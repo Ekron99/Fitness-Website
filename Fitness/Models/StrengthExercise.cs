@@ -12,13 +12,15 @@ namespace Fitness.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class WeightExercise
+    public partial class StrengthExercise
     {
         public int ExerciseID { get; set; }
+        public int UserID { get; set; }
         public int Rep { get; set; }
         public int Sets { get; set; }
         public int Weight { get; set; }
+        public System.DateTime DateRecorded { get; set; }
     
-        public virtual Exercise Exercise { get; set; }
+        public virtual User User { get; set; }
     }
 }

@@ -12,11 +12,14 @@ namespace Fitness.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Participant
+    public partial class AerobicExercise
     {
-        public int CompetitionID { get; set; }
+        public int AerobicExerciseID { get; set; }
         public int UserID { get; set; }
+        public System.TimeSpan Duration { get; set; }
+        public string Length { get; set; }
+        public System.DateTime DateRecorded { get; set; }
     
-        public virtual Competition Competition { get; set; }
+        public virtual User User { get; set; }
     }
 }

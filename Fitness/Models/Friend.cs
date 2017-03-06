@@ -18,8 +18,5 @@ namespace Fitness.Models
         public int UserID1 { get; set; }
         public int UserID2 { get; set; }
         public string Status { get; set; }
-    
-        public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
     }
 }

@@ -21,6 +21,6 @@ namespace Fitness.Models
         public int ExerciseListID { get; set; }
     
         public virtual ExerciseList ExerciseList { get; set; }
-        public virtual Participant Participant { get; set; }
+        public virtual User User { get; set; }
     }
 }

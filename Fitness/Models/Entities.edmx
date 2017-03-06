@@ -1,0 +1,476 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="fitnessModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AerobicExercise">
+          <Key>
+            <PropertyRef Name="AerobicExerciseID" />
+          </Key>
+          <Property Name="AerobicExerciseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Duration" Type="time" Precision="0" Nullable="false" />
+          <Property Name="Length" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="DateRecorded" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Competition">
+          <Key>
+            <PropertyRef Name="CompetitionID" />
+          </Key>
+          <Property Name="CompetitionID" Type="int" Nullable="false" />
+          <Property Name="OwnerID" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="int" Nullable="false" />
+          <Property Name="EndDate" Type="int" Nullable="false" />
+          <Property Name="ExerciseListID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ExerciseList">
+          <Key>
+            <PropertyRef Name="ExerciseListID" />
+          </Key>
+          <Property Name="ExerciseListID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Friends">
+          <Key>
+            <PropertyRef Name="FriendsID" />
+          </Key>
+          <Property Name="FriendsID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID1" Type="int" Nullable="false" />
+          <Property Name="UserID2" Type="int" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="45" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Measurement">
+          <Key>
+            <PropertyRef Name="MeasurementID" />
+          </Key>
+          <Property Name="MeasurementID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Part" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Value" Type="varchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Participants">
+          <Key>
+            <PropertyRef Name="CompetitionID" />
+          </Key>
+          <Property Name="CompetitionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StrengthExercise">
+          <Key>
+            <PropertyRef Name="ExerciseID" />
+          </Key>
+          <Property Name="ExerciseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Rep" Type="int" Nullable="false" />
+          <Property Name="Sets" Type="int" Nullable="false" />
+          <Property Name="Weight" Type="int" Nullable="false" />
+          <Property Name="DateRecorded" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Salt" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Hash" Type="varchar" MaxLength="1000" Nullable="false" />
+        </EntityType>
+        <Association Name="AE_USER_FK">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AerobicExercise" Type="Self.AerobicExercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="AerobicExercise">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="C_EL_FK">
+          <End Role="ExerciseList" Type="Self.ExerciseList" Multiplicity="1" />
+          <End Role="Competition" Type="Self.Competition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExerciseList">
+              <PropertyRef Name="ExerciseListID" />
+            </Principal>
+            <Dependent Role="Competition">
+              <PropertyRef Name="ExerciseListID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="C_P_FK">
+          <End Role="Competition" Type="Self.Competition" Multiplicity="1" />
+          <End Role="Participants" Type="Self.Participants" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Competition">
+              <PropertyRef Name="CompetitionID" />
+            </Principal>
+            <Dependent Role="Participants">
+              <PropertyRef Name="CompetitionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="C_USER_FK">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Participants" Type="Self.Participants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Participants">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="M_USER_FK">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Measurement" Type="Self.Measurement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Measurement">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SE_USER_FK">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StrengthExercise" Type="Self.StrengthExercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="StrengthExercise">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="fitnessModelStoreContainer">
+          <EntitySet Name="AerobicExercise" EntityType="Self.AerobicExercise" Schema="fitness" store:Type="Tables" />
+          <EntitySet Name="Competition" EntityType="Self.Competition" Schema="fitness" store:Type="Tables" />
+          <EntitySet Name="ExerciseList" EntityType="Self.ExerciseList" Schema="fitness" store:Type="Tables" />
+          <EntitySet Name="Friends" EntityType="Self.Friends" Schema="fitness" store:Type="Tables" />
+          <EntitySet Name="Measurement" EntityType="Self.Measurement" Schema="fitness" store:Type="Tables" />
+          <EntitySet Name="Participants" EntityType="Self.Participants" Schema="fitness" store:Type="Tables" />
+          <EntitySet Name="StrengthExercise" EntityType="Self.StrengthExercise" Schema="fitness" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="fitness" store:Type="Tables" />
+          <AssociationSet Name="AE_USER_FK" Association="Self.AE_USER_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="AerobicExercise" EntitySet="AerobicExercise" />
+          </AssociationSet>
+          <AssociationSet Name="C_EL_FK" Association="Self.C_EL_FK">
+            <End Role="ExerciseList" EntitySet="ExerciseList" />
+            <End Role="Competition" EntitySet="Competition" />
+          </AssociationSet>
+          <AssociationSet Name="C_P_FK" Association="Self.C_P_FK">
+            <End Role="Competition" EntitySet="Competition" />
+            <End Role="Participants" EntitySet="Participants" />
+          </AssociationSet>
+          <AssociationSet Name="C_USER_FK" Association="Self.C_USER_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Participants" EntitySet="Participants" />
+          </AssociationSet>
+          <AssociationSet Name="M_USER_FK" Association="Self.M_USER_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Measurement" EntitySet="Measurement" />
+          </AssociationSet>
+          <AssociationSet Name="SE_USER_FK" Association="Self.SE_USER_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="StrengthExercise" EntitySet="StrengthExercise" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="fitnessModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AerobicExercise">
+          <Key>
+            <PropertyRef Name="AerobicExerciseID" />
+          </Key>
+          <Property Name="AerobicExerciseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Duration" Type="Time" Nullable="false" />
+          <Property Name="Length" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateRecorded" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.AE_USER_FK" FromRole="AerobicExercise" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Competition">
+          <Key>
+            <PropertyRef Name="CompetitionID" />
+          </Key>
+          <Property Name="CompetitionID" Type="Int32" Nullable="false" />
+          <Property Name="OwnerID" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="Int32" Nullable="false" />
+          <Property Name="EndDate" Type="Int32" Nullable="false" />
+          <Property Name="ExerciseListID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ExerciseList" Relationship="Self.C_EL_FK" FromRole="Competition" ToRole="ExerciseList" />
+          <NavigationProperty Name="User" Relationship="Self.Participants" FromRole="Competition" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="ExerciseList">
+          <Key>
+            <PropertyRef Name="ExerciseListID" />
+          </Key>
+          <Property Name="ExerciseListID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Competitions" Relationship="Self.C_EL_FK" FromRole="ExerciseList" ToRole="Competition" />
+        </EntityType>
+        <EntityType Name="Friend">
+          <Key>
+            <PropertyRef Name="FriendsID" />
+          </Key>
+          <Property Name="FriendsID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID1" Type="Int32" Nullable="false" />
+          <Property Name="UserID2" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Measurement">
+          <Key>
+            <PropertyRef Name="MeasurementID" />
+          </Key>
+          <Property Name="MeasurementID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Part" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Value" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.M_USER_FK" FromRole="Measurement" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="StrengthExercise">
+          <Key>
+            <PropertyRef Name="ExerciseID" />
+          </Key>
+          <Property Name="ExerciseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Rep" Type="Int32" Nullable="false" />
+          <Property Name="Sets" Type="Int32" Nullable="false" />
+          <Property Name="Weight" Type="Int32" Nullable="false" />
+          <Property Name="DateRecorded" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.SE_USER_FK" FromRole="StrengthExercise" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Salt" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Hash" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="AerobicExercises" Relationship="Self.AE_USER_FK" FromRole="Users" ToRole="AerobicExercise" />
+          <NavigationProperty Name="Measurements" Relationship="Self.M_USER_FK" FromRole="Users" ToRole="Measurement" />
+          <NavigationProperty Name="StrengthExercises" Relationship="Self.SE_USER_FK" FromRole="Users" ToRole="StrengthExercise" />
+          <NavigationProperty Name="Competitions" Relationship="Self.Participants" FromRole="Users" ToRole="Competition" />
+        </EntityType>
+        <Association Name="AE_USER_FK">
+          <End Role="Users" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AerobicExercise" Type="Self.AerobicExercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="AerobicExercise">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="C_EL_FK">
+          <End Role="ExerciseList" Type="Self.ExerciseList" Multiplicity="1" />
+          <End Role="Competition" Type="Self.Competition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExerciseList">
+              <PropertyRef Name="ExerciseListID" />
+            </Principal>
+            <Dependent Role="Competition">
+              <PropertyRef Name="ExerciseListID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="M_USER_FK">
+          <End Role="Users" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Measurement" Type="Self.Measurement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Measurement">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SE_USER_FK">
+          <End Role="Users" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StrengthExercise" Type="Self.StrengthExercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="StrengthExercise">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Participants">
+          <End Role="Competition" Type="Self.Competition" Multiplicity="*" />
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+        </Association>
+        <EntityContainer Name="fitnessEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AerobicExercises" EntityType="Self.AerobicExercise" />
+          <EntitySet Name="Competitions" EntityType="Self.Competition" />
+          <EntitySet Name="ExerciseLists" EntityType="Self.ExerciseList" />
+          <EntitySet Name="Friends" EntityType="Self.Friend" />
+          <EntitySet Name="Measurements" EntityType="Self.Measurement" />
+          <EntitySet Name="StrengthExercises" EntityType="Self.StrengthExercise" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="AE_USER_FK" Association="Self.AE_USER_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="AerobicExercise" EntitySet="AerobicExercises" />
+          </AssociationSet>
+          <AssociationSet Name="C_EL_FK" Association="Self.C_EL_FK">
+            <End Role="ExerciseList" EntitySet="ExerciseLists" />
+            <End Role="Competition" EntitySet="Competitions" />
+          </AssociationSet>
+          <AssociationSet Name="M_USER_FK" Association="Self.M_USER_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Measurement" EntitySet="Measurements" />
+          </AssociationSet>
+          <AssociationSet Name="SE_USER_FK" Association="Self.SE_USER_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="StrengthExercise" EntitySet="StrengthExercises" />
+          </AssociationSet>
+          <AssociationSet Name="Participants" Association="Self.Participants">
+            <End Role="Competition" EntitySet="Competitions" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="fitnessModelStoreContainer" CdmEntityContainer="fitnessEntities">
+          <EntitySetMapping Name="AerobicExercises">
+            <EntityTypeMapping TypeName="fitnessModel.AerobicExercise">
+              <MappingFragment StoreEntitySet="AerobicExercise">
+                <ScalarProperty Name="AerobicExerciseID" ColumnName="AerobicExerciseID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="DateRecorded" ColumnName="DateRecorded" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Competitions">
+            <EntityTypeMapping TypeName="fitnessModel.Competition">
+              <MappingFragment StoreEntitySet="Competition">
+                <ScalarProperty Name="CompetitionID" ColumnName="CompetitionID" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="ExerciseListID" ColumnName="ExerciseListID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExerciseLists">
+            <EntityTypeMapping TypeName="fitnessModel.ExerciseList">
+              <MappingFragment StoreEntitySet="ExerciseList">
+                <ScalarProperty Name="ExerciseListID" ColumnName="ExerciseListID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Friends">
+            <EntityTypeMapping TypeName="fitnessModel.Friend">
+              <MappingFragment StoreEntitySet="Friends">
+                <ScalarProperty Name="FriendsID" ColumnName="FriendsID" />
+                <ScalarProperty Name="UserID1" ColumnName="UserID1" />
+                <ScalarProperty Name="UserID2" ColumnName="UserID2" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Measurements">
+            <EntityTypeMapping TypeName="fitnessModel.Measurement">
+              <MappingFragment StoreEntitySet="Measurement">
+                <ScalarProperty Name="MeasurementID" ColumnName="MeasurementID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Part" ColumnName="Part" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StrengthExercises">
+            <EntityTypeMapping TypeName="fitnessModel.StrengthExercise">
+              <MappingFragment StoreEntitySet="StrengthExercise">
+                <ScalarProperty Name="ExerciseID" ColumnName="ExerciseID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Rep" ColumnName="Rep" />
+                <ScalarProperty Name="Sets" ColumnName="Sets" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="DateRecorded" ColumnName="DateRecorded" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="fitnessModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Salt" ColumnName="Salt" />
+                <ScalarProperty Name="Hash" ColumnName="Hash" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Participants" TypeName="fitnessModel.Participants" StoreEntitySet="Participants">
+            <EndProperty Name="Competition">
+              <ScalarProperty Name="CompetitionID" ColumnName="CompetitionID" />
+            </EndProperty>
+            <EndProperty Name="Users">
+              <ScalarProperty Name="UserID" ColumnName="UserID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

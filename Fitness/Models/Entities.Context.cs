@@ -13,10 +13,10 @@ namespace Fitness.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class Entities : DbContext
+    public partial class fitnessEntities : DbContext
     {
-        public Entities()
-            : base("name=Entities")
+        public fitnessEntities()
+            : base("name=fitnessEntities")
         {
         }
     
@@ -25,14 +25,12 @@ namespace Fitness.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<AerobicExercise> AerobicExercises { get; set; }
         public virtual DbSet<Competition> Competitions { get; set; }
-        public virtual DbSet<Exercise> Exercises { get; set; }
         public virtual DbSet<ExerciseList> ExerciseLists { get; set; }
         public virtual DbSet<Friend> Friends { get; set; }
-        public virtual DbSet<Participant> Participants { get; set; }
+        public virtual DbSet<Measurement> Measurements { get; set; }
+        public virtual DbSet<StrengthExercise> StrengthExercises { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<ConditioningExercise> ConditioningExercises { get; set; }
-        public virtual DbSet<EnduranceExercise> EnduranceExercises { get; set; }
-        public virtual DbSet<WeightExercise> WeightExercises { get; set; }
     }
 }

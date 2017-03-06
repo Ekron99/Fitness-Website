@@ -17,26 +17,26 @@ namespace Fitness.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.Exercises = new HashSet<Exercise>();
-            this.Friends = new HashSet<Friend>();
-            this.Friends1 = new HashSet<Friend>();
+            this.AerobicExercises = new HashSet<AerobicExercise>();
+            this.Measurements = new HashSet<Measurement>();
+            this.StrengthExercises = new HashSet<StrengthExercise>();
+            this.Competitions = new HashSet<Competition>();
         }
     
         public int UserID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public Nullable<int> Age { get; set; }
-        public string Gender { get; set; }
         public string Salt { get; set; }
         public string Hash { get; set; }
-        public int Points { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Exercise> Exercises { get; set; }
+        public virtual ICollection<AerobicExercise> AerobicExercises { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Friend> Friends { get; set; }
+        public virtual ICollection<Measurement> Measurements { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Friend> Friends1 { get; set; }
+        public virtual ICollection<StrengthExercise> StrengthExercises { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Competition> Competitions { get; set; }
     }
 }
