@@ -12,6 +12,15 @@ namespace Fitness
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+            //var rolemanager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
+            //if (rolemanager.FindByName("User") == null)
+            //{
+            //    rolemanager.Create(new IdentityRole("User"));
+            //}
+            //if (rolemanager.FindByName("Admin") == null)
+            //{
+            //    rolemanager.Create(new IdentityRole("Admin"));
+            //}
         }
 
         // In this method we will create default User roles and Admin user for login   

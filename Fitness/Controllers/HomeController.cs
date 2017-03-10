@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace Fitness.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -13,6 +14,7 @@ namespace Fitness.Controllers
             return View();
         }
 
+        
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

@@ -16,9 +16,11 @@ namespace Fitness.Models
     {
         public int MeasurementID { get; set; }
         public int UserID { get; set; }
-        public string Part { get; set; }
         public string Value { get; set; }
+        public System.DateTime DateRecorded { get; set; }
+        public int PartID { get; set; }
     
         public virtual User User { get; set; }
+        public virtual Part Part { get; set; }
     }
 }

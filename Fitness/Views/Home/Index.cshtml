@@ -6,6 +6,9 @@
     <p>
         Authenticated?
         @User.Identity.IsAuthenticated
+        <br />
+        is in role?
+        @User.IsInRole("user")
     </p>
 </div>
 

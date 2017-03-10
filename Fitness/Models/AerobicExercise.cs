@@ -19,7 +19,9 @@ namespace Fitness.Models
         public System.TimeSpan Duration { get; set; }
         public string Length { get; set; }
         public System.DateTime DateRecorded { get; set; }
+        public int ExerciseListID { get; set; }
     
         public virtual User User { get; set; }
+        public virtual ExerciseList ExerciseList { get; set; }
     }
 }

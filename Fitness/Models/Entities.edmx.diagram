@@ -17,6 +17,12 @@
         <AssociationConnector Association="fitnessModel.M_USER_FK" ManuallyRouted="false" />
         <AssociationConnector Association="fitnessModel.SE_USER_FK" ManuallyRouted="false" />
         <AssociationConnector Association="fitnessModel.Participants" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="fitnessModel.Part" Width="1.5" PointX="7.5" PointY="10.5" />
+        <AssociationConnector Association="fitnessModel.P_U_FK" />
+        <AssociationConnector Association="fitnessModel.M_PART_FK" />
+        <AssociationConnector Association="fitnessModel.EL_USER_FK" />
+        <AssociationConnector Association="fitnessModel.AE_LIST_FK" />
+        <AssociationConnector Association="fitnessModel.SE_LIST_FK" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

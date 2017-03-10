@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using Fitness.Models;
 using System.Security.Cryptography;
 using System.Web.Security;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Fitness.Controllers
 {
@@ -21,6 +23,8 @@ namespace Fitness.Controllers
         {
             return View();
         }
+
+        
 
         // GET: Users/Details/5
         public ActionResult Details(int? id)
@@ -38,6 +42,7 @@ namespace Fitness.Controllers
         }
 
         // GET: Users/Create
+        [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
@@ -47,6 +52,7 @@ namespace Fitness.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult Register(RegistrationModel model)
         {
@@ -69,8 +75,11 @@ namespace Fitness.Controllers
                     user.Salt = stringSalt;
                     db.Users.Add(user);
                     db.SaveChanges();
-
+                    user = db.Users.Where(x => x.Email == model.Email).First();
                     //login the user in
+                    var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                    var tempuser = userManager.FindByEmail(user.Email);
+                    userManager.AddToRole(tempuser.Id, "User");     
                     FormsAuthentication.SetAuthCookie(model.Email, false);
 
                     return RedirectToAction("Index", "Home", null);
@@ -103,12 +112,14 @@ namespace Fitness.Controllers
             return RedirectToAction("Index", "Home", null);
         }
 
+        [AllowAnonymous]
         public ActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult Login(LoginModel user)
         {
             User existingUser = db.Users.Where(x => x.Email == user.Email).FirstOrDefault();

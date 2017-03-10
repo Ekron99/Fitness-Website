@@ -21,6 +21,8 @@ namespace Fitness.Models
             this.Measurements = new HashSet<Measurement>();
             this.StrengthExercises = new HashSet<StrengthExercise>();
             this.Competitions = new HashSet<Competition>();
+            this.Parts = new HashSet<Part>();
+            this.ExerciseLists = new HashSet<ExerciseList>();
         }
     
         public int UserID { get; set; }
@@ -29,6 +31,7 @@ namespace Fitness.Models
         public string Email { get; set; }
         public string Salt { get; set; }
         public string Hash { get; set; }
+        public string Roles { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AerobicExercise> AerobicExercises { get; set; }
@@ -38,5 +41,9 @@ namespace Fitness.Models
         public virtual ICollection<StrengthExercise> StrengthExercises { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Competition> Competitions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Part> Parts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ExerciseList> ExerciseLists { get; set; }
     }
 }

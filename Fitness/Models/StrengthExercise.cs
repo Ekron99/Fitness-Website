@@ -20,7 +20,9 @@ namespace Fitness.Models
         public int Sets { get; set; }
         public int Weight { get; set; }
         public System.DateTime DateRecorded { get; set; }
+        public int ExerciseListID { get; set; }
     
         public virtual User User { get; set; }
+        public virtual ExerciseList ExerciseList { get; set; }
     }
 }

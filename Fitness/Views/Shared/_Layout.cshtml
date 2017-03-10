@@ -3,9 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Fitness Tracker</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/Content/themes/base/css")
+    @*@Scripts.Render("~/bundles/jqueryui")*@
 
 </head>
 <body>
@@ -22,7 +24,14 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Exercises", "Index", "Exercise")</li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Strength Exercises", "Index", "StrengthExercises")</li>
+                        <li>@Html.ActionLink("Aerobic Exercises", "Index", "AerobicExercises")</li>
+                        <li>@Html.ActionLink("Measurements", "Index", "Measurements")</li>
+                        <li>@Html.ActionLink("Parts", "Index", "Parts")</li>
+                    }
+                    
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -32,7 +41,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Gabe Vaught</p>
         </footer>
     </div>
 
