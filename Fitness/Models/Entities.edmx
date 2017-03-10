@@ -33,6 +33,7 @@
           <Property Name="ExerciseListID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="45" Nullable="false" />
         </EntityType>
         <EntityType Name="Friends">
           <Key>
@@ -337,6 +338,7 @@
           <NavigationProperty Name="User" Relationship="fitnessModel.EL_USER_FK" FromRole="ExerciseList" ToRole="User" />
           <NavigationProperty Name="AerobicExercises" Relationship="fitnessModel.AE_LIST_FK" FromRole="ExerciseList" ToRole="AerobicExercise" />
           <NavigationProperty Name="StrengthExercises" Relationship="fitnessModel.SE_LIST_FK" FromRole="ExerciseList" ToRole="StrengthExercise" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Friend">
           <Key>
@@ -611,6 +613,7 @@
           <EntitySetMapping Name="ExerciseLists">
             <EntityTypeMapping TypeName="fitnessModel.ExerciseList">
               <MappingFragment StoreEntitySet="ExerciseList">
+                <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ExerciseListID" ColumnName="ExerciseListID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />

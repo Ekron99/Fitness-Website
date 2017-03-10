@@ -175,6 +175,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AerobicExercisesController.cs" />
     <Compile Include="Controllers\ExerciseListsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -394,6 +395,11 @@
     <Content Include="Views\ExerciseLists\Details.cshtml" />
     <Content Include="Views\ExerciseLists\Edit.cshtml" />
     <Content Include="Views\ExerciseLists\Index.cshtml" />
+    <Content Include="Views\AerobicExercises\Create.cshtml" />
+    <Content Include="Views\AerobicExercises\Delete.cshtml" />
+    <Content Include="Views\AerobicExercises\Details.cshtml" />
+    <Content Include="Views\AerobicExercises\Edit.cshtml" />
+    <Content Include="Views\AerobicExercises\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

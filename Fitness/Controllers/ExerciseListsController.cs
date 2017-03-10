@@ -39,6 +39,10 @@ namespace Fitness.Controllers
         // GET: ExerciseLists/Create
         public ActionResult Create()
         {
+            List<string> types = new List<string>();
+            types.Add("Strength");
+            types.Add("Aerobic");
+            ViewBag.typelist = new SelectList(types);
             return View();
         }
 
@@ -47,10 +51,11 @@ namespace Fitness.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ExerciseListID,Name,UserID")] ExerciseList exerciseList)
+        public ActionResult Create([Bind(Include = "ExerciseListID,Name,UserID,Type")] ExerciseList exerciseList)
         {
             if (ModelState.IsValid)
             {
+                
                 exerciseList.UserID = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID;
                 db.ExerciseLists.Add(exerciseList);
                 db.SaveChanges();

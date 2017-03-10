@@ -39,7 +39,7 @@ namespace Fitness.Controllers
         // GET: StrengthExercises/Create
         public ActionResult Create()
         {
-            ViewBag.List = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID), "ExerciseListID", "Name");
+            ViewBag.List = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(n => n.Type == "Strength"), "ExerciseListID", "Name");
             return View();
         }
 
