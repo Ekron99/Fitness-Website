@@ -39,8 +39,10 @@ namespace Fitness.Controllers
         // GET: StrengthExercises/Create
         public ActionResult Create()
         {
-            ViewBag.List = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(n => n.Type == "Strength"), "ExerciseListID", "Name");
-            return View();
+            ViewBag.List = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(n => n.Type == "Strength"), "ExerciseListID", "Name", 0);
+            StrengthExercise exercise = new StrengthExercise();
+            exercise.DateRecorded = DateTime.Now;
+            return View(exercise);
         }
 
         // POST: StrengthExercises/Create
@@ -48,7 +50,7 @@ namespace Fitness.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ExerciseID,UserID,Rep,Sets,Weight,DateRecorded")] StrengthExercise strengthExercise)
+        public ActionResult Create([Bind(Include = "ExerciseID, ExerciseListID,UserID,Rep,Sets,Weight,DateRecorded")] StrengthExercise strengthExercise)
         {
             if (ModelState.IsValid)
             {

@@ -32,7 +32,7 @@
             @Html.DisplayFor(modelItem => item.Value)
         </td>
         <td>
-            @item.getViewDate()
+            @item.DateRecorded.ToShortDateString()
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.MeasurementID }) |

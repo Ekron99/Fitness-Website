@@ -38,7 +38,7 @@
             @Html.DisplayFor(modelItem => item.Weight)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DateRecorded)
+            @item.DateRecorded.ToShortDateString()
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ExerciseID }) |

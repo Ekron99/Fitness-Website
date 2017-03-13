@@ -89,6 +89,7 @@ namespace Fitness.Controllers
         {
             if (ModelState.IsValid)
             {
+                //TODO: Add type of exercise to view to get this working
                 exerciseList.UserID = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID;
                 db.Entry(exerciseList).State = EntityState.Modified;
                 db.SaveChanges();

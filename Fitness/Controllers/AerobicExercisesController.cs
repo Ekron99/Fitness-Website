@@ -40,7 +40,9 @@ namespace Fitness.Controllers
         public ActionResult Create()
         {
             ViewBag.ExerciseListID = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(n => n.Type == "Aerobic"), "ExerciseListID", "Name");
-            return View();
+            AerobicExercise exercise = new AerobicExercise();
+            exercise.DateRecorded = DateTime.Now;
+            return View(exercise);
         }
 
         // POST: AerobicExercises/Create
@@ -52,6 +54,7 @@ namespace Fitness.Controllers
         {
             if (ModelState.IsValid)
             {
+                aerobicExercise.UserID = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID;
                 db.AerobicExercises.Add(aerobicExercise);
                 db.SaveChanges();
                 return RedirectToAction("Index");

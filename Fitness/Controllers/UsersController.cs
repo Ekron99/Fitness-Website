@@ -120,20 +120,20 @@ namespace Fitness.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Login(LoginModel user)
+        public ActionResult Login(LoginModel user, string ReturnUrl)
         {
             User existingUser = db.Users.Where(x => x.Email == user.Email).FirstOrDefault();
             string result = getHash(user.Password, existingUser.Salt);
             if (result == existingUser.Hash)
             {
                 FormsAuthentication.SetAuthCookie(user.Email, user.RememberMe);
+                return Redirect(ReturnUrl);
             } else
             {
+                ViewBag.errorMessage = "Invalid username or password";
                 return View(user);
             }
-            
 
-            return RedirectToAction("Index", "Home", null);
         }
 
         // GET: Users/Edit/5

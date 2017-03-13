@@ -228,6 +228,7 @@
     <Compile Include="Models\StrengthExercise.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\StrengthExerciseViewModel.cs" />
     <Compile Include="Models\User.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
