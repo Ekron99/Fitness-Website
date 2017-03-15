@@ -23,6 +23,7 @@ namespace Fitness.Models
             this.Competitions = new HashSet<Competition>();
             this.Parts = new HashSet<Part>();
             this.ExerciseLists = new HashSet<ExerciseList>();
+            this.FoodIntakes = new HashSet<FoodIntake>();
         }
     
         public int UserID { get; set; }
@@ -45,5 +46,7 @@ namespace Fitness.Models
         public virtual ICollection<Part> Parts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ExerciseList> ExerciseLists { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FoodIntake> FoodIntakes { get; set; }
     }
 }

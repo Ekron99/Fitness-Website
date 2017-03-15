@@ -177,6 +177,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AerobicExercisesController.cs" />
     <Compile Include="Controllers\ExerciseListsController.cs" />
+    <Compile Include="Controllers\FoodIntakeController.cs" />
+    <Compile Include="Controllers\FoodsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MeasurementsController.cs" />
@@ -209,6 +211,12 @@
       <DependentUpon>Entities.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ExerciseList.cs">
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Food.cs">
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FoodIntake.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Friend.cs">
@@ -385,7 +393,7 @@
     <Content Include="Views\Parts\Details.cshtml" />
     <Content Include="Views\Parts\Edit.cshtml" />
     <Content Include="Views\Parts\Index.cshtml" />
-    <Content Include="Views\Shared\Unauthorized.cshtml" />
+    <Content Include="Views\Users\Unauthorized.cshtml" />
     <Content Include="Views\StrengthExercises\Create.cshtml" />
     <Content Include="Views\StrengthExercises\Delete.cshtml" />
     <Content Include="Views\StrengthExercises\Details.cshtml" />
@@ -401,6 +409,16 @@
     <Content Include="Views\AerobicExercises\Details.cshtml" />
     <Content Include="Views\AerobicExercises\Edit.cshtml" />
     <Content Include="Views\AerobicExercises\Index.cshtml" />
+    <Content Include="Views\Foods\Create.cshtml" />
+    <Content Include="Views\Foods\Delete.cshtml" />
+    <Content Include="Views\Foods\Details.cshtml" />
+    <Content Include="Views\Foods\Edit.cshtml" />
+    <Content Include="Views\Foods\Index.cshtml" />
+    <Content Include="Views\FoodIntake\Index.cshtml" />
+    <Content Include="Views\FoodIntake\Details.cshtml" />
+    <Content Include="Views\FoodIntake\Create.cshtml" />
+    <Content Include="Views\FoodIntake\Edit.cshtml" />
+    <Content Include="Views\FoodIntake\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

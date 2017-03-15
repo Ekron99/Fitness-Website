@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "Unauthorized";
+}
+
+<h2>You are not authorized to view this page.</h2>
+@Html.BeginForm("UnauthorizedReturn", "Users", FormMethod.Post) {
+
+
+    <button type="submit" name="submit" value="Return to previous page"/>
+
+
+
+}

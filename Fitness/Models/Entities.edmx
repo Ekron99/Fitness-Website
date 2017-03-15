@@ -35,6 +35,34 @@
           <Property Name="Name" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="Type" Type="varchar" MaxLength="45" Nullable="false" />
         </EntityType>
+        <EntityType Name="Food">
+          <Key>
+            <PropertyRef Name="FoodID" />
+          </Key>
+          <Property Name="FoodID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="Quantity" Type="decimal" Precision="7" Scale="3" Nullable="false" />
+          <Property Name="Calories" Type="decimal" Precision="7" Scale="3" />
+          <Property Name="CaloriesFromFat" Type="decimal" Precision="7" Scale="3" />
+          <Property Name="SaturatedFat" Type="decimal" Precision="7" Scale="3" />
+          <Property Name="Cholestoral" Type="decimal" Precision="7" Scale="3" />
+          <Property Name="Sodium" Type="decimal" Precision="7" Scale="3" />
+          <Property Name="Potassium" Type="decimal" Precision="7" Scale="3" />
+          <Property Name="TotalCarbohydrate" Type="decimal" Precision="7" Scale="3" />
+          <Property Name="DietaryFiber" Type="decimal" Precision="7" Scale="3" />
+          <Property Name="Sugars" Type="decimal" Precision="7" Scale="3" />
+          <Property Name="Protein" Type="decimal" Precision="7" Scale="3" />
+        </EntityType>
+        <EntityType Name="FoodIntake">
+          <Key>
+            <PropertyRef Name="FoodIntakeID" />
+          </Key>
+          <Property Name="FoodIntakeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FoodID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="DateRecorded" Type="date" Nullable="false" />
+          <Property Name="Servings" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+        </EntityType>
         <EntityType Name="Friends">
           <Key>
             <PropertyRef Name="FriendsID" />
@@ -173,6 +201,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FI_F_FK">
+          <End Role="Food" Type="Self.Food" Multiplicity="1" />
+          <End Role="FoodIntake" Type="Self.FoodIntake" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Food">
+              <PropertyRef Name="FoodID" />
+            </Principal>
+            <Dependent Role="FoodIntake">
+              <PropertyRef Name="FoodID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FI_U_FK">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="FoodIntake" Type="Self.FoodIntake" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="FoodIntake">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="M_PART_FK">
           <End Role="Parts" Type="Self.Parts" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -247,6 +299,8 @@
           <EntitySet Name="AerobicExercise" EntityType="Self.AerobicExercise" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="Competition" EntityType="Self.Competition" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="ExerciseList" EntityType="Self.ExerciseList" Schema="fitness" store:Type="Tables" />
+          <EntitySet Name="Food" EntityType="Self.Food" Schema="fitness" store:Type="Tables" />
+          <EntitySet Name="FoodIntake" EntityType="Self.FoodIntake" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="Friends" EntityType="Self.Friends" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="Measurement" EntityType="Self.Measurement" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="Participants" EntityType="Self.Participants" Schema="fitness" store:Type="Tables" />
@@ -276,6 +330,14 @@
           <AssociationSet Name="EL_USER_FK" Association="Self.EL_USER_FK">
             <End Role="Users" EntitySet="Users" />
             <End Role="ExerciseList" EntitySet="ExerciseList" />
+          </AssociationSet>
+          <AssociationSet Name="FI_F_FK" Association="Self.FI_F_FK">
+            <End Role="Food" EntitySet="Food" />
+            <End Role="FoodIntake" EntitySet="FoodIntake" />
+          </AssociationSet>
+          <AssociationSet Name="FI_U_FK" Association="Self.FI_U_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="FoodIntake" EntitySet="FoodIntake" />
           </AssociationSet>
           <AssociationSet Name="M_PART_FK" Association="Self.M_PART_FK">
             <End Role="Parts" EntitySet="Parts" />
@@ -392,6 +454,7 @@
           <Property Name="Roles" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Parts" Relationship="fitnessModel.P_U_FK" FromRole="User" ToRole="Part" />
           <NavigationProperty Name="ExerciseLists" Relationship="fitnessModel.EL_USER_FK" FromRole="User" ToRole="ExerciseList" />
+          <NavigationProperty Name="FoodIntakes" Relationship="fitnessModel.U_FI_FK" FromRole="User" ToRole="FoodIntake" />
         </EntityType>
         <Association Name="AE_USER_FK">
           <End Role="Users" Type="Self.User" Multiplicity="1">
@@ -500,6 +563,16 @@
             <End Role="ExerciseList" EntitySet="ExerciseLists" />
             <End Role="StrengthExercise" EntitySet="StrengthExercises" />
           </AssociationSet>
+          <EntitySet Name="Foods" EntityType="fitnessModel.Food" />
+          <EntitySet Name="FoodIntakes" EntityType="fitnessModel.FoodIntake" />
+          <AssociationSet Name="F_FI_FK" Association="fitnessModel.F_FI_FK">
+            <End Role="Food" EntitySet="Foods" />
+            <End Role="FoodIntake" EntitySet="FoodIntakes" />
+          </AssociationSet>
+          <AssociationSet Name="U_FI_FK" Association="fitnessModel.U_FI_FK">
+            <End Role="User" EntitySet="Users" />
+            <End Role="FoodIntake" EntitySet="FoodIntakes" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Part">
           <Key>
@@ -578,6 +651,63 @@
             </Principal>
             <Dependent Role="StrengthExercise">
               <PropertyRef Name="ExerciseListID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Food">
+          <Key>
+            <PropertyRef Name="FoodID" />
+          </Key>
+          <Property Name="FoodID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Quantity" Type="Decimal" Nullable="false" />
+          <Property Name="Calories" Type="Decimal" />
+          <Property Name="CaloriesFromFat" Type="Decimal" />
+          <Property Name="SaturatedFat" Type="Decimal" />
+          <Property Name="Cholestoral" Type="Decimal" />
+          <Property Name="Sodium" Type="Decimal" />
+          <Property Name="Potassium" Type="Decimal" />
+          <Property Name="TotalCarbohydrate" Type="Decimal" />
+          <Property Name="DietaryFiber" Type="Decimal" />
+          <Property Name="Sugars" Type="Decimal" />
+          <Property Name="Protein" Type="Decimal" />
+          <NavigationProperty Name="FoodIntakes" Relationship="fitnessModel.F_FI_FK" FromRole="Food" ToRole="FoodIntake" />
+        </EntityType>
+        <EntityType Name="FoodIntake">
+          <Key>
+            <PropertyRef Name="FoodIntakeID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="FoodID" Type="Int32" Nullable="false" />
+          <Property Name="DateRecorded" Type="DateTime" Nullable="false" />
+          <Property Name="Servings" Type="Decimal" Nullable="false" />
+          <NavigationProperty Name="Food" Relationship="fitnessModel.F_FI_FK" FromRole="FoodIntake" ToRole="Food" />
+          <NavigationProperty Name="User" Relationship="fitnessModel.U_FI_FK" FromRole="FoodIntake" ToRole="User" />
+          <Property Name="FoodIntakeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <Association Name="F_FI_FK">
+          <End Type="fitnessModel.Food" Role="Food" Multiplicity="1" />
+          <End Type="fitnessModel.FoodIntake" Role="FoodIntake" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Food">
+              <PropertyRef Name="FoodID" />
+            </Principal>
+            <Dependent Role="FoodIntake">
+              <PropertyRef Name="FoodID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="U_FI_FK">
+          <End Type="fitnessModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="fitnessModel.FoodIntake" Role="FoodIntake" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="FoodIntake">
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -681,6 +811,36 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="PartID" ColumnName="PartID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Foods">
+            <EntityTypeMapping TypeName="fitnessModel.Food">
+              <MappingFragment StoreEntitySet="Food">
+                <ScalarProperty Name="Protein" ColumnName="Protein" />
+                <ScalarProperty Name="Sugars" ColumnName="Sugars" />
+                <ScalarProperty Name="DietaryFiber" ColumnName="DietaryFiber" />
+                <ScalarProperty Name="TotalCarbohydrate" ColumnName="TotalCarbohydrate" />
+                <ScalarProperty Name="Potassium" ColumnName="Potassium" />
+                <ScalarProperty Name="Sodium" ColumnName="Sodium" />
+                <ScalarProperty Name="Cholestoral" ColumnName="Cholestoral" />
+                <ScalarProperty Name="SaturatedFat" ColumnName="SaturatedFat" />
+                <ScalarProperty Name="CaloriesFromFat" ColumnName="CaloriesFromFat" />
+                <ScalarProperty Name="Calories" ColumnName="Calories" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="FoodID" ColumnName="FoodID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FoodIntakes">
+            <EntityTypeMapping TypeName="fitnessModel.FoodIntake">
+              <MappingFragment StoreEntitySet="FoodIntake">
+                <ScalarProperty Name="FoodIntakeID" ColumnName="FoodIntakeID" />
+                <ScalarProperty Name="Servings" ColumnName="Servings" />
+                <ScalarProperty Name="DateRecorded" ColumnName="DateRecorded" />
+                <ScalarProperty Name="FoodID" ColumnName="FoodID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

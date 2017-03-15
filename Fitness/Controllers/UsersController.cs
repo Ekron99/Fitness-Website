@@ -136,6 +136,19 @@ namespace Fitness.Controllers
 
         }
 
+        [AllowAnonymous]
+        public ActionResult Unauthorized(string returnURL)
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult UnauthorizedReturn(string returnURL)
+        {
+            return Redirect(returnURL);
+        }
+
         // GET: Users/Edit/5
         public ActionResult Edit(int? id)
         {

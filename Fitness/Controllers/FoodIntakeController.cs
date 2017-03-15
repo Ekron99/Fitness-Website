@@ -10,124 +10,118 @@ using Fitness.Models;
 
 namespace Fitness.Controllers
 {
-    public class ExerciseListsController : Controller
+    public class FoodIntakeController : Controller
     {
         private fitnessEntities db = new fitnessEntities();
 
-        // GET: ExerciseLists
+        // GET: FoodIntakes
         public ActionResult Index()
         {
-            var exerciseLists = db.ExerciseLists.Where(e => e.UserID == db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID);
-            return View(exerciseLists.ToList());
+            var foodIntakes = db.FoodIntakes.Include(f => f.Food).Include(f => f.User);
+            return View(foodIntakes.ToList());
         }
 
-        // GET: ExerciseLists/Details/5
+        // GET: FoodIntakes/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ExerciseList exerciseList = db.ExerciseLists.Find(id);
-            if (exerciseList == null)
+            FoodIntake foodIntake = db.FoodIntakes.Find(id);
+            if (foodIntake == null)
             {
                 return HttpNotFound();
             }
-            return View(exerciseList);
+            return View(foodIntake);
         }
 
-        // GET: ExerciseLists/Create
+        // GET: FoodIntakes/Create
         public ActionResult Create()
         {
-            List<string> types = new List<string>();
-            types.Add("Strength");
-            types.Add("Aerobic");
-            ViewBag.typelist = new SelectList(types);
+            //TODO: Add date picker for DateRecorded field
+            ViewBag.FoodID = new SelectList(db.Foods, "FoodID", "Name");
+            ViewBag.UserID = new SelectList(db.Users, "UserID", "FirstName");
             return View();
         }
 
-        // POST: ExerciseLists/Create
+        // POST: FoodIntakes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ExerciseListID,Name,UserID,Type")] ExerciseList exerciseList)
+        public ActionResult Create([Bind(Include = "FoodID,DateRecorded,Servings")] FoodIntake foodIntake)
         {
             if (ModelState.IsValid)
             {
-                
-                exerciseList.UserID = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID;
-                db.ExerciseLists.Add(exerciseList);
+                foodIntake.User = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+                db.FoodIntakes.Add(foodIntake);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(exerciseList);
+            ViewBag.FoodID = new SelectList(db.Foods, "FoodID", "Name", foodIntake.FoodID);
+            ViewBag.UserID = new SelectList(db.Users, "UserID", "FirstName", foodIntake.UserID);
+            return View(foodIntake);
         }
 
-        // GET: ExerciseLists/Edit/5
+        // GET: FoodIntakes/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ExerciseList exerciseList = db.ExerciseLists.Find(id);
-            //TODO: Test to make sure this works
-            if (exerciseList.UserID != db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID)
-            {
-                return RedirectToAction("Unauthorized", "Users", new { ReturnURL = "~/ExerciseLists/Edit/" + id });
-            }
-            List<string> types = new List<string>();
-            types.Add("Strength");
-            types.Add("Aerobic");
-            ViewBag.typelist = new SelectList(types);
-            if (exerciseList == null)
+            FoodIntake foodIntake = db.FoodIntakes.Find(id);
+            if (foodIntake == null)
             {
                 return HttpNotFound();
             }
-            return View(exerciseList);
+            ViewBag.FoodID = new SelectList(db.Foods, "FoodID", "Name", foodIntake.FoodID);
+            ViewBag.UserID = new SelectList(db.Users, "UserID", "FirstName", foodIntake.UserID);
+            return View(foodIntake);
         }
 
-        // POST: ExerciseLists/Edit/5
+        // POST: FoodIntakes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ExerciseListID,Name,UserID, Type")] ExerciseList exerciseList)
+        public ActionResult Edit([Bind(Include = "UserID,FoodID,DateRecorded,Servings")] FoodIntake foodIntake)
         {
             if (ModelState.IsValid)
             {
-                exerciseList.UserID = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID;
-                db.Entry(exerciseList).State = EntityState.Modified;
+                db.Entry(foodIntake).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(exerciseList);
+            ViewBag.FoodID = new SelectList(db.Foods, "FoodID", "Name", foodIntake.FoodID);
+            ViewBag.UserID = new SelectList(db.Users, "UserID", "FirstName", foodIntake.UserID);
+            return View(foodIntake);
         }
 
-        // GET: ExerciseLists/Delete/5
+        // GET: FoodIntakes/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ExerciseList exerciseList = db.ExerciseLists.Find(id);
-            if (exerciseList == null)
+            FoodIntake foodIntake = db.FoodIntakes.Find(id);
+            if (foodIntake == null)
             {
                 return HttpNotFound();
             }
-            return View(exerciseList);
+            return View(foodIntake);
         }
 
-        // POST: ExerciseLists/Delete/5
+        // POST: FoodIntakes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ExerciseList exerciseList = db.ExerciseLists.Find(id);
-            db.ExerciseLists.Remove(exerciseList);
+            FoodIntake foodIntake = db.FoodIntakes.Find(id);
+            db.FoodIntakes.Remove(foodIntake);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -10,124 +10,107 @@ using Fitness.Models;
 
 namespace Fitness.Controllers
 {
-    public class ExerciseListsController : Controller
+    public class FoodsController : Controller
     {
         private fitnessEntities db = new fitnessEntities();
 
-        // GET: ExerciseLists
+        // GET: Foods
         public ActionResult Index()
         {
-            var exerciseLists = db.ExerciseLists.Where(e => e.UserID == db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID);
-            return View(exerciseLists.ToList());
+            return View(db.Foods.ToList());
         }
 
-        // GET: ExerciseLists/Details/5
+        // GET: Foods/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ExerciseList exerciseList = db.ExerciseLists.Find(id);
-            if (exerciseList == null)
+            Food food = db.Foods.Find(id);
+            if (food == null)
             {
                 return HttpNotFound();
             }
-            return View(exerciseList);
+            return View(food);
         }
 
-        // GET: ExerciseLists/Create
+        // GET: Foods/Create
         public ActionResult Create()
         {
-            List<string> types = new List<string>();
-            types.Add("Strength");
-            types.Add("Aerobic");
-            ViewBag.typelist = new SelectList(types);
             return View();
         }
 
-        // POST: ExerciseLists/Create
+        // POST: Foods/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ExerciseListID,Name,UserID,Type")] ExerciseList exerciseList)
+        public ActionResult Create([Bind(Include = "FoodID,Name,Quantity,Calories,CaloriesFromFat,SaturatedFat,Cholestoral,Sodium,Potassium,TotalCarbohydrate,DietaryFiber,Sugars,Protein")] Food food)
         {
             if (ModelState.IsValid)
             {
-                
-                exerciseList.UserID = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID;
-                db.ExerciseLists.Add(exerciseList);
+                db.Foods.Add(food);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(exerciseList);
+            return View(food);
         }
 
-        // GET: ExerciseLists/Edit/5
+        // GET: Foods/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ExerciseList exerciseList = db.ExerciseLists.Find(id);
-            //TODO: Test to make sure this works
-            if (exerciseList.UserID != db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID)
-            {
-                return RedirectToAction("Unauthorized", "Users", new { ReturnURL = "~/ExerciseLists/Edit/" + id });
-            }
-            List<string> types = new List<string>();
-            types.Add("Strength");
-            types.Add("Aerobic");
-            ViewBag.typelist = new SelectList(types);
-            if (exerciseList == null)
+            Food food = db.Foods.Find(id);
+            if (food == null)
             {
                 return HttpNotFound();
             }
-            return View(exerciseList);
+            return View(food);
         }
 
-        // POST: ExerciseLists/Edit/5
+        // POST: Foods/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ExerciseListID,Name,UserID, Type")] ExerciseList exerciseList)
+        public ActionResult Edit([Bind(Include = "FoodID,Name,Quantity,Calories,CaloriesFromFat,SaturatedFat,Cholestoral,Sodium,Potassium,TotalCarbohydrate,DietaryFiber,Sugars,Protein")] Food food)
         {
             if (ModelState.IsValid)
             {
-                exerciseList.UserID = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID;
-                db.Entry(exerciseList).State = EntityState.Modified;
+                db.Entry(food).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(exerciseList);
+            return View(food);
         }
 
-        // GET: ExerciseLists/Delete/5
+        // GET: Foods/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ExerciseList exerciseList = db.ExerciseLists.Find(id);
-            if (exerciseList == null)
+            Food food = db.Foods.Find(id);
+            if (food == null)
             {
                 return HttpNotFound();
             }
-            return View(exerciseList);
+            return View(food);
         }
 
-        // POST: ExerciseLists/Delete/5
+        // POST: Foods/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ExerciseList exerciseList = db.ExerciseLists.Find(id);
-            db.ExerciseLists.Remove(exerciseList);
+            Food food = db.Foods.Find(id);
+            db.Foods.Remove(food);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
