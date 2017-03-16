@@ -4,11 +4,8 @@
 }
 
 <h2>You are not authorized to view this page.</h2>
-@Html.BeginForm("UnauthorizedReturn", "Users", FormMethod.Post) {
 
-
-    <button type="submit" name="submit" value="Return to previous page"/>
-
-
-
+@using (Html.BeginForm("Login", "Users", FormMethod.Get, null))
+{
+    <input type="submit" value="Log in as another user" />
 }

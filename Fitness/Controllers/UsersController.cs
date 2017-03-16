@@ -73,13 +73,11 @@ namespace Fitness.Controllers
                     user.Email = model.Email;
                     user.Hash = hash;
                     user.Salt = stringSalt;
+                    user.Roles = "User";
                     db.Users.Add(user);
                     db.SaveChanges();
                     user = db.Users.Where(x => x.Email == model.Email).First();
-                    //login the user in
-                    var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-                    var tempuser = userManager.FindByEmail(user.Email);
-                    userManager.AddToRole(tempuser.Id, "User");     
+                    //login the user in   
                     FormsAuthentication.SetAuthCookie(model.Email, false);
 
                     return RedirectToAction("Index", "Home", null);
@@ -127,7 +125,15 @@ namespace Fitness.Controllers
             if (result == existingUser.Hash)
             {
                 FormsAuthentication.SetAuthCookie(user.Email, user.RememberMe);
-                return Redirect(ReturnUrl);
+                if (ReturnUrl != null)
+                {
+                    return Redirect(ReturnUrl);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home", null);
+                }
+                
             } else
             {
                 ViewBag.errorMessage = "Invalid username or password";
@@ -139,14 +145,8 @@ namespace Fitness.Controllers
         [AllowAnonymous]
         public ActionResult Unauthorized(string returnURL)
         {
+            ViewBag.returnURL = returnURL;
             return View();
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        public ActionResult UnauthorizedReturn(string returnURL)
-        {
-            return Redirect(returnURL);
         }
 
         // GET: Users/Edit/5

@@ -12,33 +12,29 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.DateRecorded)
+            
+            @Html.DisplayNameFor(model => model.Food.Name)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Servings)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Food.Name)
+            @Html.DisplayNameFor(model => model.DateRecorded)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User.FirstName)
-        </th>
+
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.DateRecorded)
+            @Html.DisplayFor(modelItem => item.Food.Name)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Servings)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Food.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.FirstName)
+            @item.DateRecorded.ToShortDateString()
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.FoodIntakeID }) |

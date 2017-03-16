@@ -17,7 +17,7 @@ namespace Fitness.Controllers
         // GET: FoodIntakes
         public ActionResult Index()
         {
-            var foodIntakes = db.FoodIntakes.Include(f => f.Food).Include(f => f.User);
+            var foodIntakes = db.FoodIntakes.Include(f => f.Food).Where(x => x.User == db.Users.Where(i => i.Email == User.Identity.Name));
             return View(foodIntakes.ToList());
         }
 
@@ -73,12 +73,15 @@ namespace Fitness.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             FoodIntake foodIntake = db.FoodIntakes.Find(id);
+            if (foodIntake.UserID != db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID)
+            {
+                return RedirectToAction("Unauthorized", "Users", new { ReturnURL = "~/foodIntake/Edit/" + id });
+            }
             if (foodIntake == null)
             {
                 return HttpNotFound();
             }
             ViewBag.FoodID = new SelectList(db.Foods, "FoodID", "Name", foodIntake.FoodID);
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "FirstName", foodIntake.UserID);
             return View(foodIntake);
         }
 
@@ -91,12 +94,12 @@ namespace Fitness.Controllers
         {
             if (ModelState.IsValid)
             {
+                foodIntake.User = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
                 db.Entry(foodIntake).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
             ViewBag.FoodID = new SelectList(db.Foods, "FoodID", "Name", foodIntake.FoodID);
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "FirstName", foodIntake.UserID);
             return View(foodIntake);
         }
 

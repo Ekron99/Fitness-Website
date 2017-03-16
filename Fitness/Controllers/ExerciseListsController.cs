@@ -74,9 +74,9 @@ namespace Fitness.Controllers
             }
             ExerciseList exerciseList = db.ExerciseLists.Find(id);
             //TODO: Test to make sure this works
-            if (exerciseList.UserID != db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID)
+            if (exerciseList == null)
             {
-                return RedirectToAction("Unauthorized", "Users", new { ReturnURL = "~/ExerciseLists/Edit/" + id });
+                return RedirectToAction("Unauthorized", "Users");
             }
             List<string> types = new List<string>();
             types.Add("Strength");
