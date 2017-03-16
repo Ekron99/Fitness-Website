@@ -73,7 +73,6 @@ namespace Fitness.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ExerciseList exerciseList = db.ExerciseLists.Find(id);
-            //TODO: Test to make sure this works
             if (exerciseList == null)
             {
                 return RedirectToAction("Unauthorized", "Users");

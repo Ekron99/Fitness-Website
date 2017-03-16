@@ -12,17 +12,16 @@ namespace Fitness.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class StrengthExercise
+    public partial class StrengthGoal
     {
-        public int ExerciseID { get; set; }
+        public int GoalID { get; set; }
         public int UserID { get; set; }
-        public int Rep { get; set; }
-        public int Sets { get; set; }
-        public decimal Weight { get; set; }
-        public System.DateTime DateRecorded { get; set; }
         public int ExerciseListID { get; set; }
+        public string Name { get; set; }
+        public decimal TargetWeight { get; set; }
+        public System.DateTime EndDate { get; set; }
     
-        public virtual User User { get; set; }
         public virtual ExerciseList ExerciseList { get; set; }
+        public virtual User User { get; set; }
     }
 }

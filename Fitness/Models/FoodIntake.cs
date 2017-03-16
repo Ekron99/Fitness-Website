@@ -6,7 +6,6 @@
 //     Manual changes to this file will be overwritten if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-using System.ComponentModel.DataAnnotations;
 
 namespace Fitness.Models
 {
@@ -17,7 +16,6 @@ namespace Fitness.Models
     {
         public int UserID { get; set; }
         public int FoodID { get; set; }
-        [Display(Name ="Date Recorded")]
         public System.DateTime DateRecorded { get; set; }
         public decimal Servings { get; set; }
         public int FoodIntakeID { get; set; }

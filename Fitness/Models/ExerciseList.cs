@@ -20,6 +20,7 @@ namespace Fitness.Models
             this.Competitions = new HashSet<Competition>();
             this.AerobicExercises = new HashSet<AerobicExercise>();
             this.StrengthExercises = new HashSet<StrengthExercise>();
+            this.StrengthGoals = new HashSet<StrengthGoal>();
         }
     
         public int ExerciseListID { get; set; }
@@ -34,5 +35,7 @@ namespace Fitness.Models
         public virtual ICollection<AerobicExercise> AerobicExercises { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StrengthExercise> StrengthExercises { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StrengthGoal> StrengthGoals { get; set; }
     }
 }

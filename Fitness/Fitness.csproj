@@ -184,6 +184,7 @@
     <Compile Include="Controllers\MeasurementsController.cs" />
     <Compile Include="Controllers\PartsController.cs" />
     <Compile Include="Controllers\StrengthExercisesController.cs" />
+    <Compile Include="Controllers\StrengthGoalController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -222,6 +223,7 @@
     <Compile Include="Models\Friend.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\GoalProgressModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -237,6 +239,9 @@
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\StrengthExerciseViewModel.cs" />
+    <Compile Include="Models\StrengthGoal.cs">
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\User.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
@@ -420,6 +425,12 @@
     <Content Include="Views\FoodIntake\Create.cshtml" />
     <Content Include="Views\FoodIntake\Edit.cshtml" />
     <Content Include="Views\FoodIntake\Delete.cshtml" />
+    <Content Include="Views\StrengthGoal\Create.cshtml" />
+    <Content Include="Views\StrengthGoal\Delete.cshtml" />
+    <Content Include="Views\StrengthGoal\Details.cshtml" />
+    <Content Include="Views\StrengthGoal\Edit.cshtml" />
+    <Content Include="Views\StrengthGoal\Index.cshtml" />
+    <Content Include="Views\StrengthGoal\ViewProgress.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

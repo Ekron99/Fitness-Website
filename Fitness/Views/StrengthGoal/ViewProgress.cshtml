@@ -1,0 +1,45 @@
+﻿@model Fitness.Models.GoalProgressModel
+@{
+    ViewBag.Title = "ViewProgress";
+}
+
+<h2>View Progress</h2>
+
+<h3>@Model.goal.Name</h3>
+
+<table class="table">
+    <tr>
+        <th>
+            Reps
+        </th>
+        <th>
+           Sets
+        </th>
+        <th>
+           Weight
+        </th>
+        <th>
+            Date Recorded
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model.progress)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rep)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sets)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weight)
+            </td>
+            <td>
+                @item.DateRecorded.ToShortDateString()
+            </td>
+        </tr>
+    }
+
+</table>
