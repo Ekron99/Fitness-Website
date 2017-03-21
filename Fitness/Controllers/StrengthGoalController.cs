@@ -32,7 +32,17 @@ namespace Fitness.Controllers
             }
             model.goal = goal;
             model.progress = db.StrengthExercises.Where(x => x.User.Email == User.Identity.Name).Where(x => x.ExerciseListID == goal.ExerciseListID).Where(x => x.DateRecorded <= goal.EndDate);
-
+            decimal progress = 0;
+            foreach (var item in model.progress)
+            {
+                if (item.Weight > progress)
+                {
+                    progress = item.Weight;
+                }
+            }
+            ViewBag.progress = progress;
+            ViewBag.percentDone = progress / goal.TargetWeight * 100;
+            Math.Round(ViewBag.percentDone, 2);
             return View(model);
         }
 
