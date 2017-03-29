@@ -26,8 +26,7 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("Strength Exercises", "Index", "StrengthExercises")</li>
-                        <li>@Html.ActionLink("Aerobic Exercises", "Index", "AerobicExercises")</li>
+                        <li>@Html.ActionLink("Exercises", "Index", "ExerciseLists")</li>
                         <li>@Html.ActionLink("Measurements", "Index", "Measurements")</li>
                         <li>@Html.ActionLink("Parts", "Index", "Parts")</li>
                         <li>@Html.ActionLink("Food", "Index", "FoodIntake")</li>

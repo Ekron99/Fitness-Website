@@ -14,6 +14,15 @@ namespace Fitness.Models
     
     public partial class StrengthExercise
     {
+        public StrengthExercise()
+        {
+
+        }
+        public StrengthExercise(int exerciseID)
+        {
+            ExerciseListID = exerciseID;
+        }
+
         public int ExerciseID { get; set; }
         public int UserID { get; set; }
         public int Rep { get; set; }

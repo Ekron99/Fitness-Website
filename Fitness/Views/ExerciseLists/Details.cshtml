@@ -28,6 +28,108 @@
 
     </dl>
 </div>
+
+<div class="col-md-12">
+    @Html.ActionLink("Edit Exercise", "Edit", "ExerciseLists", new { id = Model.ExerciseListID}, new { @class="btn btn-default"})
+    @Html.ActionLink("Delete Exercise", "Delete", "ExerciseLists", new { id = Model.ExerciseListID }, new { @class = "btn btn-default" })
+</div>
+
+@if (ViewBag.NoStrength == false ||  ViewBag.NoAerobic == false)
+{
+    <div class="col-md-12" id="chart">
+        <img src="@Url.Action("CreateChart", Model)" height="600" width="800" />
+    </div>
+
+if (Model.Type == "Strength")
+{
+    <table class="table">
+        <tr>
+            <th>
+                Reps
+            </th>
+            <th>
+                Sets
+            </th>
+            <th>
+                Weight
+            </th>
+            <th>
+                Date Recorded
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.StrengthExercises)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rep)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sets)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Weight)
+                </td>
+                <td>
+                    @item.DateRecorded.ToShortDateString()
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", "StrengthExercises", new { id = item.ExerciseID }, null) |
+                    @Html.ActionLink("Details", "Details", "StrengthExercises", new { id = item.ExerciseID }, null) |
+                    @Html.ActionLink("Delete", "Delete", "StrengthExercises", new { id = item.ExerciseID }, null)
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+else
+{
+    <table class="table">
+        <tr>
+            <th>
+                Duration
+            </th>
+            <th>
+                Length
+            </th>
+            <th>
+                Date Recorded
+            </th>
+            <th>
+                Exercise Name
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.AerobicExercises)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duration)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Length)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateRecorded)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExerciseList.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", "AerobicExercises", new { id = item.AerobicExerciseID }, null) |
+                    @Html.ActionLink("Details", "Details", "AerobicExercises", new { id = item.AerobicExerciseID }, null) |
+                    @Html.ActionLink("Delete", "Delete", "AerobicExercises", new { id = item.AerobicExerciseID }, null)
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+}
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.ExerciseListID }) |
     @Html.ActionLink("Back to List", "Index")

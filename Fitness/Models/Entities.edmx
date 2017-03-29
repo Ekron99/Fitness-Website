@@ -13,7 +13,7 @@
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="ExerciseListID" Type="int" Nullable="false" />
           <Property Name="Duration" Type="time" Precision="0" Nullable="false" />
-          <Property Name="Length" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="Length" Type="decimal" Precision="8" Scale="2" Nullable="false" />
           <Property Name="DateRecorded" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="AerobicGoals">
@@ -25,7 +25,7 @@
           <Property Name="ExerciseListID" Type="int" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="Duration" Type="time" Precision="0" Nullable="false" />
-          <Property Name="Length" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="Length" Type="decimal" Precision="8" Scale="2" Nullable="false" />
           <Property Name="StartDate" Type="date" Nullable="false" />
           <Property Name="EndDate" Type="date" Nullable="false" />
           <Property Name="Focus" Type="varchar" MaxLength="45" Nullable="false" />
@@ -93,7 +93,7 @@
           <Property Name="MeasurementID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="PartID" Type="int" Nullable="false" />
-          <Property Name="Value" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Value" Type="decimal" Precision="8" Scale="2" Nullable="false" />
           <Property Name="DateRecorded" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="Participants">
@@ -463,7 +463,7 @@
           <Property Name="AerobicExerciseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="Duration" Type="Time" Nullable="false" />
-          <Property Name="Length" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Length" Type="Decimal" Nullable="false" />
           <Property Name="DateRecorded" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="User" Relationship="Self.AE_USER_FK" FromRole="AerobicExercise" ToRole="Users" />
           <Property Name="ExerciseListID" Type="Int32" Nullable="false" />
@@ -511,7 +511,7 @@
           </Key>
           <Property Name="MeasurementID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="Value" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Value" Type="Decimal" Nullable="false" />
           <NavigationProperty Name="User" Relationship="Self.M_USER_FK" FromRole="Measurement" ToRole="Users" />
           <Property Name="DateRecorded" Type="DateTime" Nullable="false" />
           <Property Name="PartID" Type="Int32" Nullable="false" />
@@ -872,7 +872,7 @@
           <Property Name="ExerciseListID" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="Duration" Type="Time" Nullable="false" />
-          <Property Name="Length" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Length" Type="Decimal" Nullable="false" />
           <Property Name="StartDate" Type="DateTime" Nullable="false" />
           <Property Name="EndDate" Type="DateTime" Nullable="false" />
           <Property Name="Focus" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />

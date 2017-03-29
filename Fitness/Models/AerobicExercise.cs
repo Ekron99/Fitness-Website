@@ -17,7 +17,7 @@ namespace Fitness.Models
         public int AerobicExerciseID { get; set; }
         public int UserID { get; set; }
         public System.TimeSpan Duration { get; set; }
-        public string Length { get; set; }
+        public decimal Length { get; set; }
         public System.DateTime DateRecorded { get; set; }
         public int ExerciseListID { get; set; }
     

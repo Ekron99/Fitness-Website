@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Fitness.Models;
+using System.Web.Helpers;
 
 namespace Fitness.Controllers
 {
@@ -41,9 +42,27 @@ namespace Fitness.Controllers
             return View(part);
         }
 
+        public ActionResult CreateChart(Part part)
+        {
+            List<string> xData = new List<string>();
+            List<decimal> yData = new List<decimal>();
+            part = db.Parts.Find(part.PartID);
+            foreach (var item in part.Measurements)
+            {
+                xData.Add(item.DateRecorded.ToShortDateString());
+                yData.Add(item.Value);
+            }
+            Chart chart = new Chart(800, 600);
+            chart.AddTitle(part.Name + " History");
+            chart.AddSeries(xValue: xData, yValues: yData, chartType: "Line");
+            chart.Write("png");
+            return null;
+        }
+
         // GET: Parts/Create
         public ActionResult Create()
         {
+
             ViewBag.UserID = new SelectList(db.Users, "UserID", "FirstName");
             return View();
         }

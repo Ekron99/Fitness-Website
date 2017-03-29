@@ -241,6 +241,7 @@
     </Compile>
     <Compile Include="Models\PartList.cs" />
     <Compile Include="Models\RegistrationModel.cs" />
+    <Compile Include="Models\StrengthAerobicList.cs" />
     <Compile Include="Models\StrengthExercise.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
@@ -444,6 +445,7 @@
     <Content Include="Views\AerobicGoals\Details.cshtml" />
     <Content Include="Views\AerobicGoals\Edit.cshtml" />
     <Content Include="Views\AerobicGoals\Index.cshtml" />
+    <Content Include="Views\Parts\CreateChart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

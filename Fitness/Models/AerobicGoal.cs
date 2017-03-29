@@ -19,7 +19,7 @@ namespace Fitness.Models
         public int ExerciseListID { get; set; }
         public string Name { get; set; }
         public System.TimeSpan Duration { get; set; }
-        public string Length { get; set; }
+        public decimal Length { get; set; }
         public System.DateTime StartDate { get; set; }
         public System.DateTime EndDate { get; set; }
         public string Focus { get; set; }

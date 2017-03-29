@@ -18,7 +18,10 @@
         @Html.HiddenFor(model => model.ExerciseID)
 
         <div class="form-group">
-            Exercise
+            <div class="control-label col-md-2" style="font-weight: bold;" >
+                Exercise
+            </div>
+            
             <div class="col-md-10">
                 @Html.DropDownList("Exercises", (SelectList)ViewBag.List, htmlAttributes: new { @class = "form-control" })
             </div>

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Fitness.Models;
+using System.Web.Helpers;
 
 namespace Fitness.Controllers
 {
@@ -17,8 +18,10 @@ namespace Fitness.Controllers
         // GET: ExerciseLists
         public ActionResult Index()
         {
-            var exerciseLists = db.ExerciseLists.Where(e => e.UserID == db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID);
-            return View(exerciseLists.ToList());
+            StrengthAerobicList list = new StrengthAerobicList();
+            list.strengthExercise = db.ExerciseLists.Where(e => e.UserID == db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID).Where(x => x.Type == "Strength").ToList();
+            list.aerobicExercise = db.ExerciseLists.Where(e => e.UserID == db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID).Where(x => x.Type == "Aerobic").ToList();
+            return View(list);
         }
 
         // GET: ExerciseLists/Details/5
@@ -29,11 +32,59 @@ namespace Fitness.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ExerciseList exerciseList = db.ExerciseLists.Find(id);
+            ViewBag.NoStrength = false;
+            ViewBag.NoAerobic = false;
+            if (exerciseList.StrengthExercises.Count == 0)
+            {
+                ViewBag.NoStrength = true;
+            }
+            if (exerciseList.AerobicExercises.Count == 0)
+            {
+                ViewBag.NoAerobic = true;
+            }
             if (exerciseList == null)
             {
                 return HttpNotFound();
             }
             return View(exerciseList);
+        }
+
+        public ActionResult CreateChart(ExerciseList exercise)
+        {
+            List<string> xData = new List<string>();
+            List<decimal> yData = new List<decimal>();
+            exercise = db.ExerciseLists.Find(exercise.ExerciseListID);
+            if (exercise.StrengthExercises.Count == 0)
+            {
+                return null;
+            }
+            decimal maxWeight = 0;
+            DateTime currentDay = exercise.StrengthExercises.ElementAt(0).DateRecorded;
+            foreach (var item in exercise.StrengthExercises)
+            {
+                if (currentDay < item.DateRecorded)
+                {
+                    xData.Add(currentDay.ToShortDateString().ToString());
+                    yData.Add(maxWeight);
+                    currentDay = item.DateRecorded;
+                    maxWeight = 0;
+                }
+                if (maxWeight < item.Weight)
+                {
+                    maxWeight = item.Weight;
+                }
+                
+                
+            }
+            xData.Add(currentDay.ToShortDateString().ToString());
+            yData.Add(maxWeight);
+            ViewBag.NoImage = false;
+            Chart chart = new Chart(800, 600);
+            chart.AddLegend("Weight");
+            chart.AddTitle(exercise.Name + " History");
+            chart.AddSeries(xValue: xData, yValues: yData, chartType: "Line");
+            chart.Write("png");
+            return null;
         }
 
         // GET: ExerciseLists/Create
