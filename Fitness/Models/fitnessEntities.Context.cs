@@ -26,16 +26,16 @@ namespace Fitness.Models
         }
     
         public virtual DbSet<AerobicExercise> AerobicExercises { get; set; }
+        public virtual DbSet<AerobicGoal> AerobicGoals { get; set; }
         public virtual DbSet<Competition> Competitions { get; set; }
         public virtual DbSet<ExerciseList> ExerciseLists { get; set; }
-        public virtual DbSet<Friend> Friends { get; set; }
-        public virtual DbSet<Measurement> Measurements { get; set; }
-        public virtual DbSet<StrengthExercise> StrengthExercises { get; set; }
-        public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Part> Parts { get; set; }
         public virtual DbSet<Food> Foods { get; set; }
         public virtual DbSet<FoodIntake> FoodIntakes { get; set; }
+        public virtual DbSet<Friend> Friends { get; set; }
+        public virtual DbSet<Measurement> Measurements { get; set; }
+        public virtual DbSet<Part> Parts { get; set; }
+        public virtual DbSet<StrengthExercise> StrengthExercises { get; set; }
         public virtual DbSet<StrengthGoal> StrengthGoals { get; set; }
-        public virtual DbSet<AerobicGoal> AerobicGoals { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     }
 }

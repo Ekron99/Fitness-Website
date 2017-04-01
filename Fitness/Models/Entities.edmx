@@ -16,6 +16,20 @@
           <Property Name="Length" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="DateRecorded" Type="date" Nullable="false" />
         </EntityType>
+        <EntityType Name="AerobicGoals">
+          <Key>
+            <PropertyRef Name="GoalID" />
+          </Key>
+          <Property Name="GoalID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="ExerciseListID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Duration" Type="time" Precision="0" Nullable="false" />
+          <Property Name="Length" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" Nullable="false" />
+          <Property Name="Focus" Type="varchar" MaxLength="45" Nullable="false" />
+        </EntityType>
         <EntityType Name="Competition">
           <Key>
             <PropertyRef Name="CompetitionID" />
@@ -119,6 +133,7 @@
           <Property Name="Name" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="TargetWeight" Type="decimal" Precision="8" Scale="2" Nullable="false" />
           <Property Name="EndDate" Type="date" Nullable="false" />
+          <Property Name="StartDate" Type="date" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -195,6 +210,18 @@
             </Principal>
             <Dependent Role="Participants">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EL_AE_FK">
+          <End Role="ExerciseList" Type="Self.ExerciseList" Multiplicity="1" />
+          <End Role="AerobicGoals" Type="Self.AerobicGoals" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExerciseList">
+              <PropertyRef Name="ExerciseListID" />
+            </Principal>
+            <Dependent Role="AerobicGoals">
+              <PropertyRef Name="ExerciseListID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -318,6 +345,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="U_AE_FK">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="AerobicGoals" Type="Self.AerobicGoals" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="AerobicGoals">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="U_SG_FK">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="StrengthGoals" Type="Self.StrengthGoals" Multiplicity="*" />
@@ -332,6 +371,7 @@
         </Association>
         <EntityContainer Name="fitnessModelStoreContainer">
           <EntitySet Name="AerobicExercise" EntityType="Self.AerobicExercise" Schema="fitness" store:Type="Tables" />
+          <EntitySet Name="AerobicGoals" EntityType="Self.AerobicGoals" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="Competition" EntityType="Self.Competition" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="ExerciseList" EntityType="Self.ExerciseList" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="Food" EntityType="Self.Food" Schema="fitness" store:Type="Tables" />
@@ -362,6 +402,10 @@
           <AssociationSet Name="C_USER_FK" Association="Self.C_USER_FK">
             <End Role="Users" EntitySet="Users" />
             <End Role="Participants" EntitySet="Participants" />
+          </AssociationSet>
+          <AssociationSet Name="EL_AE_FK" Association="Self.EL_AE_FK">
+            <End Role="ExerciseList" EntitySet="ExerciseList" />
+            <End Role="AerobicGoals" EntitySet="AerobicGoals" />
           </AssociationSet>
           <AssociationSet Name="EL_SG_FK" Association="Self.EL_SG_FK">
             <End Role="ExerciseList" EntitySet="ExerciseList" />
@@ -398,6 +442,10 @@
           <AssociationSet Name="SE_USER_FK" Association="Self.SE_USER_FK">
             <End Role="Users" EntitySet="Users" />
             <End Role="StrengthExercise" EntitySet="StrengthExercise" />
+          </AssociationSet>
+          <AssociationSet Name="U_AE_FK" Association="Self.U_AE_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="AerobicGoals" EntitySet="AerobicGoals" />
           </AssociationSet>
           <AssociationSet Name="U_SG_FK" Association="Self.U_SG_FK">
             <End Role="Users" EntitySet="Users" />
@@ -446,6 +494,7 @@
           <NavigationProperty Name="StrengthExercises" Relationship="fitnessModel.SE_LIST_FK" FromRole="ExerciseList" ToRole="StrengthExercise" />
           <Property Name="Type" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="StrengthGoals" Relationship="fitnessModel.EL_SG_FK" FromRole="ExerciseList" ToRole="StrengthGoal" />
+          <NavigationProperty Name="AerobicGoals" Relationship="fitnessModel.EL_AE_FK" FromRole="ExerciseList" ToRole="AerobicGoal" />
         </EntityType>
         <EntityType Name="Friend">
           <Key>
@@ -501,6 +550,7 @@
           <NavigationProperty Name="ExerciseLists" Relationship="fitnessModel.EL_USER_FK" FromRole="User" ToRole="ExerciseList" />
           <NavigationProperty Name="FoodIntakes" Relationship="fitnessModel.U_FI_FK" FromRole="User" ToRole="FoodIntake" />
           <NavigationProperty Name="StrengthGoals" Relationship="fitnessModel.U_SG_FK" FromRole="User" ToRole="StrengthGoal" />
+          <NavigationProperty Name="AerobicGoals" Relationship="fitnessModel.U_AE_FK" FromRole="User" ToRole="AerobicGoal" />
         </EntityType>
         <Association Name="AE_USER_FK">
           <End Role="Users" Type="Self.User" Multiplicity="1">
@@ -628,7 +678,16 @@
             <End Role="User" EntitySet="Users" />
             <End Role="StrengthGoal" EntitySet="StrengthGoals" />
           </AssociationSet>
-        </EntityContainer>
+          <EntitySet Name="AerobicGoals" EntityType="fitnessModel.AerobicGoal" />
+          <AssociationSet Name="EL_AE_FK" Association="fitnessModel.EL_AE_FK">
+            <End Role="ExerciseList" EntitySet="ExerciseLists" />
+            <End Role="AerobicGoal" EntitySet="AerobicGoals" />
+          </AssociationSet>
+          <AssociationSet Name="U_AE_FK" Association="fitnessModel.U_AE_FK">
+            <End Role="User" EntitySet="Users" />
+            <End Role="AerobicGoal" EntitySet="AerobicGoals" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="Part">
           <Key>
             <PropertyRef Name="PartID" />
@@ -778,6 +837,7 @@
           <Property Name="EndDate" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="ExerciseList" Relationship="fitnessModel.EL_SG_FK" FromRole="StrengthGoal" ToRole="ExerciseList" />
           <NavigationProperty Name="User" Relationship="fitnessModel.U_SG_FK" FromRole="StrengthGoal" ToRole="User" />
+          <Property Name="StartDate" Type="DateTime" />
         </EntityType>
         <Association Name="EL_SG_FK">
           <End Type="fitnessModel.ExerciseList" Role="ExerciseList" Multiplicity="1" />
@@ -803,7 +863,47 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <EntityType Name="AerobicGoal">
+          <Key>
+            <PropertyRef Name="GoalID" />
+          </Key>
+          <Property Name="GoalID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="ExerciseListID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="Duration" Type="Time" Nullable="false" />
+          <Property Name="Length" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" />
+          <Property Name="Focus" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ExerciseList" Relationship="fitnessModel.EL_AE_FK" FromRole="AerobicGoal" ToRole="ExerciseList" />
+          <NavigationProperty Name="User" Relationship="fitnessModel.U_AE_FK" FromRole="AerobicGoal" ToRole="User" />
+        </EntityType>
+        <Association Name="EL_AE_FK">
+          <End Type="fitnessModel.ExerciseList" Role="ExerciseList" Multiplicity="1" />
+          <End Type="fitnessModel.AerobicGoal" Role="AerobicGoal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExerciseList">
+              <PropertyRef Name="ExerciseListID" />
+            </Principal>
+            <Dependent Role="AerobicGoal">
+              <PropertyRef Name="ExerciseListID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="U_AE_FK">
+          <End Type="fitnessModel.User" Role="User" Multiplicity="1" />
+          <End Type="fitnessModel.AerobicGoal" Role="AerobicGoal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="AerobicGoal">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -939,8 +1039,24 @@
           <EntitySetMapping Name="StrengthGoals">
             <EntityTypeMapping TypeName="fitnessModel.StrengthGoal">
               <MappingFragment StoreEntitySet="StrengthGoals">
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
                 <ScalarProperty Name="TargetWeight" ColumnName="TargetWeight" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ExerciseListID" ColumnName="ExerciseListID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="GoalID" ColumnName="GoalID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AerobicGoals">
+            <EntityTypeMapping TypeName="fitnessModel.AerobicGoal">
+              <MappingFragment StoreEntitySet="AerobicGoals">
+                <ScalarProperty Name="Focus" ColumnName="Focus" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ExerciseListID" ColumnName="ExerciseListID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />

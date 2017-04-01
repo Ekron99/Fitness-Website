@@ -21,7 +21,7 @@ namespace Fitness.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("FitnessEntities", throwIfV1Schema: false)
+            : base("fitnessEntities", throwIfV1Schema: false)
         {
         }
 

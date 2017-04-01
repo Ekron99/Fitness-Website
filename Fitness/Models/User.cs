@@ -25,6 +25,7 @@ namespace Fitness.Models
             this.ExerciseLists = new HashSet<ExerciseList>();
             this.FoodIntakes = new HashSet<FoodIntake>();
             this.StrengthGoals = new HashSet<StrengthGoal>();
+            this.AerobicGoals = new HashSet<AerobicGoal>();
         }
     
         public int UserID { get; set; }
@@ -51,5 +52,7 @@ namespace Fitness.Models
         public virtual ICollection<FoodIntake> FoodIntakes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StrengthGoal> StrengthGoals { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AerobicGoal> AerobicGoals { get; set; }
     }
 }

@@ -31,7 +31,7 @@ namespace Fitness.Controllers
                 return RedirectToAction("Unauthorized", "Users");
             }
             model.goal = goal;
-            model.progress = db.StrengthExercises.Where(x => x.User.Email == User.Identity.Name).Where(x => x.ExerciseListID == goal.ExerciseListID).Where(x => x.DateRecorded <= goal.EndDate);
+            model.progress = db.StrengthExercises.Where(x => x.User.Email == User.Identity.Name).Where(x => x.ExerciseListID == goal.ExerciseListID).Where(x => x.DateRecorded <= goal.EndDate).OrderByDescending(x => x.Weight).OrderByDescending(x => x.DateRecorded);
             decimal progress = 0;
             foreach (var item in model.progress)
             {
@@ -42,7 +42,7 @@ namespace Fitness.Controllers
             }
             ViewBag.progress = progress;
             ViewBag.percentDone = progress / goal.TargetWeight * 100;
-            Math.Round(ViewBag.percentDone, 2);
+            ViewBag.percentDone = Math.Round(ViewBag.percentDone, 2);
             return View(model);
         }
 

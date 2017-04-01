@@ -176,9 +176,11 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AerobicExercisesController.cs" />
+    <Compile Include="Controllers\AerobicGoalsController.cs" />
     <Compile Include="Controllers\ExerciseListsController.cs" />
     <Compile Include="Controllers\FoodIntakeController.cs" />
     <Compile Include="Controllers\FoodsController.cs" />
+    <Compile Include="Controllers\GoalsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MeasurementsController.cs" />
@@ -191,6 +193,9 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AerobicExercise.cs">
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AerobicGoal.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Competition.cs">
@@ -224,6 +229,7 @@
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\GoalProgressModel.cs" />
+    <Compile Include="Models\GoalsModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -432,6 +438,12 @@
     <Content Include="Views\StrengthGoal\Edit.cshtml" />
     <Content Include="Views\StrengthGoal\Index.cshtml" />
     <Content Include="Views\StrengthGoal\ViewProgress.cshtml" />
+    <Content Include="Views\Goals\Index.cshtml" />
+    <Content Include="Views\AerobicGoals\Create.cshtml" />
+    <Content Include="Views\AerobicGoals\Delete.cshtml" />
+    <Content Include="Views\AerobicGoals\Details.cshtml" />
+    <Content Include="Views\AerobicGoals\Edit.cshtml" />
+    <Content Include="Views\AerobicGoals\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

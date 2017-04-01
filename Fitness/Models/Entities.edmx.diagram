@@ -27,9 +27,12 @@
         <EntityTypeShape EntityType="fitnessModel.FoodIntake" Width="1.5" PointX="10.875" PointY="7.125" />
         <AssociationConnector Association="fitnessModel.F_FI_FK" />
         <AssociationConnector Association="fitnessModel.U_FI_FK" />
-        <EntityTypeShape EntityType="fitnessModel.StrengthGoal" Width="1.5" PointX="10.5" PointY="3.375" />
+        <EntityTypeShape EntityType="fitnessModel.StrengthGoal" Width="1.5" PointX="10.5" PointY="4" />
         <AssociationConnector Association="fitnessModel.EL_SG_FK" />
         <AssociationConnector Association="fitnessModel.U_SG_FK" />
+        <EntityTypeShape EntityType="fitnessModel.AerobicGoal" Width="1.5" PointX="10.5" PointY="0.75" />
+        <AssociationConnector Association="fitnessModel.EL_AE_FK" />
+        <AssociationConnector Association="fitnessModel.U_AE_FK" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
