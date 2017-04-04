@@ -15,7 +15,6 @@
         <h4>LoginModel</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @*//TODO: Get the error message to display well*@
         <div class="form-group">
             <div class="text-danger">
                 @ViewBag.errorMessage
@@ -56,7 +55,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Register as a new user", "Register", "Users")
 </div>
 
 @section Scripts {

@@ -121,6 +121,11 @@ namespace Fitness.Controllers
         public ActionResult Login(LoginModel user, string ReturnUrl)
         {
             User existingUser = db.Users.Where(x => x.Email == user.Email).FirstOrDefault();
+            if (existingUser == null)
+            {
+                ViewBag.errorMessage = "User does not exist!";
+                return View(user);
+            }
             string result = getHash(user.Password, existingUser.Salt);
             if (result == existingUser.Hash)
             {

@@ -1,4 +1,4 @@
-﻿@model Fitness.Models.GoalProgressModel
+﻿@model Fitness.Models.StrengthGoalProgressModel
 @{
     ViewBag.Title = "View Progress";
 }
@@ -10,7 +10,7 @@
 @Html.ActionLink("Add new entry", "Create", "StrengthExercises")
 
 <div class="progress" style="height: 20px;">
-    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="@ViewBag.percentDone" aria-valuemin="0" aria-valuemax="100" style="width: @ViewBag.percentDone%;">
+    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: @ViewBag.percentDone%;">
     </div>
 
 </div>

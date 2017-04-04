@@ -71,4 +71,10 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+<script>
+        $(document).ready(function () {
+            $('#Duration').mask('00:00:00',  { placeholder: '00:00:00' } );
+
+        });
+</script>
 }

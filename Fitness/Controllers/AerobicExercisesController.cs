@@ -41,8 +41,8 @@ namespace Fitness.Controllers
         {
             ViewBag.ExerciseListID = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(n => n.Type == "Aerobic"), "ExerciseListID", "Name");
             AerobicExercise exercise = new AerobicExercise();
-            exercise.DateRecorded = DateTime.Now;
-            return View(exercise);
+            ViewBag .DateRecorded = DateTime.Now;
+            return View();
         }
 
         // POST: AerobicExercises/Create

@@ -74,11 +74,19 @@ namespace Fitness.Controllers
 
         public ActionResult ViewProgress(int? id)
         {
+            AerobicGoalModel model = new AerobicGoalModel();
             AerobicGoal goal = db.AerobicGoals.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).FirstOrDefault();
+            model.goal = goal;
             if (goal.Focus == "Duration")
             {
-                ViewBag.progress = db.AerobicExercises.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(x => x.ExerciseListID == goal.ExerciseListID).Where(x => x.DateRecorded >= goal.StartDate && x.DateRecorded <= goal.EndDate).OrderByDescending(x => x.Duration);
-                TimeSpan bestTime = ViewBag.progress[0];
+                var progress = db.AerobicExercises.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(x => x.ExerciseListID == goal.ExerciseListID).Where(x => x.DateRecorded >= goal.StartDate && x.DateRecorded <= goal.EndDate).OrderByDescending(x => x.Duration);
+                model.progress = progress;
+                if (progress.SingleOrDefault() == null)
+                {
+                    ViewBag.percentDone = 0;
+                    return View(model);
+                }
+                TimeSpan bestTime = progress.ElementAt(0).Duration;
                 ViewBag.percentDone = bestTime.TotalSeconds / goal.Duration.TotalSeconds;
                 ViewBag.percentDone *= 100;
                 ViewBag.percentDone = Math.Round(ViewBag.percentDone, 2);
@@ -86,13 +94,18 @@ namespace Fitness.Controllers
             else
             {
                 //TODO: Make it to where it calculates the completion for the length
-                ViewBag.progress = db.AerobicExercises.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(x => x.ExerciseListID == goal.ExerciseListID).Where(x => x.DateRecorded >= goal.StartDate && x.DateRecorded <= goal.EndDate).OrderByDescending(x => x.Length);
-
+                var progress = db.AerobicExercises.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(x => x.ExerciseListID == goal.ExerciseListID).Where(x => x.DateRecorded >= goal.StartDate && x.DateRecorded <= goal.EndDate).OrderByDescending(x => x.Length);
+                model.progress = progress;
+                if (progress.SingleOrDefault() == null)
+                {
+                    ViewBag.percentDone = 0;
+                    return View(model);
+                }
+                
+                var bestLength = progress.ElementAt(0).Length;
+                ViewBag.percentDone = Math.Round(bestLength / goal.Length * 100, 2);
             }
-
-            
-
-            return View();
+            return View(model);
         }
 
         // GET: AerobicGoals/Edit/5

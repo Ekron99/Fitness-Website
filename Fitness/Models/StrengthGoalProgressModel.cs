@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Fitness.Models
 {
-    public class GoalProgressModel
+    public class StrengthGoalProgressModel
     {
 
         public StrengthGoal goal { get; set; }

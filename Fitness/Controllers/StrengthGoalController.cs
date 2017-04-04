@@ -24,7 +24,7 @@ namespace Fitness.Controllers
         public ActionResult ViewProgress(int? id)
         {
             //TODO: be able to add a new entry on this page
-            GoalProgressModel model = new GoalProgressModel();
+            StrengthGoalProgressModel model = new StrengthGoalProgressModel();
             StrengthGoal goal = db.StrengthGoals.Where(x => x.GoalID == id).FirstOrDefault();
             if (goal == null)
             {

@@ -41,7 +41,7 @@ namespace Fitness.Controllers
         public ActionResult Create()
         {
             ViewBag.List = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(n => n.Type == "Strength"), "ExerciseListID", "Name", 0);
-            StrengthExercise exercise = new StrengthExercise();
+            AerobicExercise exercise = new AerobicExercise();
             exercise.DateRecorded = DateTime.Now;
             return View(exercise);
         }
@@ -86,7 +86,7 @@ namespace Fitness.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ExerciseID,UserID,Rep,Sets,Weight,DateRecorded")] StrengthExercise strengthExercise)
+        public ActionResult Edit([Bind(Include = "ExerciseID,UserID,Rep,Sets,Weight,DateRecorded")] AerobicExercise strengthExercise)
         {
             if (ModelState.IsValid)
             {

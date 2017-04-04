@@ -12,7 +12,8 @@ namespace Fitness
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery-ui-{version}.js",
                         "~/Content/themes/base/jquery-ui.css",
-                        "~/Content/themes/base/datepicker.css"));
+                        "~/Content/themes/base/datepicker.css",
+                        "~/Scripts/jquery.mask.min.js"));
 
             //bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
             //            "~/Scripts/jquery-ui.min.js"));

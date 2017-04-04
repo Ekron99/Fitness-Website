@@ -198,6 +198,7 @@
     <Compile Include="Models\AerobicGoal.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AerobicGoalModel.cs" />
     <Compile Include="Models\Competition.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
@@ -228,7 +229,7 @@
     <Compile Include="Models\Friend.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\GoalProgressModel.cs" />
+    <Compile Include="Models\StrengthGoalProgressModel.cs" />
     <Compile Include="Models\GoalsModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LoginModel.cs" />
@@ -344,6 +345,7 @@
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.mask.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -446,6 +448,7 @@
     <Content Include="Views\AerobicGoals\Edit.cshtml" />
     <Content Include="Views\AerobicGoals\Index.cshtml" />
     <Content Include="Views\Parts\CreateChart.cshtml" />
+    <Content Include="Views\AerobicGoals\ViewProgress.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

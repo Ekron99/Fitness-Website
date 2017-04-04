@@ -1,0 +1,62 @@
+﻿@model Fitness.Models.AerobicGoalModel
+
+@{
+    ViewBag.Title = "View Progress";
+}
+
+<h2>View Progress</h2>
+
+<h3>Name: @Model.goal.Name</h3>
+<h4>Exercise: @Model.goal.ExerciseList.Name</h4>
+@Html.ActionLink("Add new entry", "Create", "AerobicExercises")
+
+<div class="progress" style="height: 20px;">
+    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="@ViewBag.percentDone" aria-valuemin="0" aria-valuemax="100" style="width: @ViewBag.percentDone%;">
+    </div>
+
+</div>
+
+<div class="text-success col-md-12 " style="font-size: 20px; text-align:center; ">
+    @ViewBag.percentDone% Complete
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.goal.Duration)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.goal.Length)
+        </th>
+        <th>
+            Date Recorded
+        </th>
+
+        <th>
+            Exercise Name
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.progress)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Length)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateRecorded)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExerciseList.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.AerobicExerciseID })
+            </td>
+        </tr>
+    }
+
+</table>
