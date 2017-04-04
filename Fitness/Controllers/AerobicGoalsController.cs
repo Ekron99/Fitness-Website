@@ -107,6 +107,10 @@ namespace Fitness.Controllers
             {
                 return HttpNotFound();
             }
+            List<string> list = new List<string>();
+            list.Add("Duration");
+            list.Add("Length");
+            ViewBag.Focus = new SelectList(list);
             ViewBag.ExerciseListID = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(x => x.Type == "Aerobic"), "ExerciseListID", "Name");
             return View(aerobicGoal);
         }
@@ -124,6 +128,10 @@ namespace Fitness.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            List<string> list = new List<string>();
+            list.Add("Duration");
+            list.Add("Length");
+            ViewBag.Focus = new SelectList(list);
             ViewBag.ExerciseListID = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(x => x.Type == "Aerobic"), "ExerciseListID", "Name");
             return View(aerobicGoal);
         }

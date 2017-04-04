@@ -39,6 +39,12 @@ namespace Fitness.Controllers
             {
                 return Redirect("~/Shared/Unauthorized");
             }
+            ViewBag.NoMeasurements = false;
+            if (part.Measurements.Count == 0)
+            {
+                ViewBag.NoMeasurements = true;
+            }
+
             return View(part);
         }
 

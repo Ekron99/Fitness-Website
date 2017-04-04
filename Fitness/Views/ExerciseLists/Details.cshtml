@@ -29,11 +29,6 @@
     </dl>
 </div>
 
-<div class="col-md-12">
-    @Html.ActionLink("Edit Exercise", "Edit", "ExerciseLists", new { id = Model.ExerciseListID}, new { @class="btn btn-default"})
-    @Html.ActionLink("Delete Exercise", "Delete", "ExerciseLists", new { id = Model.ExerciseListID }, new { @class = "btn btn-default" })
-</div>
-
 @if (ViewBag.NoStrength == false ||  ViewBag.NoAerobic == false)
 {
     <div class="col-md-12" id="chart">
@@ -113,7 +108,7 @@ else
                     @Html.DisplayFor(modelItem => item.Length)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DateRecorded)
+                    @item.DateRecorded.ToShortDateString()
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ExerciseList.Name)
@@ -127,10 +122,18 @@ else
         }
 
     </table>
-}
+    }
 
 }
+else
+{
+    <h4 class="text-warning">No data recorded</h4>
+}
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ExerciseListID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Add new entry", "Create", Model.Type == "Strength" ? "StrengthExercises" : "AerobicExercises", null, new { @class = "btn btn-success" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Edit Exercise", "Edit", "ExerciseLists", new { id = Model.ExerciseListID }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Delete Exercise", "Delete", "ExerciseLists", new { id = Model.ExerciseListID }, new { @class = "btn btn-warning" })
+    
 </p>

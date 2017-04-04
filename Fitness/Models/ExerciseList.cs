@@ -23,7 +23,6 @@ namespace Fitness.Models
             this.StrengthGoals = new HashSet<StrengthGoal>();
             this.AerobicGoals = new HashSet<AerobicGoal>();
         }
-    
         public int ExerciseListID { get; set; }
         public string Name { get; set; }
         public int UserID { get; set; }

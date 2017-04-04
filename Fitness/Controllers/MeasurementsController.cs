@@ -38,7 +38,7 @@ namespace Fitness.Controllers
         }
 
         // GET: Measurements/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
             List<object> selectList = new List<object>();
             //go through each measurement related to the current user
@@ -51,7 +51,7 @@ namespace Fitness.Controllers
                     PartName = item.Name
                 });
             }
-            ViewBag.Parts = new SelectList(selectList, "Id", "PartName");
+            ViewBag.Parts = new SelectList(selectList, "Id", "PartName", (id != null ? id : null));
             return View();
         }
 
@@ -85,7 +85,6 @@ namespace Fitness.Controllers
             if (ModelState.IsValid)
             {
                 measurement.UserID = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID;
-                measurement.DateRecorded = DateTime.Now;
                 db.Measurements.Add(measurement);
                 db.SaveChanges();
                 return RedirectToAction("Index");

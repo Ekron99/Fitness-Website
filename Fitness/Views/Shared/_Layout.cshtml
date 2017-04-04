@@ -26,11 +26,10 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("Exercises", "Index", "ExerciseLists")</li>
-                        <li>@Html.ActionLink("Measurements", "Index", "Measurements")</li>
-                        <li>@Html.ActionLink("Parts", "Index", "Parts")</li>
-                        <li>@Html.ActionLink("Food", "Index", "FoodIntake")</li>
-                        <li>@Html.ActionLink("Goals", "Index", "Goals")</li>
+                        <li>@Html.ActionLink("View Exercises", "Index", "ExerciseLists")</li>
+                        <li>@Html.ActionLink("View Parts", "Index", "Parts")</li>
+                        <li>@Html.ActionLink("Track Food", "Index", "FoodIntake")</li>
+                        <li>@Html.ActionLink("Track Goals", "Index", "Goals")</li>
                     }
                     
                 </ul>

@@ -11,7 +11,8 @@ namespace Fitness.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class StrengthGoal
     {
         public int GoalID { get; set; }
@@ -19,9 +20,13 @@ namespace Fitness.Models
         public int ExerciseListID { get; set; }
         public string Name { get; set; }
         public decimal TargetWeight { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime EndDate { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> StartDate { get; set; }
-    
+        [Display(Name = "Exercise Name")] 
         public virtual ExerciseList ExerciseList { get; set; }
         public virtual User User { get; set; }
     }

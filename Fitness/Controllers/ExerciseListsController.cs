@@ -51,40 +51,103 @@ namespace Fitness.Controllers
 
         public ActionResult CreateChart(ExerciseList exercise)
         {
-            List<string> xData = new List<string>();
-            List<decimal> yData = new List<decimal>();
+            
             exercise = db.ExerciseLists.Find(exercise.ExerciseListID);
-            if (exercise.StrengthExercises.Count == 0)
+
+            if (exercise.Type == "Strength")
             {
+                //strength exercise chart
+                if (exercise.StrengthExercises.Count == 0)
+                {
+                    return null;
+                }
+                List<string> xData = new List<string>();
+                List<decimal> yData = new List<decimal>();
+                decimal maxWeight = 0;
+                DateTime currentDay = exercise.StrengthExercises.ElementAt(0).DateRecorded;
+                foreach (var item in exercise.StrengthExercises)
+                {
+                    if (currentDay < item.DateRecorded)
+                    {
+                        xData.Add(currentDay.ToShortDateString().ToString());
+                        yData.Add(maxWeight);
+                        currentDay = item.DateRecorded;
+                        maxWeight = 0;
+                    }
+                    if (maxWeight < item.Weight)
+                    {
+                        maxWeight = item.Weight;
+                    }
+
+
+                }
+                xData.Add(currentDay.ToShortDateString().ToString());
+                yData.Add(maxWeight);
+                ViewBag.NoImage = false;
+                Chart chart = new Chart(800, 600);
+                chart.AddLegend("Weight", "Weight");
+                chart.AddTitle(exercise.Name + " History");
+                chart.AddSeries(xValue: xData, yValues: yData, chartType: "Line", legend: "Weight");
+                chart.Write("png");
+                return null;
+            } 
+            else
+            {
+                if (exercise.AerobicExercises.Count == 0)
+                {
+                    return null;
+                }
+                //aerobic exercise chart
+                List<string> dayData = new List<string>();
+                List<string> durationData = new List<string>();
+                List<decimal> lengthData = new List<decimal>();
+                TimeSpan maxDuration = TimeSpan.Zero;
+                decimal maxLength = 0;
+                DateTime currentDay = exercise.AerobicExercises.ElementAt(0).DateRecorded;
+                foreach (var item in exercise.AerobicExercises)
+                {
+                    if (currentDay < item.DateRecorded)
+                    {
+                        dayData.Add(currentDay.ToShortDateString().ToString());
+                        durationData.Add(maxDuration.ToString());
+                        lengthData.Add(maxLength);
+                        currentDay = item.DateRecorded;
+                        maxLength = 0;
+                        maxDuration = TimeSpan.Zero;
+                    }
+                    if (maxLength < item.Length)
+                    {
+                        maxLength = item.Length;
+                    }
+                    if (maxDuration < item.Duration)
+                    {
+                        maxDuration = item.Duration;
+                    }
+
+
+                }
+                dayData.Add(currentDay.ToShortDateString().ToString());
+                durationData.Add(maxDuration.ToString());
+                lengthData.Add(maxLength);
+
+                //TODO: Make this work? Or be able to switch between the different charts
+                ViewBag.NoImage = false;
+                Chart chart = new Chart(800, 600);
+                chart.AddLegend("Duration", "Duration");
+                chart.AddLegend("Length", "Length");
+
+                chart.AddSeries(yValues: durationData, chartType: "Line", legend: "Duration");
+                chart.AddSeries(yValues: lengthData, legend: "Length", chartType: "Line");
+
+                chart.AddSeries(xValue: dayData, chartType: "Line");
+
+                chart.AddTitle(exercise.Name + " History");
+                chart.Write("png");
+
+
                 return null;
             }
-            decimal maxWeight = 0;
-            DateTime currentDay = exercise.StrengthExercises.ElementAt(0).DateRecorded;
-            foreach (var item in exercise.StrengthExercises)
-            {
-                if (currentDay < item.DateRecorded)
-                {
-                    xData.Add(currentDay.ToShortDateString().ToString());
-                    yData.Add(maxWeight);
-                    currentDay = item.DateRecorded;
-                    maxWeight = 0;
-                }
-                if (maxWeight < item.Weight)
-                {
-                    maxWeight = item.Weight;
-                }
-                
-                
-            }
-            xData.Add(currentDay.ToShortDateString().ToString());
-            yData.Add(maxWeight);
-            ViewBag.NoImage = false;
-            Chart chart = new Chart(800, 600);
-            chart.AddLegend("Weight");
-            chart.AddTitle(exercise.Name + " History");
-            chart.AddSeries(xValue: xData, yValues: yData, chartType: "Line");
-            chart.Write("png");
-            return null;
+           
         }
 
         // GET: ExerciseLists/Create

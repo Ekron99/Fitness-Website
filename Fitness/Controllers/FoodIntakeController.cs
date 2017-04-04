@@ -17,7 +17,7 @@ namespace Fitness.Controllers
         // GET: FoodIntakes
         public ActionResult Index()
         {
-            var foodIntakes = db.FoodIntakes.Include(f => f.Food).Where(x => x.User == db.Users.Where(i => i.Email == User.Identity.Name));
+            var foodIntakes = db.FoodIntakes.Include(f => f.Food).Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID);
             return View(foodIntakes.ToList());
         }
 

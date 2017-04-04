@@ -30,9 +30,7 @@
         </td>
         <td>
             @Html.ActionLink("Add Entry", "Create", "Measurements") |
-            @Html.ActionLink("Edit", "Edit", new { id=item.PartID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PartID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PartID })
+            @Html.ActionLink("View Details", "Details", new { id=item.PartID })
         </td>
     </tr>
 }

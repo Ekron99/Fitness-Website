@@ -1,12 +1,14 @@
 ﻿@model Fitness.Models.PartList
 
+<br />
+<h2>Add a new part</h2>
 
 @using (Html.BeginForm()) 
 {
-    //@Html.AntiForgeryToken()
+    @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Add a new part</h4>
+        
         <hr />
         <div class="form-group">
             @Html.LabelFor(model => model.part.Name, htmlAttributes: new { @class = "control-label col-md-2" })
