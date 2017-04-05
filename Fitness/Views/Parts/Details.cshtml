@@ -42,9 +42,9 @@
                 @item.DateRecorded.ToShortDateString()
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.MeasurementID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.MeasurementID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.MeasurementID })
+                @Html.ActionLink("Edit", "Edit", "Measurements", new { id = item.MeasurementID }, null) |
+                @Html.ActionLink("Details", "Details", "Measurements", new { id = item.MeasurementID }, null) |
+                @Html.ActionLink("Delete", "Delete", "Measurements", new { id = item.MeasurementID }, null)
             </td>
         </tr>
     }

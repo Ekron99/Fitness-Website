@@ -29,14 +29,15 @@
     </dl>
 </div>
 
-@if (ViewBag.NoStrength == false ||  ViewBag.NoAerobic == false)
+@if (ViewBag.NoStrength == false || ViewBag.NoAerobic == false)
 {
-       <div class="col-md-12" id="chart">
-            <img src="@Url.Action("CreateChart", Model)" height="600" width="800" />
-        </div>
+
 
     if (Model.Type == "Strength")
     {
+        <div class="col-md-12" id="chart">
+            <img src="@Url.Action("CreateStrengthChart", Model)" height="600" width="800" />
+        </div>
         <table class="table">
             <tr>
                 <th>
@@ -81,6 +82,15 @@
     }
     else
     {
+       <div class="col-md-12">
+           @Html.DropDownList("ChartType", (SelectList)ViewBag.focus, htmlAttributes: new { @class = "form-control" })
+            <div class="col-md-12" id="durationchart" style="display:inline;">
+                <img src="@Url.Action("CreateAerobicDurationChart", Model)" height="600" width="800" />
+            </div>
+            <div class="col-md-12" id="lengthchart" style="display:none;">
+                <img src="@Url.Action("CreateAerobicLengthChart", Model)" height="600" width="800" />
+            </div>
+        </div>
         <table class="table">
             <tr>
                 <th>
@@ -137,3 +147,26 @@ else
     @Html.ActionLink("Delete Exercise", "Delete", "ExerciseLists", new { id = Model.ExerciseListID }, new { @class = "btn btn-warning" })
     
 </p>
+
+@section Scripts {
+    <script>
+        $("#ChartType").on("change", function () {
+            var listIndex = document.getElementById("ChartType").selectedIndex;
+            if (listIndex == 0) {
+                $("#lengthchart").fadeOut(function () {
+                    $("#durationchart").fadeIn();
+                });
+                
+            } else {
+                $("#durationchart").fadeOut(function () {
+                    $("#lengthchart").fadeIn();
+                });
+                
+            }
+            });
+
+    </script>
+    
+    
+    
+    }

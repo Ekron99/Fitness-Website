@@ -4,10 +4,11 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Fitness.Models;
-using System.Web.Helpers;
+using System.Web.UI.DataVisualization;
+using System.Web.UI.DataVisualization.Charting;
+using System.IO;
 
 namespace Fitness.Controllers
 {
@@ -32,8 +33,13 @@ namespace Fitness.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ExerciseList exerciseList = db.ExerciseLists.Find(id);
+            List<object> focusList = new List<object>();
+            focusList.Add(new SelectListItem { Text = "Duration", Value = "Duration" });
+            focusList.Add(new SelectListItem { Text = "Distance", Value = "Distance" });
+            ViewBag.focus = new SelectList(focusList, "Value", "Text");
             ViewBag.NoStrength = false;
             ViewBag.NoAerobic = false;
+            ViewBag.URL = "CreateAerobicChart/?ChartType=Duration";
             if (exerciseList.StrengthExercises.Count == 0)
             {
                 ViewBag.NoStrength = true;
@@ -49,105 +55,221 @@ namespace Fitness.Controllers
             return View(exerciseList);
         }
 
-        public ActionResult CreateChart(ExerciseList exercise)
+        public ActionResult CreateStrengthChart(ExerciseList exercise)
         {
-            
+
             exercise = db.ExerciseLists.Find(exercise.ExerciseListID);
 
-            if (exercise.Type == "Strength")
+            //strength exercise chart
+            if (exercise.StrengthExercises.Count == 0)
             {
-                //strength exercise chart
-                if (exercise.StrengthExercises.Count == 0)
-                {
-                    return null;
-                }
-                List<string> xData = new List<string>();
-                List<decimal> yData = new List<decimal>();
-                decimal maxWeight = 0;
-                DateTime currentDay = exercise.StrengthExercises.ElementAt(0).DateRecorded;
-                foreach (var item in exercise.StrengthExercises)
-                {
-                    if (currentDay < item.DateRecorded)
-                    {
-                        xData.Add(currentDay.ToShortDateString().ToString());
-                        yData.Add(maxWeight);
-                        currentDay = item.DateRecorded;
-                        maxWeight = 0;
-                    }
-                    if (maxWeight < item.Weight)
-                    {
-                        maxWeight = item.Weight;
-                    }
-
-
-                }
-                xData.Add(currentDay.ToShortDateString().ToString());
-                yData.Add(maxWeight);
-                ViewBag.NoImage = false;
-                Chart chart = new Chart(800, 600);
-                chart.AddLegend("Weight", "Weight");
-                chart.AddTitle(exercise.Name + " History");
-                chart.AddSeries(xValue: xData, yValues: yData, chartType: "Line", legend: "Weight");
-                chart.Write("png");
-                return null;
-            } 
-            else
-            {
-                if (exercise.AerobicExercises.Count == 0)
-                {
-                    return null;
-                }
-                //aerobic exercise chart
-                List<string> dayData = new List<string>();
-                List<string> durationData = new List<string>();
-                List<decimal> lengthData = new List<decimal>();
-                TimeSpan maxDuration = TimeSpan.Zero;
-                decimal maxLength = 0;
-                DateTime currentDay = exercise.AerobicExercises.ElementAt(0).DateRecorded;
-                foreach (var item in exercise.AerobicExercises)
-                {
-                    if (currentDay < item.DateRecorded)
-                    {
-                        dayData.Add(currentDay.ToShortDateString().ToString());
-                        durationData.Add(maxDuration.ToString());
-                        lengthData.Add(maxLength);
-                        currentDay = item.DateRecorded;
-                        maxLength = 0;
-                        maxDuration = TimeSpan.Zero;
-                    }
-                    if (maxLength < item.Length)
-                    {
-                        maxLength = item.Length;
-                    }
-                    if (maxDuration < item.Duration)
-                    {
-                        maxDuration = item.Duration;
-                    }
-
-
-                }
-                dayData.Add(currentDay.ToShortDateString().ToString());
-                durationData.Add(maxDuration.ToString());
-                lengthData.Add(maxLength);
-
-                //TODO: Make this work? Or be able to switch between the different charts
-                ViewBag.NoImage = false;
-                Chart chart = new Chart(800, 600);
-                chart.AddLegend("Duration", "Duration");
-                chart.AddLegend("Length", "Length");
-
-                chart.AddSeries(yValues: durationData, chartType: "Line", legend: "Duration");
-                chart.AddSeries(yValues: lengthData, legend: "Length", chartType: "Line");
-
-                chart.AddSeries(xValue: dayData, chartType: "Line");
-
-                chart.AddTitle(exercise.Name + " History");
-                chart.Write("png");
-
-
                 return null;
             }
-           
+            List<string> xData = new List<string>();
+            List<decimal> yData = new List<decimal>();
+            decimal maxWeight = 0;
+            DateTime currentDay = exercise.StrengthExercises.ElementAt(0).DateRecorded;
+            foreach (var item in exercise.StrengthExercises)
+            {
+                if (currentDay < item.DateRecorded)
+                {
+                    xData.Add(currentDay.ToShortDateString().ToString());
+                    yData.Add(maxWeight);
+                    currentDay = item.DateRecorded;
+                    maxWeight = 0;
+                }
+                if (maxWeight < item.Weight)
+                {
+                    maxWeight = item.Weight;
+                }
+
+
+            }
+            xData.Add(currentDay.ToShortDateString().ToString());
+            yData.Add(maxWeight);
+            ViewBag.NoImage = false;
+            Chart chart = new Chart();
+            chart.BackColor = System.Drawing.Color.Transparent;
+            
+            chart.Height = 600;
+            chart.Width = 800;
+            ChartArea chartArea = new ChartArea("ChartArea");
+            chart.ChartAreas.Add(chartArea);
+            Series series = new Series("Strength");
+            chart.Series.Add(series);
+            series.ChartArea = "ChartArea";
+            series.ChartType = SeriesChartType.Line;
+            series.BorderWidth = 4;
+            for (int n = 0; n < xData.Count; n++)
+            {
+                series.Points.AddXY(xData.ElementAt(n), yData.ElementAt(n));
+            }
+            
+            using (MemoryStream stream = new MemoryStream()) {
+                chart.SaveImage(stream, ChartImageFormat.Png);
+                return File(stream.ToArray(), "image/png");
+            }
+            
+            //Chart chart = new Chart(800,600);
+            //chart.AddLegend("Weight", "Weight");
+            //chart.AddTitle(exercise.Name + " History");
+            //chart.AddSeries(xValue: xData, yValues: yData, chartType: "Line", legend: "Weight");
+            //chart.Write("png");
+                
+                     
+        }
+
+        public ActionResult CreateAerobicDurationChart(ExerciseList exercise)
+        {
+            exercise = db.ExerciseLists.Find(exercise.ExerciseListID);  
+            if (exercise.AerobicExercises.Count == 0)
+            {
+                return null;
+            }
+            List<string> chartTypeList = new List<string>();
+            chartTypeList.Add("Duration");
+            chartTypeList.Add("Distance");
+            ViewBag.chartTypeList = new SelectList(chartTypeList);
+            //aerobic exercise chart
+            List<string> dayData = new List<string>();
+            List<TimeSpan> durationData = new List<TimeSpan>();
+            TimeSpan maxDuration = TimeSpan.Zero;
+            DateTime currentDay = exercise.AerobicExercises.ElementAt(0).DateRecorded;
+            foreach (var item in exercise.AerobicExercises)
+            {
+                if (currentDay < item.DateRecorded)
+                {
+                    dayData.Add(currentDay.ToShortDateString().ToString());
+                    durationData.Add(maxDuration);
+                    currentDay = item.DateRecorded;
+                    maxDuration = TimeSpan.Zero;
+                }
+                if (maxDuration < item.Duration)
+                {
+                    maxDuration = item.Duration;
+                }
+
+
+            }
+            dayData.Add(currentDay.ToShortDateString().ToString());
+            durationData.Add(maxDuration);
+
+            Legend legend = new Legend();
+            legend.Name = "Hours";
+
+            ViewBag.NoImage = false;
+            Chart chart = new Chart();
+            chart.Legends.Add(legend);
+            chart.BackColor = System.Drawing.Color.Transparent;
+            chart.Legends.Add(new Legend("Hours"));
+            chart.Height = 600;
+            chart.Width = 800;
+            ChartArea chartArea = new ChartArea("ChartArea");
+            chart.ChartAreas.Add(chartArea);
+            Series series = new Series();
+            series.Name = "Hours per day";
+            chart.Series.Add(series);
+            series.ChartArea = "ChartArea";
+            series.ChartType = SeriesChartType.Line;
+            series.BorderWidth = 4;
+            for (int n = 0; n < dayData.Count; n++)
+            {
+                series.Points.AddXY(dayData.ElementAt(n), durationData.ElementAt(n).TotalHours);
+            }
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                chart.SaveImage(stream, ChartImageFormat.Png);
+                return File(stream.ToArray(), "image/png");
+            }
+            //System.Web.Helpers.Chart chart = new System.Web.Helpers.Chart(800, 600);
+
+            //chart.AddSeries(yValues: durationData, chartType: "Line", legend: "Duration");
+
+            //chart.AddSeries(xValue: dayData, chartType: "Line");
+            //chart.AddTitle(exercise.Name + " History");
+            //chart.Write("png");
+        }
+
+        public ActionResult CreateAerobicLengthChart(ExerciseList exercise)
+        {
+            exercise = db.ExerciseLists.Find(exercise.ExerciseListID);
+            if (exercise.AerobicExercises.Count == 0)
+            {
+                return null;
+            }
+            List<string> chartTypeList = new List<string>();
+            chartTypeList.Add("Duration");
+            chartTypeList.Add("Distance");
+            ViewBag.chartTypeList = new SelectList(chartTypeList);
+            //aerobic exercise chart
+            List<string> dayData = new List<string>();
+            List<string> durationData = new List<string>();
+            List<decimal> lengthData = new List<decimal>();
+            TimeSpan maxDuration = TimeSpan.Zero;
+            decimal maxLength = 0;
+            DateTime currentDay = exercise.AerobicExercises.ElementAt(0).DateRecorded;
+            foreach (var item in exercise.AerobicExercises)
+            {
+                if (currentDay < item.DateRecorded)
+                {
+                    dayData.Add(currentDay.ToShortDateString().ToString());
+                    durationData.Add(maxDuration.ToString());
+                    lengthData.Add(maxLength);
+                    currentDay = item.DateRecorded;
+                    maxLength = 0;
+                    maxDuration = TimeSpan.Zero;
+                }
+                if (maxLength < item.Length)
+                {
+                    maxLength = item.Length;
+                }
+                if (maxDuration < item.Duration)
+                {
+                    maxDuration = item.Duration;
+                }
+
+
+            }
+            dayData.Add(currentDay.ToShortDateString().ToString());
+            durationData.Add(maxDuration.ToString());
+            lengthData.Add(maxLength);
+
+            ViewBag.NoImage = false;
+            Chart chart = new Chart();
+            chart.BackColor = System.Drawing.Color.Transparent;
+
+            chart.Height = 600;
+            chart.Width = 800;
+            ChartArea chartArea = new ChartArea("ChartArea");
+            chart.ChartAreas.Add(chartArea);
+            Series series = new Series("Strength");
+            chart.Series.Add(series);
+            series.ChartArea = "ChartArea";
+            series.ChartType = SeriesChartType.Line;
+            series.BorderWidth = 4;
+            for (int n = 0; n < dayData.Count; n++)
+            {
+                series.Points.AddXY(dayData.ElementAt(n), lengthData.ElementAt(n));
+            }
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                chart.SaveImage(stream, ChartImageFormat.Png);
+                return File(stream.ToArray(), "image/png");
+            }
+
+            //System.Web.Helpers.Chart chart = new System.Web.Helpers.Chart(800, 600);
+
+            //chart.AddLegend("Length", "Length");
+            //chart.AddSeries(yValues: lengthData, legend: "Length", chartType: "Line");
+
+            //chart.AddSeries(xValue: dayData, chartType: "Line");
+            //chart.AddTitle(exercise.Name + " History");
+            //chart.Write("png");
+
+
+            //return null;
         }
 
         // GET: ExerciseLists/Create

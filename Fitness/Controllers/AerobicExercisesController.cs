@@ -17,7 +17,7 @@ namespace Fitness.Controllers
         // GET: AerobicExercises
         public ActionResult Index()
         {
-            var aerobicExercises = db.AerobicExercises.Include(a => a.User).Include(a => a.ExerciseList);
+            var aerobicExercises = db.AerobicExercises.Include(a => a.User).Include(a => a.ExerciseList).Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID);
             return View(aerobicExercises.ToList());
         }
 
@@ -57,7 +57,7 @@ namespace Fitness.Controllers
                 aerobicExercise.UserID = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID;
                 db.AerobicExercises.Add(aerobicExercise);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "ExerciseLists");
             }
 
             ViewBag.UserID = new SelectList(db.Users, "UserID", "FirstName", aerobicExercise.UserID);

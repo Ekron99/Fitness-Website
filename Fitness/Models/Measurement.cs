@@ -17,9 +17,11 @@ namespace Fitness.Models
     {
         public int MeasurementID { get; set; }
         public int UserID { get; set; }
+        [Display(Name = "Inches")]
         public decimal Value { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Date Recorded")]
         public System.DateTime DateRecorded { get; set; }
         public int PartID { get; set; }
     
