@@ -33,6 +33,14 @@
         <EntityTypeShape EntityType="fitnessModel.AerobicGoal" Width="1.5" PointX="10.5" PointY="0.75" />
         <AssociationConnector Association="fitnessModel.EL_AE_FK" />
         <AssociationConnector Association="fitnessModel.U_AE_FK" />
+        <EntityTypeShape EntityType="fitnessModel.Comment" Width="1.5" PointX="9.75" PointY="10.625" />
+        <EntityTypeShape EntityType="fitnessModel.Post" Width="1.5" PointX="7.5" PointY="13.75" />
+        <AssociationConnector Association="fitnessModel.C_C_FK" />
+        <AssociationConnector Association="fitnessModel.C_U_FK" />
+        <AssociationConnector Association="fitnessModel.P_C_FK" />
+        <AssociationConnector Association="fitnessModel.U_U_FK1" />
+        <AssociationConnector Association="fitnessModel.U_U_FK2" />
+        <AssociationConnector Association="fitnessModel.U_P_FK" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

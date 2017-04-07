@@ -13,21 +13,29 @@ namespace Fitness.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public partial class AerobicExercise
+    public partial class Comment
     {
-        public int AerobicExerciseID { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Comment()
+        {
+            this.ChildComments = new HashSet<Comment>();
+        }
+    
+        public int CommentID { get; set; }
+        public int PostID { get; set; }
         public int UserID { get; set; }
-        [DisplayFormat(DataFormatString = "{0:hh\\:mm}", ApplyFormatInEditMode = true)]
-        public System.TimeSpan Duration { get; set; }
-        [Display(Name = "Distance")]
-        public decimal Length { get; set; }
+        public Nullable<int> ParentCommentID { get; set; }
+        public string Text { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime DateRecorded { get; set; }
-        [Display(Name = "Exercise Name")]
-        public int ExerciseListID { get; set; }
+        public int Upvotes { get; set; }
+        public int Downvotes { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Comment> ChildComments { get; set; }
+        public virtual Comment ParentComment { get; set; }
         public virtual User User { get; set; }
-        public virtual ExerciseList ExerciseList { get; set; }
+        public virtual Post Post { get; set; }
     }
 }

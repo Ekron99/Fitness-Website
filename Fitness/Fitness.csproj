@@ -201,6 +201,9 @@
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AerobicGoalModel.cs" />
+    <Compile Include="Models\Comment.cs">
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Competition.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
@@ -230,6 +233,9 @@
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Friend.cs">
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Post.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\StrengthGoalProgressModel.cs" />

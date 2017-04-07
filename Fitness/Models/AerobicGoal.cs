@@ -24,7 +24,6 @@ namespace Fitness.Models
         public System.TimeSpan Duration { get; set; }
         [Display(Name = "Distance")]
         public decimal Length { get; set; }
-
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime StartDate { get; set; }

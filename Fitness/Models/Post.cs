@@ -13,23 +13,27 @@ namespace Fitness.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public partial class StrengthGoal
+    public partial class Post
     {
-        public int GoalID { get; set; }
-        public int UserID { get; set; }
-        [Display(Name = "Exercise Name")]
-        public int ExerciseListID { get; set; }
-        public string Name { get; set; }
-        [Display(Name = "Target Weight")]
-        public decimal TargetWeight { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public System.DateTime EndDate { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public Nullable<System.DateTime> StartDate { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Post()
+        {
+            this.Comments = new HashSet<Comment>();
+        }
     
-        public virtual ExerciseList ExerciseList { get; set; }
+        public int PostID { get; set; }
+        public int UserID { get; set; }
+        public string Text { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public System.DateTime DateRecorded { get; set; }
+        public bool Deleted { get; set; }
+        public bool Closed { get; set; }
+        public int Upvotes { get; set; }
+        public int DownVotes { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Comment> Comments { get; set; }
         public virtual User User { get; set; }
     }
 }

@@ -30,6 +30,19 @@
           <Property Name="EndDate" Type="date" Nullable="false" />
           <Property Name="Focus" Type="varchar" MaxLength="45" Nullable="false" />
         </EntityType>
+        <EntityType Name="Comments">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Name="CommentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PostID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="ParentCommentID" Type="int" />
+          <Property Name="Text" Type="mediumtext" Nullable="false" />
+          <Property Name="DateRecorded" Type="date" Nullable="false" />
+          <Property Name="Upvotes" Type="int" Nullable="false" />
+          <Property Name="Downvotes" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Competition">
           <Key>
             <PropertyRef Name="CompetitionID" />
@@ -85,6 +98,7 @@
           <Property Name="UserID1" Type="int" Nullable="false" />
           <Property Name="UserID2" Type="int" Nullable="false" />
           <Property Name="Status" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="DateRecorded" Type="date" />
         </EntityType>
         <EntityType Name="Measurement">
           <Key>
@@ -110,6 +124,19 @@
           <Property Name="PartID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Posts">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="PostID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Text" Type="mediumtext" Nullable="false" />
+          <Property Name="DateRecorded" Type="date" Nullable="false" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+          <Property Name="Closed" Type="bit" Nullable="false" />
+          <Property Name="Upvotes" Type="int" Nullable="false" />
+          <Property Name="DownVotes" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="StrengthExercise">
           <Key>
@@ -175,6 +202,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="C_C_FK">
+          <End Role="Comments" Type="Self.Comments" Multiplicity="0..1" />
+          <End Role="Comments1" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comments">
+              <PropertyRef Name="CommentID" />
+            </Principal>
+            <Dependent Role="Comments1">
+              <PropertyRef Name="ParentCommentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="C_EL_FK">
           <End Role="ExerciseList" Type="Self.ExerciseList" Multiplicity="1" />
           <End Role="Competition" Type="Self.Competition" Multiplicity="*" />
@@ -196,6 +235,18 @@
             </Principal>
             <Dependent Role="Participants">
               <PropertyRef Name="CompetitionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="C_U_FK">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -303,6 +354,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="P_C_FK">
+          <End Role="Posts" Type="Self.Posts" Multiplicity="1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Posts">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="P_U_FK">
           <End Role="Users" Type="Self.Users" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -357,6 +420,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="U_P_FK">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Posts" Type="Self.Posts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Posts">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="U_SG_FK">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="StrengthGoals" Type="Self.StrengthGoals" Multiplicity="*" />
@@ -369,9 +446,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="U_U_FK1">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Friends" Type="Self.Friends" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Friends">
+              <PropertyRef Name="UserID1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="U_U_FK2">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Friends" Type="Self.Friends" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Friends">
+              <PropertyRef Name="UserID2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="fitnessModelStoreContainer">
           <EntitySet Name="AerobicExercise" EntityType="Self.AerobicExercise" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="AerobicGoals" EntityType="Self.AerobicGoals" Schema="fitness" store:Type="Tables" />
+          <EntitySet Name="Comments" EntityType="Self.Comments" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="Competition" EntityType="Self.Competition" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="ExerciseList" EntityType="Self.ExerciseList" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="Food" EntityType="Self.Food" Schema="fitness" store:Type="Tables" />
@@ -380,6 +482,7 @@
           <EntitySet Name="Measurement" EntityType="Self.Measurement" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="Participants" EntityType="Self.Participants" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="Parts" EntityType="Self.Parts" Schema="fitness" store:Type="Tables" />
+          <EntitySet Name="Posts" EntityType="Self.Posts" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="StrengthExercise" EntityType="Self.StrengthExercise" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="StrengthGoals" EntityType="Self.StrengthGoals" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="fitness" store:Type="Tables" />
@@ -391,6 +494,10 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="AerobicExercise" EntitySet="AerobicExercise" />
           </AssociationSet>
+          <AssociationSet Name="C_C_FK" Association="Self.C_C_FK">
+            <End Role="Comments" EntitySet="Comments" />
+            <End Role="Comments1" EntitySet="Comments" />
+          </AssociationSet>
           <AssociationSet Name="C_EL_FK" Association="Self.C_EL_FK">
             <End Role="ExerciseList" EntitySet="ExerciseList" />
             <End Role="Competition" EntitySet="Competition" />
@@ -398,6 +505,10 @@
           <AssociationSet Name="C_P_FK" Association="Self.C_P_FK">
             <End Role="Competition" EntitySet="Competition" />
             <End Role="Participants" EntitySet="Participants" />
+          </AssociationSet>
+          <AssociationSet Name="C_U_FK" Association="Self.C_U_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Comments" EntitySet="Comments" />
           </AssociationSet>
           <AssociationSet Name="C_USER_FK" Association="Self.C_USER_FK">
             <End Role="Users" EntitySet="Users" />
@@ -431,6 +542,10 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Measurement" EntitySet="Measurement" />
           </AssociationSet>
+          <AssociationSet Name="P_C_FK" Association="Self.P_C_FK">
+            <End Role="Posts" EntitySet="Posts" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
           <AssociationSet Name="P_U_FK" Association="Self.P_U_FK">
             <End Role="Users" EntitySet="Users" />
             <End Role="Parts" EntitySet="Parts" />
@@ -447,9 +562,21 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="AerobicGoals" EntitySet="AerobicGoals" />
           </AssociationSet>
+          <AssociationSet Name="U_P_FK" Association="Self.U_P_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Posts" EntitySet="Posts" />
+          </AssociationSet>
           <AssociationSet Name="U_SG_FK" Association="Self.U_SG_FK">
             <End Role="Users" EntitySet="Users" />
             <End Role="StrengthGoals" EntitySet="StrengthGoals" />
+          </AssociationSet>
+          <AssociationSet Name="U_U_FK1" Association="Self.U_U_FK1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Friends" EntitySet="Friends" />
+          </AssociationSet>
+          <AssociationSet Name="U_U_FK2" Association="Self.U_U_FK2">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Friends" EntitySet="Friends" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -504,6 +631,9 @@
           <Property Name="UserID1" Type="Int32" Nullable="false" />
           <Property Name="UserID2" Type="Int32" Nullable="false" />
           <Property Name="Status" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateRecorded" Type="DateTime" />
+          <NavigationProperty Name="User" Relationship="fitnessModel.U_U_FK1" FromRole="Friend" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="fitnessModel.U_U_FK2" FromRole="Friend" ToRole="User" />
         </EntityType>
         <EntityType Name="Measurement">
           <Key>
@@ -551,6 +681,10 @@
           <NavigationProperty Name="FoodIntakes" Relationship="fitnessModel.U_FI_FK" FromRole="User" ToRole="FoodIntake" />
           <NavigationProperty Name="StrengthGoals" Relationship="fitnessModel.U_SG_FK" FromRole="User" ToRole="StrengthGoal" />
           <NavigationProperty Name="AerobicGoals" Relationship="fitnessModel.U_AE_FK" FromRole="User" ToRole="AerobicGoal" />
+          <NavigationProperty Name="Comments" Relationship="fitnessModel.C_U_FK" FromRole="User" ToRole="Comment" />
+          <NavigationProperty Name="Friends" Relationship="fitnessModel.U_U_FK1" FromRole="User" ToRole="Friend" />
+          <NavigationProperty Name="Friends1" Relationship="fitnessModel.U_U_FK2" FromRole="User" ToRole="Friend" />
+          <NavigationProperty Name="Posts" Relationship="fitnessModel.U_P_FK" FromRole="User" ToRole="Post" />
         </EntityType>
         <Association Name="AE_USER_FK">
           <End Role="Users" Type="Self.User" Multiplicity="1">
@@ -686,6 +820,32 @@
           <AssociationSet Name="U_AE_FK" Association="fitnessModel.U_AE_FK">
             <End Role="User" EntitySet="Users" />
             <End Role="AerobicGoal" EntitySet="AerobicGoals" />
+          </AssociationSet>
+          <EntitySet Name="Comments" EntityType="fitnessModel.Comment" />
+          <EntitySet Name="Posts" EntityType="fitnessModel.Post" />
+          <AssociationSet Name="C_C_FK" Association="fitnessModel.C_C_FK">
+            <End Role="Comment" EntitySet="Comments" />
+            <End Role="Comment1" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="C_U_FK" Association="fitnessModel.C_U_FK">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="P_C_FK" Association="fitnessModel.P_C_FK">
+            <End Role="Post" EntitySet="Posts" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="U_U_FK1" Association="fitnessModel.U_U_FK1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Friend" EntitySet="Friends" />
+          </AssociationSet>
+          <AssociationSet Name="U_U_FK2" Association="fitnessModel.U_U_FK2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Friend" EntitySet="Friends" />
+          </AssociationSet>
+          <AssociationSet Name="U_P_FK" Association="fitnessModel.U_P_FK">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Post" EntitySet="Posts" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Part">
@@ -903,6 +1063,112 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Name="CommentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PostID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="ParentCommentID" Type="Int32" />
+          <Property Name="Text" Type="String" Nullable="false" MaxLength="16777215" FixedLength="false" Unicode="false" />
+          <Property Name="DateRecorded" Type="DateTime" Nullable="false" />
+          <Property Name="Upvotes" Type="Int32" Nullable="false" />
+          <Property Name="Downvotes" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ChildComments" Relationship="fitnessModel.C_C_FK" FromRole="Comment" ToRole="Comment1" />
+          <NavigationProperty Name="ParentComment" Relationship="fitnessModel.C_C_FK" FromRole="Comment1" ToRole="Comment" />
+          <NavigationProperty Name="User" Relationship="fitnessModel.C_U_FK" FromRole="Comment" ToRole="User" />
+          <NavigationProperty Name="Post" Relationship="fitnessModel.P_C_FK" FromRole="Comment" ToRole="Post" />
+        </EntityType>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="PostID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Text" Type="String" Nullable="false" MaxLength="16777215" FixedLength="false" Unicode="false" />
+          <Property Name="DateRecorded" Type="DateTime" Nullable="false" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="Closed" Type="Boolean" Nullable="false" />
+          <Property Name="Upvotes" Type="Int32" Nullable="false" />
+          <Property Name="DownVotes" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Comments" Relationship="fitnessModel.P_C_FK" FromRole="Post" ToRole="Comment" />
+          <NavigationProperty Name="User" Relationship="fitnessModel.U_P_FK" FromRole="Post" ToRole="User" />
+        </EntityType>
+        <Association Name="C_C_FK">
+          <End Type="fitnessModel.Comment" Role="Comment" Multiplicity="0..1" />
+          <End Type="fitnessModel.Comment" Role="Comment1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comment">
+              <PropertyRef Name="CommentID" />
+            </Principal>
+            <Dependent Role="Comment1">
+              <PropertyRef Name="ParentCommentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="C_U_FK">
+          <End Type="fitnessModel.User" Role="User" Multiplicity="1" />
+          <End Type="fitnessModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="P_C_FK">
+          <End Type="fitnessModel.Post" Role="Post" Multiplicity="1" />
+          <End Type="fitnessModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="U_U_FK1">
+          <End Type="fitnessModel.User" Role="User" Multiplicity="1" />
+          <End Type="fitnessModel.Friend" Role="Friend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Friend">
+              <PropertyRef Name="UserID1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="U_U_FK2">
+          <End Type="fitnessModel.User" Role="User" Multiplicity="1" />
+          <End Type="fitnessModel.Friend" Role="Friend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Friend">
+              <PropertyRef Name="UserID2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="U_P_FK">
+          <End Type="fitnessModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="fitnessModel.Post" Role="Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -945,6 +1211,7 @@
           <EntitySetMapping Name="Friends">
             <EntityTypeMapping TypeName="fitnessModel.Friend">
               <MappingFragment StoreEntitySet="Friends">
+                <ScalarProperty Name="DateRecorded" ColumnName="DateRecorded" />
                 <ScalarProperty Name="FriendsID" ColumnName="FriendsID" />
                 <ScalarProperty Name="UserID1" ColumnName="UserID1" />
                 <ScalarProperty Name="UserID2" ColumnName="UserID2" />
@@ -1061,6 +1328,34 @@
                 <ScalarProperty Name="ExerciseListID" ColumnName="ExerciseListID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="GoalID" ColumnName="GoalID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="fitnessModel.Comment">
+              <MappingFragment StoreEntitySet="Comments">
+                <ScalarProperty Name="Downvotes" ColumnName="Downvotes" />
+                <ScalarProperty Name="Upvotes" ColumnName="Upvotes" />
+                <ScalarProperty Name="DateRecorded" ColumnName="DateRecorded" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="ParentCommentID" ColumnName="ParentCommentID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Posts">
+            <EntityTypeMapping TypeName="fitnessModel.Post">
+              <MappingFragment StoreEntitySet="Posts">
+                <ScalarProperty Name="DownVotes" ColumnName="DownVotes" />
+                <ScalarProperty Name="Upvotes" ColumnName="Upvotes" />
+                <ScalarProperty Name="Closed" ColumnName="Closed" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="DateRecorded" ColumnName="DateRecorded" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
