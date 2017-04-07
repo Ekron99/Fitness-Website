@@ -90,12 +90,16 @@ namespace Fitness.Controllers
             ViewBag.NoImage = false;
             Chart chart = new Chart();
             chart.BackColor = System.Drawing.Color.Transparent;
-            
+            chart.AntiAliasing = AntiAliasingStyles.Graphics;
             chart.Height = 600;
             chart.Width = 800;
             ChartArea chartArea = new ChartArea("ChartArea");
             chart.ChartAreas.Add(chartArea);
             Series series = new Series("Strength");
+            chartArea.AxisX.Title = "Date Recorded";
+            chartArea.AxisY.Title = "Weight Lifted";
+            chartArea.AxisY.TitleFont = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, 15, System.Drawing.FontStyle.Regular);
+            chartArea.AxisX.TitleFont = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, 15, System.Drawing.FontStyle.Regular);
             chart.Series.Add(series);
             series.ChartArea = "ChartArea";
             series.ChartType = SeriesChartType.Line;
@@ -103,6 +107,8 @@ namespace Fitness.Controllers
             for (int n = 0; n < xData.Count; n++)
             {
                 series.Points.AddXY(xData.ElementAt(n), yData.ElementAt(n));
+                series.Points.ElementAt(n).Label = yData.ElementAt(n).ToString();
+                series.Points.ElementAt(n).LabelBorderWidth = 5;
             }
             
             using (MemoryStream stream = new MemoryStream()) {
@@ -154,20 +160,20 @@ namespace Fitness.Controllers
             dayData.Add(currentDay.ToShortDateString().ToString());
             durationData.Add(maxDuration);
 
-            Legend legend = new Legend();
-            legend.Name = "Hours";
 
             ViewBag.NoImage = false;
             Chart chart = new Chart();
-            chart.Legends.Add(legend);
             chart.BackColor = System.Drawing.Color.Transparent;
-            chart.Legends.Add(new Legend("Hours"));
+            chart.AntiAliasing = AntiAliasingStyles.Graphics;
             chart.Height = 600;
             chart.Width = 800;
             ChartArea chartArea = new ChartArea("ChartArea");
+            chartArea.AxisY.TitleFont = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, 15, System.Drawing.FontStyle.Regular);
+            chartArea.AxisX.TitleFont = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, 15, System.Drawing.FontStyle.Regular);
+            chartArea.AxisX.Title = "Date Recorded";
+            chartArea.AxisY.Title = "Hours Elapsed";
             chart.ChartAreas.Add(chartArea);
             Series series = new Series();
-            series.Name = "Hours per day";
             chart.Series.Add(series);
             series.ChartArea = "ChartArea";
             series.ChartType = SeriesChartType.Line;
@@ -175,8 +181,9 @@ namespace Fitness.Controllers
             for (int n = 0; n < dayData.Count; n++)
             {
                 series.Points.AddXY(dayData.ElementAt(n), durationData.ElementAt(n).TotalHours);
+                series.Points.ElementAt(n).Label = durationData.ElementAt(n).TotalHours.ToString() + " Hours";
+                series.Points.ElementAt(n).LabelBorderWidth = 5;
             }
-
             using (MemoryStream stream = new MemoryStream())
             {
                 chart.SaveImage(stream, ChartImageFormat.Png);
@@ -238,12 +245,17 @@ namespace Fitness.Controllers
             ViewBag.NoImage = false;
             Chart chart = new Chart();
             chart.BackColor = System.Drawing.Color.Transparent;
-
+            chart.AntiAliasing = AntiAliasingStyles.Graphics;
             chart.Height = 600;
             chart.Width = 800;
             ChartArea chartArea = new ChartArea("ChartArea");
+            chartArea.AxisY.TitleFont = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, 15, System.Drawing.FontStyle.Regular);
+            chartArea.AxisX.TitleFont = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, 15, System.Drawing.FontStyle.Regular);
+            chartArea.AxisX.Title = "Date Recorded";
+            chartArea.AxisY.Title = "Miles Traveled";
             chart.ChartAreas.Add(chartArea);
-            Series series = new Series("Strength");
+            Series series = new Series("Distance");
+            Series durationSeries = new Series("Duration");
             chart.Series.Add(series);
             series.ChartArea = "ChartArea";
             series.ChartType = SeriesChartType.Line;
@@ -251,8 +263,9 @@ namespace Fitness.Controllers
             for (int n = 0; n < dayData.Count; n++)
             {
                 series.Points.AddXY(dayData.ElementAt(n), lengthData.ElementAt(n));
+                series.Points.ElementAt(n).Label = lengthData.ElementAt(n).ToString() + " Miles";
+                series.Points.ElementAt(n).LabelBorderWidth = 5;
             }
-
             using (MemoryStream stream = new MemoryStream())
             {
                 chart.SaveImage(stream, ChartImageFormat.Png);
@@ -282,16 +295,24 @@ namespace Fitness.Controllers
             return View();
         }
 
+        public PartialViewResult CreateModal()
+        {
+            List<string> types = new List<string>();
+            types.Add("Strength");
+            types.Add("Aerobic");
+            ViewBag.typelist = new SelectList(types);
+            return PartialView("CreateModal");
+        }
+
         // POST: ExerciseLists/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ExerciseListID,Name,UserID,Type")] ExerciseList exerciseList)
+        public ActionResult Create([Bind(Include = "Name,Type")] ExerciseList exerciseList)
         {
             if (ModelState.IsValid)
-            {
-                
+            {   
                 exerciseList.UserID = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID;
                 db.ExerciseLists.Add(exerciseList);
                 db.SaveChanges();

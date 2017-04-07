@@ -42,7 +42,7 @@ namespace Fitness.Controllers
             ViewBag.ExerciseListID = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(x => x.Type == "Aerobic"), "ExerciseListID", "Name");
             List<string> list = new List<string>();
             list.Add("Duration");
-            list.Add("Length");
+            list.Add("Distance");
             ViewBag.Focus = new SelectList(list);
             return View();
         }
@@ -62,9 +62,17 @@ namespace Fitness.Controllers
             if (ModelState.IsValid)
             {
                 aerobicGoal.User = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+                if (aerobicGoal.Focus == "Distance")
+                {
+                    aerobicGoal.Length = 0;
+                }
+                else
+                {
+                    aerobicGoal.Duration = TimeSpan.Zero;
+                }
                 db.AerobicGoals.Add(aerobicGoal);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Goals");
             }
 
             ViewBag.ExerciseListID = new SelectList(db.ExerciseLists, "ExerciseListID", "Name", aerobicGoal.ExerciseListID);
@@ -79,17 +87,24 @@ namespace Fitness.Controllers
             model.goal = goal;
             if (goal.Focus == "Duration")
             {
-                var progress = db.AerobicExercises.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(x => x.ExerciseListID == goal.ExerciseListID).Where(x => x.DateRecorded >= goal.StartDate && x.DateRecorded <= goal.EndDate).OrderByDescending(x => x.Duration);
+                IQueryable<AerobicExercise> progress = db.AerobicExercises.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(x => x.ExerciseListID == goal.ExerciseListID).Where(x => x.DateRecorded >= goal.StartDate && x.DateRecorded <= goal.EndDate).OrderByDescending(x => x.Duration);
                 model.progress = progress;
-                if (progress.SingleOrDefault() == null)
+                if (progress.Count() == 0)
                 {
                     ViewBag.percentDone = 0;
                     return View(model);
                 }
-                TimeSpan bestTime = progress.ElementAt(0).Duration;
-                ViewBag.percentDone = bestTime.TotalSeconds / goal.Duration.TotalSeconds;
-                ViewBag.percentDone *= 100;
-                ViewBag.percentDone = Math.Round(ViewBag.percentDone, 2);
+                TimeSpan bestTime = progress.First().Duration;
+                if (bestTime > goal.Duration)
+                {
+                    ViewBag.percentDone = 100;
+                }
+                else
+                {
+                    ViewBag.percentDone = bestTime.TotalSeconds / goal.Duration.TotalSeconds;
+                    ViewBag.percentDone *= 100;
+                    ViewBag.percentDone = Math.Round(ViewBag.percentDone, 2);
+                }
             }
             else
             {
@@ -102,8 +117,16 @@ namespace Fitness.Controllers
                     return View(model);
                 }
                 
-                var bestLength = progress.ElementAt(0).Length;
-                ViewBag.percentDone = Math.Round(bestLength / goal.Length * 100, 2);
+                var bestLength = progress.First().Length;
+                if (bestLength > goal.Length)
+                {
+                    ViewBag.percentDone = 100;
+                }
+                else
+                {
+                    ViewBag.percentDone = Math.Round(bestLength / goal.Length * 100, 2);
+                }
+                
             }
             return View(model);
         }
@@ -137,9 +160,17 @@ namespace Fitness.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (aerobicGoal.Focus == "Distance")
+                {
+                    aerobicGoal.Length = 0;
+                }
+                else
+                {
+                    aerobicGoal.Duration = TimeSpan.Zero;
+                }
                 db.Entry(aerobicGoal).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Goals");
             }
             List<string> list = new List<string>();
             list.Add("Duration");
@@ -172,7 +203,7 @@ namespace Fitness.Controllers
             AerobicGoal aerobicGoal = db.AerobicGoals.Find(id);
             db.AerobicGoals.Remove(aerobicGoal);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Goals");
         }
 
         protected override void Dispose(bool disposing)

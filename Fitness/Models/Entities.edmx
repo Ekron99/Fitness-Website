@@ -24,8 +24,8 @@
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="ExerciseListID" Type="int" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="128" Nullable="false" />
-          <Property Name="Duration" Type="time" Precision="0" Nullable="false" />
-          <Property Name="Length" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="Duration" Type="time" Precision="0" />
+          <Property Name="Length" Type="decimal" Precision="8" Scale="2" />
           <Property Name="StartDate" Type="date" Nullable="false" />
           <Property Name="EndDate" Type="date" Nullable="false" />
           <Property Name="Focus" Type="varchar" MaxLength="45" Nullable="false" />

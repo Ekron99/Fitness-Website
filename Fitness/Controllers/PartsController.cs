@@ -7,7 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Fitness.Models;
-using System.Web.Helpers;
+using System.Web.UI.DataVisualization.Charting;
+using System.IO;
 
 namespace Fitness.Controllers
 {
@@ -58,11 +59,40 @@ namespace Fitness.Controllers
                 xData.Add(item.DateRecorded.ToShortDateString());
                 yData.Add(item.Value);
             }
-            Chart chart = new Chart(800, 600);
-            chart.AddTitle(part.Name + " History");
-            chart.AddSeries(xValue: xData, yValues: yData, chartType: "Line");
-            chart.Write("png");
-            return null;
+
+            Chart chart = new Chart();
+            chart.BackColor = System.Drawing.Color.Transparent;
+            chart.AntiAliasing = AntiAliasingStyles.Graphics;
+            chart.Height = 600;
+            chart.Width = 800;
+            ChartArea chartArea = new ChartArea("ChartArea");
+            chart.ChartAreas.Add(chartArea);
+            Series series = new Series("Part");
+            chartArea.AxisX.Title = "Date Recorded";
+            chartArea.AxisY.Title = "Measurement Value";
+            chartArea.AxisY.TitleFont = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, 15, System.Drawing.FontStyle.Regular);
+            chartArea.AxisX.TitleFont = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, 15, System.Drawing.FontStyle.Regular);
+            chart.Series.Add(series);
+            series.ChartArea = "ChartArea";
+            series.ChartType = SeriesChartType.Line;
+            series.BorderWidth = 4;
+            for (int n = 0; n < xData.Count; n++)
+            {
+                series.Points.AddXY(xData.ElementAt(n), yData.ElementAt(n));
+                series.Points.ElementAt(n).Label = yData.ElementAt(n).ToString();
+            }
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                chart.SaveImage(stream, ChartImageFormat.Png);
+                return File(stream.ToArray(), "image/png");
+            }
+
+            //Chart chart = new Chart(800, 600);
+            //chart.AddTitle(part.Name + " History");
+            //chart.AddSeries(xValue: xData, yValues: yData, chartType: "Line");
+            //chart.Write("png");
+            //return null;
         }
 
         // GET: Parts/Create

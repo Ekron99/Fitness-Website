@@ -31,7 +31,6 @@ namespace Fitness.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime EndDate { get; set; }
-
         public string Focus { get; set; }
     
         public virtual ExerciseList ExerciseList { get; set; }

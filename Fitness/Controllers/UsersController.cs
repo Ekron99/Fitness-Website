@@ -24,8 +24,6 @@ namespace Fitness.Controllers
             return View();
         }
 
-        
-
         // GET: Users/Details/5
         public ActionResult Details(int? id)
         {

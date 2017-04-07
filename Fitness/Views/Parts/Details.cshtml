@@ -4,9 +4,6 @@
     ViewBag.Title = "Details";
 }
 <h2 class="text-primary">@Model.Name Measurements</h2>
-@Html.ActionLink("Add new entry", "Create", "Measurements   ", new { id = Model.PartID }, new { @class = "btn btn-warning" })
-@Html.ActionLink("Edit", "Edit", "Parts", new { id = Model.PartID}, new { @class = "btn btn-warning"})
-@Html.ActionLink("Delete this part", "Delete", "Parts", new { id = Model.PartID }, new { @class = "btn btn-warning" })
 
 @if (ViewBag.NoMeasurements == false)
 {
@@ -57,6 +54,7 @@ else
 }
 
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.PartID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Add new entry", "Create", "Measurements", new { id = Model.PartID }, new { @class = "btn btn-success" })
+    @Html.ActionLink("Edit", "Edit", "Parts", new { id = Model.PartID }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Delete this part", "Delete", "Parts", new { id = Model.PartID }, new { @class = "btn btn-danger" })
 </p>

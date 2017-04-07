@@ -17,7 +17,7 @@ namespace Fitness.Models
     {
         public int AerobicExerciseID { get; set; }
         public int UserID { get; set; }
-        [DisplayFormat(DataFormatString="{0:hh\\:mm}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:hh\\:mm}", ApplyFormatInEditMode = true)]
         public System.TimeSpan Duration { get; set; }
         [Display(Name = "Distance")]
         public decimal Length { get; set; }

@@ -19,7 +19,6 @@ namespace Fitness.Models
         public int FoodID { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Date Recorded")]
         public System.DateTime DateRecorded { get; set; }
         public decimal Servings { get; set; }
         public int FoodIntakeID { get; set; }

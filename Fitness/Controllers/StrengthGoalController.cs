@@ -80,7 +80,7 @@ namespace Fitness.Controllers
                 strengthGoal.User = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
                 db.StrengthGoals.Add(strengthGoal);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Goals");
             }
 
             ViewBag.ExerciseListID = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(n => n.Type == "Strength"), "ExerciseListID", "Name", strengthGoal.ExerciseListID);
@@ -116,7 +116,7 @@ namespace Fitness.Controllers
                 strengthGoal.UserID = strengthGoal.User.UserID;
                 db.Entry(strengthGoal).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Goals");
             }
             ViewBag.ExerciseListID = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(n => n.Type == "Strength"), "ExerciseListID", "Name", strengthGoal.ExerciseListID);
             return View(strengthGoal);
@@ -145,7 +145,7 @@ namespace Fitness.Controllers
             StrengthGoal strengthGoal = db.StrengthGoals.Find(id);
             db.StrengthGoals.Remove(strengthGoal);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Goals");
         }
 
         protected override void Dispose(bool disposing)

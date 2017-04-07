@@ -452,6 +452,10 @@
     <Content Include="Views\AerobicGoals\Index.cshtml" />
     <Content Include="Views\Parts\CreateChart.cshtml" />
     <Content Include="Views\AerobicGoals\ViewProgress.cshtml" />
+    <Content Include="Views\AerobicExercises\CreateModal.cshtml" />
+    <Content Include="Views\ExerciseLists\CreateModal.cshtml" />
+    <Content Include="Views\Goals\CreateAerobicModal.cshtml" />
+    <Content Include="Views\Goals\CreateStrengthModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

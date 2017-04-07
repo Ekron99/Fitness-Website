@@ -8,7 +8,14 @@
 
 <h3>Name: @Model.goal.Name</h3>
 <h4>Exercise: @Model.goal.ExerciseList.Name</h4>
-@Html.ActionLink("Add new entry", "Create", "AerobicExercises")
+@if (Model.goal.Focus == "Duration")
+{
+    <h4>Goal: @Model.goal.Duration</h4>
+}
+else
+{
+    <h4>Goal: @Model.goal.Length</h4>
+}
 
 <div class="progress" style="height: 20px;">
     <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="@ViewBag.percentDone" aria-valuemin="0" aria-valuemax="100" style="width: @ViewBag.percentDone%;">
@@ -54,9 +61,15 @@
                 @Html.DisplayFor(modelItem => item.ExerciseList.Name)
             </td>
             <td>
-                @Html.ActionLink("Details", "Details", new { id = item.AerobicExerciseID })
+                @Html.ActionLink("Details", "Details", "AerobicExercises", new { id = item.AerobicExerciseID }, null)
             </td>
         </tr>
     }
 
 </table>
+
+<p>
+    @Html.ActionLink("Add new entry", "Create", "AerobicExercises", null, new { @class = "btn btn-success" })
+    @Html.ActionLink("Edit this goal", "Edit", "AerobicGoals", new { id = Model.goal.GoalID }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Delete this goal", "Delete", "AerobicGoals", new { id = Model.goal.GoalID }, new { @class = "btn btn-danger" })
+</p>

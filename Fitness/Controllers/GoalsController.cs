@@ -19,5 +19,22 @@ namespace Fitness.Controllers
 
             return View(goals);
         }
+
+        public PartialViewResult CreateAerobicModal()
+        {
+            ViewBag.ExerciseListID = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(x => x.Type == "Aerobic"), "ExerciseListID", "Name");
+            List<string> list = new List<string>();
+            list.Add("Duration");
+            list.Add("Distance");
+            ViewBag.Focus = new SelectList(list);
+            return PartialView("CreateAerobicModal");
+        }
+        
+        public PartialViewResult CreateStrengthModal()
+        {
+            ViewBag.ExerciseListID = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(n => n.Type == "Strength"), "ExerciseListID", "Name");
+            return PartialView("CreateStrengthModal");
+        }
+
     }
 }
