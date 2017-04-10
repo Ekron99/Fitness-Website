@@ -12,6 +12,7 @@ namespace Fitness.Models
         public int ten { get; set;}
         public int five { get; set; }
         public int twoFive { get; set; }
+        public string type { get; set; }
 
     }
 }
