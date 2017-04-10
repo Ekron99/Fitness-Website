@@ -90,11 +90,10 @@ namespace Fitness.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserID,FoodID,DateRecorded,Servings")] FoodIntake foodIntake)
+        public ActionResult Edit([Bind(Include = "UserID,FoodID,FoodIntakeID,DateRecorded,Servings")] FoodIntake foodIntake)
         {
             if (ModelState.IsValid)
-            {
-                foodIntake.User = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+            { 
                 db.Entry(foodIntake).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

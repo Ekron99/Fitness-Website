@@ -34,7 +34,7 @@ namespace Fitness
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap-flatly.min.css",
+                      "~/Content/bootstrap.simplex.min.css",
                       "~/Content/site.css"));
         }
     }

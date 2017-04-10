@@ -31,7 +31,7 @@ namespace Fitness.Controllers
                 return RedirectToAction("Unauthorized", "Users");
             }
             model.goal = goal;
-            model.progress = db.StrengthExercises.Where(x => x.User.Email == User.Identity.Name).Where(x => x.ExerciseListID == goal.ExerciseListID).Where(x => x.DateRecorded <= goal.EndDate).OrderByDescending(x => x.Weight).OrderByDescending(x => x.DateRecorded);
+            model.progress = db.StrengthExercises.Where(x => x.User.Email == User.Identity.Name).Where(x => x.ExerciseListID == goal.ExerciseListID).Where(x => x.DateRecorded <= goal.EndDate).Where(x => x.DateRecorded >= goal.StartDate).OrderByDescending(x => x.Weight).OrderByDescending(x => x.DateRecorded);
             decimal progress = 0;
             foreach (var item in model.progress)
             {
@@ -40,9 +40,15 @@ namespace Fitness.Controllers
                     progress = item.Weight;
                 }
             }
-            ViewBag.progress = progress;
-            ViewBag.percentDone = progress / goal.TargetWeight * 100;
-            ViewBag.percentDone = Math.Round(ViewBag.percentDone, 2);
+            if (progress > model.goal.TargetWeight)
+            {
+                ViewBag.percentDone = 100;
+            } else
+            {
+                ViewBag.progress = progress;
+                ViewBag.percentDone = progress / goal.TargetWeight * 100;
+                ViewBag.percentDone = Math.Round(ViewBag.percentDone, 2);
+            }
             return View(model);
         }
 
@@ -73,7 +79,7 @@ namespace Fitness.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "GoalID,ExerciseListID,Name,TargetWeight,EndDate")] StrengthGoal strengthGoal)
+        public ActionResult Create([Bind(Include = "GoalID,ExerciseListID,Name,TargetWeight,StartDate,EndDate")] StrengthGoal strengthGoal)
         {
             if (ModelState.IsValid)
             {
@@ -108,7 +114,7 @@ namespace Fitness.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "GoalID,ExerciseListID,Name,TargetWeight,EndDate")] StrengthGoal strengthGoal)
+        public ActionResult Edit([Bind(Include = "GoalID,ExerciseListID,Name,TargetWeight,StartDate,EndDate")] StrengthGoal strengthGoal)
         {
             if (ModelState.IsValid)
             {

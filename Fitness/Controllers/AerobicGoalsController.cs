@@ -62,7 +62,7 @@ namespace Fitness.Controllers
             if (ModelState.IsValid)
             {
                 aerobicGoal.User = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
-                if (aerobicGoal.Focus == "Distance")
+                if (aerobicGoal.Focus == "Duration")
                 {
                     aerobicGoal.Length = 0;
                 }
@@ -83,7 +83,7 @@ namespace Fitness.Controllers
         public ActionResult ViewProgress(int? id)
         {
             AerobicGoalModel model = new AerobicGoalModel();
-            AerobicGoal goal = db.AerobicGoals.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).FirstOrDefault();
+            AerobicGoal goal = db.AerobicGoals.Find(id);
             model.goal = goal;
             if (goal.Focus == "Duration")
             {
@@ -111,7 +111,7 @@ namespace Fitness.Controllers
                 //TODO: Make it to where it calculates the completion for the length
                 var progress = db.AerobicExercises.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(x => x.ExerciseListID == goal.ExerciseListID).Where(x => x.DateRecorded >= goal.StartDate && x.DateRecorded <= goal.EndDate).OrderByDescending(x => x.Length);
                 model.progress = progress;
-                if (progress.SingleOrDefault() == null)
+                if (progress.Count() == 0)
                 {
                     ViewBag.percentDone = 0;
                     return View(model);
@@ -160,7 +160,7 @@ namespace Fitness.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (aerobicGoal.Focus == "Distance")
+                if (aerobicGoal.Focus == "Duration")
                 {
                     aerobicGoal.Length = 0;
                 }

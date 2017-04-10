@@ -20,7 +20,6 @@ namespace Fitness.Models
         [Display(Name = "Exercise Name")]
         public int ExerciseListID { get; set; }
         public string Name { get; set; }
-        [DisplayFormat(DataFormatString = "{0:hh\\:mm}", ApplyFormatInEditMode = true)]
         public System.TimeSpan Duration { get; set; }
         [Display(Name = "Distance")]
         public decimal Length { get; set; }

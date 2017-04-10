@@ -7,18 +7,22 @@
 
 <h3>@Model.goal.Name</h3>
 <h4>@Model.goal.ExerciseList.Name</h4>
+<h4>@Model.goal.StartDate.Value.ToShortDateString() - @Model.goal.EndDate.ToShortDateString()</h4>
 
 
 <div class="progress" style="height: 20px;">
-    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: @ViewBag.percentDone%;">
+    <div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: @ViewBag.percentDone%;">
     </div>
 
 </div>
 
-<div class="text-success col-md-12 " style="font-size: 20px; text-align:center; ">
+<div class="text-primary col-md-12 " style="font-size: 20px; text-align:center; ">
     @ViewBag.percentDone% Complete
+    <br />
 </div>
 
+@if (Model.progress.Count() > 0)
+{
 <table class="table">
     <tr>
         <th>
@@ -55,6 +59,17 @@
     }
 
 </table>
+}
+else
+{
+    <div class="well">
+        <h4 class="text-primary">No entries for this exercise</h4>
+        <p>
+            This may be because there are no entries for this exercise within the goal start and end dates.
+        </p>
+    </div>
+    <br />
+}
 <p>
     @Html.ActionLink("Add new entry", "Create", "StrengthExercises", null, new { @class = "btn btn-success" })
     @Html.ActionLink("Edit this goal", "Edit", "StrengthGoal", new { id = Model.goal.GoalID }, new { @class = "btn btn-default" })

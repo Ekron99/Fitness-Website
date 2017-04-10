@@ -189,6 +189,7 @@
     <Compile Include="Controllers\PartsController.cs" />
     <Compile Include="Controllers\StrengthExercisesController.cs" />
     <Compile Include="Controllers\StrengthGoalController.cs" />
+    <Compile Include="Controllers\ToolsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -235,6 +236,7 @@
     <Compile Include="Models\Friend.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PlateModel.cs" />
     <Compile Include="Models\Post.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
@@ -272,6 +274,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrap.simplex.min.css" />
     <Content Include="Content\jquery-ui.min.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
@@ -462,6 +465,7 @@
     <Content Include="Views\ExerciseLists\CreateModal.cshtml" />
     <Content Include="Views\Goals\CreateAerobicModal.cshtml" />
     <Content Include="Views\Goals\CreateStrengthModal.cshtml" />
+    <Content Include="Views\Tools\PlateCalc.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
