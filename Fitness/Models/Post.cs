@@ -20,6 +20,8 @@ namespace Fitness.Models
         {
             this.Comments = new HashSet<Comment>();
         }
+
+        
     
         public int PostID { get; set; }
         public int UserID { get; set; }
@@ -31,9 +33,16 @@ namespace Fitness.Models
         public bool Closed { get; set; }
         public int Upvotes { get; set; }
         public int DownVotes { get; set; }
+        public string Title { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual User User { get; set; }
+
+        public int totalVotes()
+        {
+            return Upvotes - DownVotes;
+        }
     }
+    
 }

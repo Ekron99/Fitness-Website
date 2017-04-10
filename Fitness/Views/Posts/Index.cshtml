@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Fitness.Models.Post>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>User posts</h2>
+
+@Html.ActionLink("Create a new post", "Create", null, htmlAttributes: new { @class = "btn btn-primary" })
+<br />
+
+@foreach (var item in Model)
+{
+    <br />
+    <div class="row well" id="@item.PostID">
+        <div class="col-md-1" >
+
+           <div style="height: 33%; font-size:25px;">
+               <a href="@Url.Action("upvote", "Posts", new { id = item.PostID })" class="btn btn-primary">
+                   <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+               </a>
+           </div>
+
+            <div style="height: 33%; font-size:25px;">
+                <div style="margin-left: 12px;">
+                    @item.totalVotes()
+                </div>
+            </div>
+
+            <div style="height: 33%; font-size:25px;">
+                <a href="@Url.Action("downvote", "Posts", new { id = item.PostID })" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                </a>
+            </div>
+
+        </div>
+
+        <div class="col-md-8">
+            <h3>@Html.ActionLink(@item.Title, "Details", new { id = item.PostID })</h3>
+            <h5>@item.Text</h5>
+
+        </div>
+        
+
+    </div>
+
+}

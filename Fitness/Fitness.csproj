@@ -187,6 +187,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MeasurementsController.cs" />
     <Compile Include="Controllers\PartsController.cs" />
+    <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Controllers\StrengthExercisesController.cs" />
     <Compile Include="Controllers\StrengthGoalController.cs" />
     <Compile Include="Controllers\ToolsController.cs" />
@@ -466,6 +467,9 @@
     <Content Include="Views\Goals\CreateAerobicModal.cshtml" />
     <Content Include="Views\Goals\CreateStrengthModal.cshtml" />
     <Content Include="Views\Tools\PlateCalc.cshtml" />
+    <Content Include="Views\Posts\Index.cshtml" />
+    <Content Include="Views\Posts\Create.cshtml" />
+    <Content Include="Views\Posts\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

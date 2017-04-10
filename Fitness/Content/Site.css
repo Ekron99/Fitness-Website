@@ -1,6 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    font-size: 15px
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -27,4 +28,12 @@ textarea {
     padding-right:0;
     padding-left:0;
 }
+
+.glyphicon.glyphicon-menu-up {
+    font-size: 75px;
+}
+
+.glyphicon.glyphicon-menu-up {
+    font-size: 75px;
+}   
 

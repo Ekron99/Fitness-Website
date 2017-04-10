@@ -1,0 +1,32 @@
+﻿@model Fitness.Models.Post
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<p><h2>@Model.Title</h2> @Model.DateRecorded</p>
+<div class="well">
+    <h4>@Model.Text</h4>
+</div>
+
+@using (Html.BeginForm())
+{
+    //create new comment
+
+
+
+}
+
+<hr />
+
+@foreach (var comment in Model.Comments)
+{
+
+    <div class="row">
+        <p>@comment.Text</p>
+    </div>
+
+
+
+}
+
