@@ -16,15 +16,16 @@ namespace Fitness.Controllers
             objectList.Add(new
             {
                 id = "lb",
-                value = "lbs"
+                value = "Pounds"
             });
             objectList.Add(new
             {
                 id = "kg",
-                value = "kgs"
+                value = "Kilograms"
             });
-
             ViewBag.type = new SelectList(objectList, "id", "value");
+
+
             if (weight == null)
             {
                 return View();
@@ -34,49 +35,65 @@ namespace Fitness.Controllers
                 ViewBag.error = "No weight entered!";
                 return View();
             }
-            if (weight % 5 != 0)
-            {
-                ViewBag.error = "Weight is not an increment of 5!";
-                return View();
-            }
-            if (weight <= 45)
-            {
-                ViewBag.error = "Weight entered is less than or equal to the bar itself, no extra weight is needed!";
-                return View();
-            }
+
             PlateModel model = new PlateModel();
-            //take the weight of the bar off
-            weight -= 45;
+
+            if (type == "lb")
+            {
+                if (weight % 5 != 0)
+                {
+                    ViewBag.error = "Weight is not an increment of 5!";
+                    return View();
+                }
+                if (weight <= 45)
+                {
+                    ViewBag.error = "Weight entered is less than or equal to the bar itself, no extra weight is needed!";
+                    return View();
+                }
+                
+                //take the weight of the bar off
+                weight -= 45;
+
+                while (weight >= 90)
+                {
+                    model.fourtyFive++;
+                    weight -= 90;
+                }
+
+                while (weight >= 50)
+                {
+                    model.twentyFive++;
+                    weight -= 50;
+                }
+
+                while (weight >= 20)
+                {
+                    model.ten++;
+                    weight -= 20;
+                }
+
+                while (weight >= 10)
+                {
+                    model.five++;
+                    weight -= 10;
+                }
+
+                while (weight >= 5)
+                {
+                    model.twoFive++;
+                    weight -= 5;
+                }
+            }
+            else if (type == "kg")
+            {
+                ViewBag.error = "Kilograms are not supported yet!";
+            }
+            else
+            {
+                ViewBag.error = "Hey! Don't mess with the URL";
+            }
+
             
-            while (weight >= 90)
-            {
-                model.fourtyFive++;
-                weight -= 90;
-            }
-
-            while (weight >= 50)
-            {
-                model.twentyFive++;
-                weight -= 50;
-            }
-
-            while (weight >= 20)
-            {
-                model.ten++;
-                weight -= 20;
-            }
-
-            while (weight >= 10)
-            {
-                model.five++;
-                weight -= 10;
-            }
-
-            while (weight >= 5)
-            {
-                model.twoFive++;
-                weight -= 5;
-            }
 
             return View(model);
         }
