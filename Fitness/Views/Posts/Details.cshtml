@@ -8,25 +8,135 @@
 <div class="well">
     <h4>@Model.Text</h4>
 </div>
-
-@using (Html.BeginForm())
-{
-    //create new comment
-
-
-
-}
+<div class="row">
+    @using (Html.BeginForm("Create", "Comments", FormMethod.Post))
+    {
+        //create new comment
+        <div class="col-md-12">
+            <h4>Post a new comment</h4>
+            <textarea class="form-control" cols="20" id="Text" name="Text" rows="5"></textarea>
+            <br />
+            <input type="submit" value="Submit" class="btn btn-primary" />
+        </div>
+        @Html.HiddenFor(model => model.PostID)
+    }
+</div>
 
 <hr />
 
 @foreach (var comment in Model.Comments)
 {
+    if (comment.ParentCommentID == null)
+    {
+        continue;
+    }
+    <div class="well">
+        <div class="row">
+            @* Votes *@
+            <div class="col-md-1 col-xs-2">
+                @if (comment.userVote == 1)
+                {
+                    <div style="height: 33%; font-size:10px;">
+                        <a href="@Url.Action("upvote", "Comments", new { id = comment.CommentID })" class="btn btn-success">
+                            <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div style="height: 33%; font-size:10px;">
+                        <a href="@Url.Action("upvote", "Comments", new { id = comment.CommentID })" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                }
 
-    <div class="row">
-        <p>@comment.Text</p>
+
+                <div style="height: 33%; font-size:20px;">
+                    <div style="margin-left: 12px;">
+                        @comment.totalVotes()
+                    </div>
+                </div>
+
+                @if (comment.userVote == -1)
+                {
+                    <div style="height: 33%; font-size:10px;">
+                        <a href="@Url.Action("downvote", "Comments", new { id = comment.CommentID })" class="btn btn-warning">
+                            <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div style="height: 33%; font-size:10px;">
+                        <a href="@Url.Action("downvote", "Comments", new { id = comment.CommentID })" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                }
+
+
+            </div>
+            @* Text *@
+            <div class="col-md-11 col-xs-10">
+                <p class="panel panel-body">
+                    @comment.Text
+                </p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-offset-1 col-md-4">
+                <p class="btn btn-primary" onclick="toggle(@comment.CommentID)" id="reply-@comment.CommentID">
+                    Reply
+                </p>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row" style="display: none;" id="@comment.CommentID">
+            <div class="col-md-offset-1 col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        @Html.Action("CreatePartial", "Comments", new { ParentCommentID = comment.CommentID, PostID = comment.PostID })
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-
-
 }
 
+@section Scripts {
+    
+    <script>
+        function toggle(id) {
+            if ($("#reply-" + id).text() === "Reply") {
+                $("#reply-" + id).text("Cancel");
+            } else if ($("#reply-" + id).text() === "Cancel") {
+                $("#reply-" + id).text("Reply");
+            } else {
+                $("#reply-" + id).text("Cancel");
+            }
+            $("#" + id).slideToggle("slow");
+
+        }
+
+        //$(document).ready(function () {
+        //    $(".reply").click(function () {
+        //        var child = $(".reply").find("")
+        //        if ($(".reply").text() === "Reply") {
+        //            $(".reply").text("Cancel");
+        //        } else if ($(".reply").text() === "Cancel") {
+        //            $(".reply").text("Reply");
+        //        } else {
+        //            $(".reply").text("Cancel");
+        //        }
+        //        $(".createReply").slideToggle("slow");
+
+        //    });
+        //});
+    </script>
+    
+    
+    }

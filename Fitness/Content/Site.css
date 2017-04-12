@@ -24,16 +24,3 @@ textarea {
     max-width: 280px;
 }
 
-.no-gutter > [class*='col-'] {
-    padding-right:0;
-    padding-left:0;
-}
-
-.glyphicon.glyphicon-menu-up {
-    font-size: 75px;
-}
-
-.glyphicon.glyphicon-menu-up {
-    font-size: 75px;
-}   
-

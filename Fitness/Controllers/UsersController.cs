@@ -54,9 +54,15 @@ namespace Fitness.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(RegistrationModel model)
         {
+            ViewBag.errorMessage = "";
             if (ModelState.IsValid)
             {
-                if (model.password == model.confirmPassword) { 
+                if (model.password == model.confirmPassword) {
+                    if (db.Users.Where(x => x.Email == model.Email).FirstOrDefault() != null)
+                    {
+                        ViewBag.errorMessage = "That email is already taken!";
+                        return View(model);
+                    }
                     //make salt and hash first!
                     RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider();
                     byte[] salt = new byte[20];

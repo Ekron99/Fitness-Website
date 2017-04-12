@@ -25,7 +25,7 @@ namespace Fitness.Controllers
         {
             //TODO: be able to add a new entry on this page
             StrengthGoalProgressModel model = new StrengthGoalProgressModel();
-            StrengthGoal goal = db.StrengthGoals.Where(x => x.GoalID == id).FirstOrDefault();
+            StrengthGoal goal = db.StrengthGoals.Where(x => x.GoalID == id && x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).FirstOrDefault();
             if (goal == null)
             {
                 return RedirectToAction("Unauthorized", "Users");

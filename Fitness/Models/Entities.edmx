@@ -39,9 +39,18 @@
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="ParentCommentID" Type="int" />
           <Property Name="Text" Type="mediumtext" Nullable="false" />
-          <Property Name="DateRecorded" Type="date" Nullable="false" />
+          <Property Name="DateRecorded" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="Upvotes" Type="int" Nullable="false" />
           <Property Name="Downvotes" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CommentVotes">
+          <Key>
+            <PropertyRef Name="VoteID" />
+          </Key>
+          <Property Name="VoteID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="CommentID" Type="int" Nullable="false" />
+          <Property Name="Value" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Competition">
           <Key>
@@ -132,12 +141,21 @@
           <Property Name="PostID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="Text" Type="mediumtext" Nullable="false" />
-          <Property Name="DateRecorded" Type="date" Nullable="false" />
+          <Property Name="DateRecorded" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="Deleted" Type="bit" Nullable="false" />
           <Property Name="Closed" Type="bit" Nullable="false" />
           <Property Name="Upvotes" Type="int" Nullable="false" />
           <Property Name="DownVotes" Type="int" Nullable="false" />
           <Property Name="Title" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PostVotes">
+          <Key>
+            <PropertyRef Name="VoteID" />
+          </Key>
+          <Property Name="VoteID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="PostID" Type="int" Nullable="false" />
+          <Property Name="Value" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="StrengthExercise">
           <Key>
@@ -265,6 +283,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="CV_C_FK">
+          <End Role="Comments" Type="Self.Comments" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CommentVotes" Type="Self.CommentVotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comments">
+              <PropertyRef Name="CommentID" />
+            </Principal>
+            <Dependent Role="CommentVotes">
+              <PropertyRef Name="CommentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CV_U_FK">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CommentVotes" Type="Self.CommentVotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="CommentVotes">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="EL_AE_FK">
           <End Role="ExerciseList" Type="Self.ExerciseList" Multiplicity="1" />
           <End Role="AerobicGoals" Type="Self.AerobicGoals" Multiplicity="*" />
@@ -381,6 +427,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="PV_P_FK">
+          <End Role="Posts" Type="Self.Posts" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PostVotes" Type="Self.PostVotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Posts">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="PostVotes">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PV_U_FK">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PostVotes" Type="Self.PostVotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="PostVotes">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="SE_LIST_FK">
           <End Role="ExerciseList" Type="Self.ExerciseList" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -475,6 +549,7 @@
           <EntitySet Name="AerobicExercise" EntityType="Self.AerobicExercise" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="AerobicGoals" EntityType="Self.AerobicGoals" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="Comments" EntityType="Self.Comments" Schema="fitness" store:Type="Tables" />
+          <EntitySet Name="CommentVotes" EntityType="Self.CommentVotes" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="Competition" EntityType="Self.Competition" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="ExerciseList" EntityType="Self.ExerciseList" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="Food" EntityType="Self.Food" Schema="fitness" store:Type="Tables" />
@@ -484,6 +559,7 @@
           <EntitySet Name="Participants" EntityType="Self.Participants" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="Parts" EntityType="Self.Parts" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="Posts" EntityType="Self.Posts" Schema="fitness" store:Type="Tables" />
+          <EntitySet Name="PostVotes" EntityType="Self.PostVotes" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="StrengthExercise" EntityType="Self.StrengthExercise" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="StrengthGoals" EntityType="Self.StrengthGoals" Schema="fitness" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="fitness" store:Type="Tables" />
@@ -514,6 +590,14 @@
           <AssociationSet Name="C_USER_FK" Association="Self.C_USER_FK">
             <End Role="Users" EntitySet="Users" />
             <End Role="Participants" EntitySet="Participants" />
+          </AssociationSet>
+          <AssociationSet Name="CV_C_FK" Association="Self.CV_C_FK">
+            <End Role="Comments" EntitySet="Comments" />
+            <End Role="CommentVotes" EntitySet="CommentVotes" />
+          </AssociationSet>
+          <AssociationSet Name="CV_U_FK" Association="Self.CV_U_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="CommentVotes" EntitySet="CommentVotes" />
           </AssociationSet>
           <AssociationSet Name="EL_AE_FK" Association="Self.EL_AE_FK">
             <End Role="ExerciseList" EntitySet="ExerciseList" />
@@ -550,6 +634,14 @@
           <AssociationSet Name="P_U_FK" Association="Self.P_U_FK">
             <End Role="Users" EntitySet="Users" />
             <End Role="Parts" EntitySet="Parts" />
+          </AssociationSet>
+          <AssociationSet Name="PV_P_FK" Association="Self.PV_P_FK">
+            <End Role="Posts" EntitySet="Posts" />
+            <End Role="PostVotes" EntitySet="PostVotes" />
+          </AssociationSet>
+          <AssociationSet Name="PV_U_FK" Association="Self.PV_U_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="PostVotes" EntitySet="PostVotes" />
           </AssociationSet>
           <AssociationSet Name="SE_LIST_FK" Association="Self.SE_LIST_FK">
             <End Role="ExerciseList" EntitySet="ExerciseList" />
@@ -686,6 +778,8 @@
           <NavigationProperty Name="Friends" Relationship="fitnessModel.U_U_FK1" FromRole="User" ToRole="Friend" />
           <NavigationProperty Name="Friends1" Relationship="fitnessModel.U_U_FK2" FromRole="User" ToRole="Friend" />
           <NavigationProperty Name="Posts" Relationship="fitnessModel.U_P_FK" FromRole="User" ToRole="Post" />
+          <NavigationProperty Name="CommentVotes" Relationship="fitnessModel.CV_U_FK" FromRole="User" ToRole="CommentVote" />
+          <NavigationProperty Name="PostVotes" Relationship="fitnessModel.PV_U_FK" FromRole="User" ToRole="PostVote" />
         </EntityType>
         <Association Name="AE_USER_FK">
           <End Role="Users" Type="Self.User" Multiplicity="1">
@@ -847,6 +941,24 @@
           <AssociationSet Name="U_P_FK" Association="fitnessModel.U_P_FK">
             <End Role="User" EntitySet="Users" />
             <End Role="Post" EntitySet="Posts" />
+          </AssociationSet>
+          <EntitySet Name="CommentVotes" EntityType="fitnessModel.CommentVote" />
+          <EntitySet Name="PostVotes" EntityType="fitnessModel.PostVote" />
+          <AssociationSet Name="CV_C_FK" Association="fitnessModel.CV_C_FK">
+            <End Role="Comment" EntitySet="Comments" />
+            <End Role="CommentVote" EntitySet="CommentVotes" />
+          </AssociationSet>
+          <AssociationSet Name="CV_U_FK" Association="fitnessModel.CV_U_FK">
+            <End Role="User" EntitySet="Users" />
+            <End Role="CommentVote" EntitySet="CommentVotes" />
+          </AssociationSet>
+          <AssociationSet Name="PV_P_FK" Association="fitnessModel.PV_P_FK">
+            <End Role="Post" EntitySet="Posts" />
+            <End Role="PostVote" EntitySet="PostVotes" />
+          </AssociationSet>
+          <AssociationSet Name="PV_U_FK" Association="fitnessModel.PV_U_FK">
+            <End Role="User" EntitySet="Users" />
+            <End Role="PostVote" EntitySet="PostVotes" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Part">
@@ -1080,6 +1192,7 @@
           <NavigationProperty Name="ParentComment" Relationship="fitnessModel.C_C_FK" FromRole="Comment1" ToRole="Comment" />
           <NavigationProperty Name="User" Relationship="fitnessModel.C_U_FK" FromRole="Comment" ToRole="User" />
           <NavigationProperty Name="Post" Relationship="fitnessModel.P_C_FK" FromRole="Comment" ToRole="Post" />
+          <NavigationProperty Name="CommentVotes" Relationship="fitnessModel.CV_C_FK" FromRole="Comment" ToRole="CommentVote" />
         </EntityType>
         <EntityType Name="Post">
           <Key>
@@ -1096,6 +1209,7 @@
           <NavigationProperty Name="Comments" Relationship="fitnessModel.P_C_FK" FromRole="Post" ToRole="Comment" />
           <NavigationProperty Name="User" Relationship="fitnessModel.U_P_FK" FromRole="Post" ToRole="User" />
           <Property Name="Title" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="PostVotes" Relationship="fitnessModel.PV_P_FK" FromRole="Post" ToRole="PostVote" />
         </EntityType>
         <Association Name="C_C_FK">
           <End Type="fitnessModel.Comment" Role="Comment" Multiplicity="0..1" />
@@ -1167,6 +1281,84 @@
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="Post">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CommentVote">
+          <Key>
+            <PropertyRef Name="VoteID" />
+          </Key>
+          <Property Name="VoteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="CommentID" Type="Int32" Nullable="false" />
+          <Property Name="Value" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Comment" Relationship="fitnessModel.CV_C_FK" FromRole="CommentVote" ToRole="Comment" />
+          <NavigationProperty Name="User" Relationship="fitnessModel.CV_U_FK" FromRole="CommentVote" ToRole="User" />
+        </EntityType>
+        <EntityType Name="PostVote">
+          <Key>
+            <PropertyRef Name="VoteID" />
+          </Key>
+          <Property Name="VoteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="PostID" Type="Int32" Nullable="false" />
+          <Property Name="Value" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Post" Relationship="fitnessModel.PV_P_FK" FromRole="PostVote" ToRole="Post" />
+          <NavigationProperty Name="User" Relationship="fitnessModel.PV_U_FK" FromRole="PostVote" ToRole="User" />
+        </EntityType>
+        <Association Name="CV_C_FK">
+          <End Type="fitnessModel.Comment" Role="Comment" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="fitnessModel.CommentVote" Role="CommentVote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comment">
+              <PropertyRef Name="CommentID" />
+            </Principal>
+            <Dependent Role="CommentVote">
+              <PropertyRef Name="CommentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CV_U_FK">
+          <End Type="fitnessModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="fitnessModel.CommentVote" Role="CommentVote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="CommentVote">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PV_P_FK">
+          <End Type="fitnessModel.Post" Role="Post" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="fitnessModel.PostVote" Role="PostVote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="PostVote">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PV_U_FK">
+          <End Type="fitnessModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="fitnessModel.PostVote" Role="PostVote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="PostVote">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1359,6 +1551,26 @@
                 <ScalarProperty Name="Text" ColumnName="Text" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="PostID" ColumnName="PostID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CommentVotes">
+            <EntityTypeMapping TypeName="fitnessModel.CommentVote">
+              <MappingFragment StoreEntitySet="CommentVotes">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="VoteID" ColumnName="VoteID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PostVotes">
+            <EntityTypeMapping TypeName="fitnessModel.PostVote">
+              <MappingFragment StoreEntitySet="PostVotes">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="VoteID" ColumnName="VoteID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

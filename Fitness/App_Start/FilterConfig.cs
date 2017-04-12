@@ -7,6 +7,7 @@ namespace Fitness
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
+            //get rid of this to get custom default error page instead of shared/error
             filters.Add(new HandleErrorAttribute());
         }
     }

@@ -179,6 +179,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AerobicExercisesController.cs" />
     <Compile Include="Controllers\AerobicGoalsController.cs" />
+    <Compile Include="Controllers\CommentsController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ExerciseListsController.cs" />
     <Compile Include="Controllers\FoodIntakeController.cs" />
     <Compile Include="Controllers\FoodsController.cs" />
@@ -204,6 +206,9 @@
     </Compile>
     <Compile Include="Models\AerobicGoalModel.cs" />
     <Compile Include="Models\Comment.cs">
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CommentVote.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Competition.cs">
@@ -239,6 +244,9 @@
     </Compile>
     <Compile Include="Models\PlateModel.cs" />
     <Compile Include="Models\Post.cs">
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PostVote.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\StrengthGoalProgressModel.cs" />
@@ -470,6 +478,10 @@
     <Content Include="Views\Posts\Index.cshtml" />
     <Content Include="Views\Posts\Create.cshtml" />
     <Content Include="Views\Posts\Details.cshtml" />
+    <Content Include="Views\Posts\CreateModal.cshtml" />
+    <Content Include="Views\Comments\CreatePartial.cshtml" />
+    <Content Include="Views\Error\Index.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

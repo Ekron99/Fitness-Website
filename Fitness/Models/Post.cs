@@ -11,38 +11,36 @@ namespace Fitness.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Post
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Post()
         {
             this.Comments = new HashSet<Comment>();
+            this.PostVotes = new HashSet<PostVote>();
         }
-
-        
     
         public int PostID { get; set; }
         public int UserID { get; set; }
         public string Text { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime DateRecorded { get; set; }
         public bool Deleted { get; set; }
         public bool Closed { get; set; }
         public int Upvotes { get; set; }
         public int DownVotes { get; set; }
         public string Title { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Comment> Comments { get; set; }
-        public virtual User User { get; set; }
 
         public int totalVotes()
         {
             return Upvotes - DownVotes;
         }
-    }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PostVote> PostVotes { get; set; }
+        public int userVote { get; internal set; }
+    }
 }

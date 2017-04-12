@@ -11,14 +11,14 @@ namespace Fitness.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Comment
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Comment()
         {
             this.ChildComments = new HashSet<Comment>();
+            this.CommentVotes = new HashSet<CommentVote>();
         }
     
         public int CommentID { get; set; }
@@ -26,16 +26,23 @@ namespace Fitness.Models
         public int UserID { get; set; }
         public Nullable<int> ParentCommentID { get; set; }
         public string Text { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime DateRecorded { get; set; }
         public int Upvotes { get; set; }
         public int Downvotes { get; set; }
-    
+
+        public int totalVotes()
+        {
+            return Upvotes - Downvotes;
+        }
+
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> ChildComments { get; set; }
         public virtual Comment ParentComment { get; set; }
         public virtual User User { get; set; }
         public virtual Post Post { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CommentVote> CommentVotes { get; set; }
+        public int userVote { get; internal set; }
     }
 }

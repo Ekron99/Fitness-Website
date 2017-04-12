@@ -5,20 +5,31 @@
 
 <h2>User posts</h2>
 
-@Html.ActionLink("Create a new post", "Create", null, htmlAttributes: new { @class = "btn btn-primary" })
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal">Submit a new post</button>
 <br />
 
 @foreach (var item in Model)
 {
     <br />
     <div class="row well" id="@item.PostID">
-        <div class="col-md-1" >
-
-           <div style="height: 33%; font-size:25px;">
-               <a href="@Url.Action("upvote", "Posts", new { id = item.PostID })" class="btn btn-primary">
-                   <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
-               </a>
-           </div>
+        <div class="col-md-1 col-xs-2" >
+            @if (item.userVote == 1)
+            {
+                <div style="height: 33%; font-size:25px;">
+                    <a href="@Url.Action("upvote", "Posts", new { id = item.PostID })" class="btn btn-success">
+                        <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div style="height: 33%; font-size:25px;">
+                    <a href="@Url.Action("upvote", "Posts", new { id = item.PostID })" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                    </a>
+                </div>
+            }
+           
 
             <div style="height: 33%; font-size:25px;">
                 <div style="margin-left: 12px;">
@@ -26,21 +37,62 @@
                 </div>
             </div>
 
-            <div style="height: 33%; font-size:25px;">
-                <a href="@Url.Action("downvote", "Posts", new { id = item.PostID })" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                </a>
-            </div>
+            @if (item.userVote == -1)
+            {
+                <div style="height: 33%; font-size:25px;">
+                    <a href="@Url.Action("downvote", "Posts", new { id = item.PostID })" class="btn btn-warning">
+                        <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div style="height: 33%; font-size:25px;">
+                    <a href="@Url.Action("downvote", "Posts", new { id = item.PostID })" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                    </a>
+                </div>
+            }
+            
 
         </div>
 
-        <div class="col-md-8">
+        <div class="col-md-11 col-xs-10">
             <h3>@Html.ActionLink(@item.Title, "Details", new { id = item.PostID })</h3>
-            <h5>@item.Text</h5>
+            @if (item.Text.Length > 50)
+            {
+                <h5>@item.Text.Substring(0, 150) . . . </h5>
+            }
+            else
+            {
+                <h5>@item.Text</h5>
+            }
 
+            <p>
+                @Html.ActionLink("View comments", "Details", new { id = item.PostID }, htmlAttributes: new { @class = "btn btn-primary" })
+            </p>
         </div>
-        
 
     </div>
 
 }
+
+<div id="Modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Submit a new post</h3>
+            </div>
+            <div class="modal-body">
+                @Html.Action("CreateModal")
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -11,14 +11,11 @@ namespace Fitness.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class FoodIntake
     {
         public int UserID { get; set; }
         public int FoodID { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime DateRecorded { get; set; }
         public decimal Servings { get; set; }
         public int FoodIntakeID { get; set; }

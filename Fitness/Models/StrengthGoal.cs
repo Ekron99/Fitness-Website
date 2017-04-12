@@ -11,21 +11,15 @@ namespace Fitness.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class StrengthGoal
     {
         public int GoalID { get; set; }
         public int UserID { get; set; }
-        [Display(Name = "Exercise Name")]
         public int ExerciseListID { get; set; }
         public string Name { get; set; }
         public decimal TargetWeight { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime EndDate { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime StartDate { get; set; }
     
         public virtual ExerciseList ExerciseList { get; set; }

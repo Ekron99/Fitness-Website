@@ -30,6 +30,8 @@ namespace Fitness.Models
             this.Friends = new HashSet<Friend>();
             this.Friends1 = new HashSet<Friend>();
             this.Posts = new HashSet<Post>();
+            this.CommentVotes = new HashSet<CommentVote>();
+            this.PostVotes = new HashSet<PostVote>();
         }
     
         public int UserID { get; set; }
@@ -66,5 +68,9 @@ namespace Fitness.Models
         public virtual ICollection<Friend> Friends1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Post> Posts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CommentVote> CommentVotes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PostVote> PostVotes { get; set; }
     }
 }

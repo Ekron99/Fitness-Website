@@ -39,5 +39,7 @@ namespace Fitness.Models
         public virtual DbSet<AerobicGoal> AerobicGoals { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
+        public virtual DbSet<CommentVote> CommentVotes { get; set; }
+        public virtual DbSet<PostVote> PostVotes { get; set; }
     }
 }
