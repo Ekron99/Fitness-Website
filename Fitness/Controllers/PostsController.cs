@@ -14,7 +14,7 @@ namespace Fitness.Controllers
         // GET: Posts
         public ActionResult Index()
         {
-            var posts = db.Posts.OrderBy(x => x.DateRecorded).ToList();
+            var posts = db.Posts.OrderByDescending(x => x.DateRecorded).OrderByDescending(x => x.Upvotes - x.DownVotes).ToList();
             User user = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
             foreach (var item in posts)
             {
@@ -48,8 +48,7 @@ namespace Fitness.Controllers
                     item.userVote = 0;
                 }
             }
-
-            post.Comments.OrderBy(x => x.ParentCommentID == null).OrderBy(x => x.DateRecorded);
+            post.Comments.OrderBy(x => x.ParentCommentID == null).OrderByDescending(x => x.DateRecorded).OrderByDescending(x => x.Upvotes - x.Downvotes);
             return View(post);
         }
 

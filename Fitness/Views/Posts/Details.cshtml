@@ -24,9 +24,9 @@
 
 <hr />
 
-@foreach (var comment in Model.Comments)
+@foreach (var comment in Model.Comments.OrderByDescending(x => x.Upvotes - x.Downvotes).OrderByDescending(x => x.DateRecorded))
 {
-    if (comment.ParentCommentID == null)
+    if (comment.ParentCommentID != null)
     {
         continue;
     }
@@ -84,7 +84,7 @@
                 </p>
             </div>
         </div>
-        
+
         <div class="row">
             <div class="col-md-offset-1 col-md-4">
                 <p class="btn btn-primary" onclick="toggle(@comment.CommentID)" id="reply-@comment.CommentID">
@@ -104,11 +104,72 @@
                 </div>
             </div>
         </div>
+
+        @foreach (var item in comment.ChildComments)
+        {
+            if (item.ParentCommentID == null)
+            {
+                continue;
+            }
+
+            <div class="col-md-offset-1"><div class="row well" style="background-color: #fcfcfc;"> 
+                <div class="col-md-1 col-xs-2">
+                    @if (item.userVote == 1)
+                    {
+                        <div style="height: 33%; font-size:10px;">
+                            <a href="@Url.Action("upvote", "Comments", new { id = item.CommentID })" class="btn btn-success">
+                                <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="height: 33%; font-size:10px;">
+                            <a href="@Url.Action("upvote", "Comments", new { id = item.CommentID })" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    }
+
+
+                    <div style="height: 33%; font-size:20px;">
+                        <div style="margin-left: 12px;">
+                            @item.totalVotes()
+                        </div>
+                    </div>
+
+                    @if (item.userVote == -1)
+                    {
+                        <div style="height: 33%; font-size:10px;">
+                            <a href="@Url.Action("downvote", "Comments", new { id = item.CommentID })" class="btn btn-warning">
+                                <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="height: 33%; font-size:10px;">
+                            <a href="@Url.Action("downvote", "Comments", new { id = item.CommentID })" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    }
+
+
+                </div>
+
+                <div class="col-md-11 col-xs-10">
+                    <p class="panel panel-body" style="background-color: #e3e3e3;">
+                        @item.Text
+                    </p>
+                </div>
+            </div></div>
+        }
     </div>
 }
 
 @section Scripts {
-    
+
     <script>
         function toggle(id) {
             if ($("#reply-" + id).text() === "Reply") {
@@ -137,6 +198,6 @@
         //    });
         //});
     </script>
-    
-    
-    }
+
+
+}

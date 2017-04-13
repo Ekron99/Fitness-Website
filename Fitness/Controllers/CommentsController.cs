@@ -28,10 +28,10 @@ namespace Fitness.Controllers
         public ActionResult Create(Comment comment)
         {
             comment.User = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
-            if (comment.ParentCommentID == 0 || comment.ParentCommentID == null)
-            {
-                return RedirectToAction("Details", "Posts", new { id = comment.PostID });
-            }
+            //if (comment.ParentCommentID == 0 || comment.ParentCommentID == null)
+            //{
+            //    return RedirectToAction("Details", "Posts", new { id = comment.PostID });
+            //}
             comment.DateRecorded = DateTime.Now;
             db.Comments.Add(comment);
             db.SaveChanges();
@@ -69,7 +69,7 @@ namespace Fitness.Controllers
                 db.SaveChangesAsync();
             }
 
-            return Redirect("/Posts/Details/" + comment.PostID);
+            return Redirect("/Posts/Details/" + comment.PostID + "#" + comment.CommentID);
         }
 
         public PartialViewResult CreateModal()
@@ -112,7 +112,7 @@ namespace Fitness.Controllers
                 db.SaveChanges();
             }
 
-            return Redirect("/Posts/Details/" + comment.PostID);
+            return Redirect("/Posts/Details/" + comment.PostID + "#" + comment.CommentID);
         }
 
     }
