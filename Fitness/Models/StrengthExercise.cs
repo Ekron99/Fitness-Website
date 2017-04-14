@@ -11,7 +11,8 @@ namespace Fitness.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class StrengthExercise
     {
         public int ExerciseID { get; set; }
@@ -19,7 +20,10 @@ namespace Fitness.Models
         public int Rep { get; set; }
         public int Sets { get; set; }
         public decimal Weight { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime DateRecorded { get; set; }
+        [Display(Name = "Exercise Name")]
         public int ExerciseListID { get; set; }
     
         public virtual User User { get; set; }

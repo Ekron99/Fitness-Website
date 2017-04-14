@@ -33,8 +33,10 @@ namespace Fitness.Models
         public Nullable<decimal> DietaryFiber { get; set; }
         public Nullable<decimal> Sugars { get; set; }
         public Nullable<decimal> Protein { get; set; }
+        public Nullable<int> UserID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FoodIntake> FoodIntakes { get; set; }
+        public virtual User User { get; set; }
     }
 }

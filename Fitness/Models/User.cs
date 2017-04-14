@@ -32,6 +32,7 @@ namespace Fitness.Models
             this.Posts = new HashSet<Post>();
             this.CommentVotes = new HashSet<CommentVote>();
             this.PostVotes = new HashSet<PostVote>();
+            this.Foods = new HashSet<Food>();
         }
     
         public int UserID { get; set; }
@@ -72,5 +73,7 @@ namespace Fitness.Models
         public virtual ICollection<CommentVote> CommentVotes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PostVote> PostVotes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Food> Foods { get; set; }
     }
 }

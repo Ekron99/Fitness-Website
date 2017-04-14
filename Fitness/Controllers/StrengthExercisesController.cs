@@ -38,12 +38,24 @@ namespace Fitness.Controllers
         }
 
         // GET: StrengthExercises/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
-            ViewBag.List = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(n => n.Type == "Strength"), "ExerciseListID", "Name", 0);
-            StrengthExercise exercise = new StrengthExercise();
-            exercise.DateRecorded = DateTime.Now;
-            return View(exercise);
+            if (id != null)
+            {
+                ViewBag.List = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(n => n.Type == "Strength"), "ExerciseListID", "Name", id);
+            }
+            else
+            {
+                ViewBag.List = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(n => n.Type == "Strength"), "ExerciseListID", "Name", 0);
+            }
+            
+            return View();
+        }
+
+        public ActionResult CreateModal(int id)
+        {
+            ViewBag.List = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(n => n.Type == "Strength"), "ExerciseListID", "Name", id);
+            return PartialView("CreateModal");
         }
 
         // POST: StrengthExercises/Create
@@ -58,7 +70,7 @@ namespace Fitness.Controllers
                 strengthExercise.UserID = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID;
                 db.StrengthExercises.Add(strengthExercise);
                 db.SaveChanges();
-                return RedirectToAction("Index", "ExerciseLists");
+                return RedirectToAction("Details", "ExerciseLists", new { id = strengthExercise.ExerciseListID });
             }
 
             ViewBag.List = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID), "ExerciseListID", "Name");
@@ -77,7 +89,7 @@ namespace Fitness.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.List = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID), "ExerciseListID", "Name");
+            ViewBag.List = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID), "ExerciseListID", "Name", strengthExercise.ExerciseListID);
             return View(strengthExercise);
         }
 
@@ -86,13 +98,13 @@ namespace Fitness.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ExerciseID,UserID,Rep,Sets,Weight,DateRecorded")] AerobicExercise strengthExercise)
+        public ActionResult Edit([Bind(Include = "ExerciseID,ExerciseListID,UserID,Rep,Sets,Weight,DateRecorded")] StrengthExercise strengthExercise)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(strengthExercise).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "ExerciseLists", new { id = strengthExercise.ExerciseListID });
             }
             return View(strengthExercise);
         }
@@ -120,7 +132,7 @@ namespace Fitness.Controllers
             StrengthExercise strengthExercise = db.StrengthExercises.Find(id);
             db.StrengthExercises.Remove(strengthExercise);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "ExerciseLists", new { id = strengthExercise.ExerciseListID });
         }
 
         protected override void Dispose(bool disposing)

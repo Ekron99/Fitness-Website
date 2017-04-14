@@ -40,7 +40,8 @@ namespace Fitness.Controllers
         public ActionResult Create()
         {
             //TODO: Add date picker for DateRecorded field
-            ViewBag.FoodID = new SelectList(db.Foods, "FoodID", "Name");
+            var list = db.Foods.Where(x => x.User == null || x.User.Email == User.Identity.Name).ToList();
+            ViewBag.FoodID = new SelectList(list, "FoodID", "Name");
             ViewBag.UserID = new SelectList(db.Users, "UserID", "FirstName");
             return View();
         }
@@ -54,6 +55,7 @@ namespace Fitness.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 foodIntake.User = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
                 db.FoodIntakes.Add(foodIntake);
                 db.SaveChanges();

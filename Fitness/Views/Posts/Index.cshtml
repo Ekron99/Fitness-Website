@@ -10,6 +10,10 @@
 
 @foreach (var item in Model)
 {
+    if (item.Deleted == true)
+    {
+        continue;   
+    }
     <br />
     <div class="row well" id="@item.PostID">
         <div class="col-md-1 col-xs-2" >
@@ -71,6 +75,12 @@
             <p>
                 @Html.ActionLink("View comments", "Details", new { id = item.PostID }, htmlAttributes: new { @class = "btn btn-primary" })
             </p>
+            @if (User.IsInRole("Admin"))
+            {
+                <p>
+                    @Html.ActionLink("Delete Post", "Delete", new { id = item.PostID })
+                </p>
+            }
         </div>
 
     </div>

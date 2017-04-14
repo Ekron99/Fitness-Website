@@ -11,13 +11,16 @@ namespace Fitness.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Friend
     {
         public int FriendsID { get; set; }
         public int UserID1 { get; set; }
         public int UserID2 { get; set; }
         public string Status { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> DateRecorded { get; set; }
     
         public virtual User User { get; set; }

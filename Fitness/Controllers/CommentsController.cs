@@ -36,7 +36,7 @@ namespace Fitness.Controllers
             db.Comments.Add(comment);
             db.SaveChanges();
 
-            return RedirectToAction("Details", "Posts", new { id = comment.PostID });
+            return Redirect("~/Posts/Details/" + comment.PostID + "/#" + comment.CommentID);
         }
 
         public ActionResult upvote(int id)
@@ -55,6 +55,14 @@ namespace Fitness.Controllers
                     db.Entry(comment).State = EntityState.Modified;
                     db.SaveChangesAsync();
                 }
+                else
+                {
+                    //undo vote
+                    comment.Upvotes--;
+                    db.CommentVotes.Remove(vote);
+                    db.Entry(comment).State = EntityState.Modified;
+                    db.SaveChangesAsync();
+                }
             }
             else
             {
@@ -69,7 +77,7 @@ namespace Fitness.Controllers
                 db.SaveChangesAsync();
             }
 
-            return Redirect("/Posts/Details/" + comment.PostID + "#" + comment.CommentID);
+            return Redirect("/Posts/Details/" + comment.PostID + "/#" + comment.CommentID);
         }
 
         public PartialViewResult CreateModal()
@@ -96,7 +104,10 @@ namespace Fitness.Controllers
                 else
                 {
                     //undo vote
-
+                    comment.Downvotes--;
+                    db.CommentVotes.Remove(vote);
+                    db.Entry(comment).State = EntityState.Modified;
+                    db.SaveChanges();
                 }
             }
             else
@@ -112,7 +123,29 @@ namespace Fitness.Controllers
                 db.SaveChanges();
             }
 
-            return Redirect("/Posts/Details/" + comment.PostID + "#" + comment.CommentID);
+            return Redirect("/Posts/Details/" + comment.PostID + "/#" + comment.CommentID);
+        }
+
+        public ActionResult Delete(int id)
+        {
+            if (User.IsInRole("Admin"))
+            {
+                var comment = db.Comments.Find(id);
+                return View(comment);
+            }
+            else
+            {
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = this.Url });
+            }
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            var comment = db.Comments.Find(id); 
+            db.Comments.Remove(comment);
+            db.SaveChangesAsync();
+            return RedirectToAction("Details", "Posts", new { id = comment.PostID });
         }
 
     }

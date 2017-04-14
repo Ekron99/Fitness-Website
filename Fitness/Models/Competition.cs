@@ -11,13 +11,19 @@ namespace Fitness.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Competition
     {
         public int CompetitionID { get; set; }
         public int OwnerID { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public int StartDate { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public int EndDate { get; set; }
+        [Display(Name = "Exercise Name")]
         public int ExerciseListID { get; set; }
     
         public virtual ExerciseList ExerciseList { get; set; }

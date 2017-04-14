@@ -47,6 +47,7 @@
         <AssociationConnector Association="fitnessModel.CV_U_FK" />
         <AssociationConnector Association="fitnessModel.PV_P_FK" />
         <AssociationConnector Association="fitnessModel.PV_U_FK" />
+        <AssociationConnector Association="fitnessModel.F_U_FK" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

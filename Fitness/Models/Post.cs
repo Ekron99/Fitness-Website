@@ -11,7 +11,8 @@ namespace Fitness.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Post
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -24,12 +25,15 @@ namespace Fitness.Models
         public int PostID { get; set; }
         public int UserID { get; set; }
         public string Text { get; set; }
+        [DataType(DataType.Date)]
         public System.DateTime DateRecorded { get; set; }
         public bool Deleted { get; set; }
         public bool Closed { get; set; }
         public int Upvotes { get; set; }
         public int DownVotes { get; set; }
         public string Title { get; set; }
+
+        public int userVote { get; set; }
 
         public int totalVotes()
         {
@@ -41,6 +45,5 @@ namespace Fitness.Models
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PostVote> PostVotes { get; set; }
-        public int userVote { get; internal set; }
     }
 }

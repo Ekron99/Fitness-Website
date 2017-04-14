@@ -37,12 +37,24 @@ namespace Fitness.Controllers
         }
 
         // GET: AerobicExercises/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
-            ViewBag.ExerciseListID = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(n => n.Type == "Aerobic"), "ExerciseListID", "Name");
-            AerobicExercise exercise = new AerobicExercise();
-            ViewBag .DateRecorded = DateTime.Now;
+            if (id != null)
+            {
+                ViewBag.ExerciseListID = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(n => n.Type == "Aerobic"), "ExerciseListID", "Name", id);
+            }
+            else
+            {
+                ViewBag.ExerciseListID = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(n => n.Type == "Aerobic"), "ExerciseListID", "Name", 0);
+            }
+            
             return View();
+        }
+
+        public ActionResult CreateModal(int id)
+        {
+            ViewBag.ExerciseListID = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(n => n.Type == "Aerobic"), "ExerciseListID", "Name", id);
+            return PartialView("CreateModal");
         }
 
         // POST: AerobicExercises/Create
@@ -57,7 +69,7 @@ namespace Fitness.Controllers
                 aerobicExercise.UserID = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID;
                 db.AerobicExercises.Add(aerobicExercise);
                 db.SaveChanges();
-                return RedirectToAction("Index", "ExerciseLists");
+                return RedirectToAction("Details", "ExerciseLists", new { id = aerobicExercise.ExerciseListID });
             }
 
             ViewBag.UserID = new SelectList(db.Users, "UserID", "FirstName", aerobicExercise.UserID);
@@ -93,7 +105,7 @@ namespace Fitness.Controllers
             {
                 db.Entry(aerobicExercise).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "ExerciseLists", new { id = aerobicExercise.ExerciseListID });
             }
             ViewBag.UserID = new SelectList(db.Users, "UserID", "FirstName", aerobicExercise.UserID);
             ViewBag.ExerciseListID = new SelectList(db.ExerciseLists, "ExerciseListID", "Name", aerobicExercise.ExerciseListID);
@@ -123,7 +135,7 @@ namespace Fitness.Controllers
             AerobicExercise aerobicExercise = db.AerobicExercises.Find(id);
             db.AerobicExercises.Remove(aerobicExercise);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "ExerciseLists", new { id = aerobicExercise.ExerciseListID });
         }
 
         protected override void Dispose(bool disposing)

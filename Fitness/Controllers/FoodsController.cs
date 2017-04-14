@@ -50,9 +50,10 @@ namespace Fitness.Controllers
         {
             if (ModelState.IsValid)
             {
+                food.User = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
                 db.Foods.Add(food);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "FoodIntake");
             }
 
             return View(food);

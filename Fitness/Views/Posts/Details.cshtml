@@ -4,9 +4,55 @@
     ViewBag.Title = "Details";
 }
 
-<p><h2>@Model.Title</h2> @Model.DateRecorded</p>
-<div class="well">
-    <h4>@Model.Text</h4>
+<p><h2>@Model.Title</h2> <h4 style="display:inline-block;">@Model.User.FirstName @Model.User.LastName.Substring(0, 1)</h4> - @Model.DateRecorded</p>
+<div class="row well">
+    <div class="col-md-1 col-xs-2">
+        @if (Model.userVote == 1)
+        {
+            <div style="height: 33%; font-size:10px;">
+                <a href="@Url.Action("upvote", "Posts", new { id = Model.PostID, fromComments = true })" class="btn btn-success">
+                    <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                </a>
+            </div>
+        }
+        else
+        {
+            <div style="height: 33%; font-size:10px;">
+                <a href="@Url.Action("upvote", "Posts", new { id = Model.PostID, fromComments = true})" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                </a>
+            </div>
+        }
+
+
+        <div style="height: 33%; font-size:20px;">
+            <div style="margin-left: 12px;">
+                @Model.totalVotes()
+            </div>
+        </div>
+
+        @if (Model.userVote == -1)
+        {
+            <div style="height: 33%; font-size:10px;">
+                <a href="@Url.Action("downvote", "Posts", new { id = Model.PostID, fromComments = true })" class="btn btn-warning">
+                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                </a>
+            </div>
+        }
+        else
+        {
+            <div style="height: 33%; font-size:10px;">
+                <a href="@Url.Action("downvote", "Posts", new { id = Model.PostID, fromComments = true })" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                </a>
+            </div>
+        }
+
+
+    </div>
+    <div class="col-md-11 col-xs-10">
+        <h4>@Model.Text</h4>
+    </div>
 </div>
 <div class="row">
     @using (Html.BeginForm("Create", "Comments", FormMethod.Post))
@@ -30,7 +76,7 @@
     {
         continue;
     }
-    <div class="well">
+    <div class="well" id="@comment.CommentID">
         <div class="row">
             @* Votes *@
             <div class="col-md-1 col-xs-2">
@@ -79,9 +125,13 @@
             </div>
             @* Text *@
             <div class="col-md-11 col-xs-10">
-                <p class="panel panel-body">
-                    @comment.Text
-                </p>
+                <div class="panel panel-body">
+                    <h4 style="display: inline-block;">@comment.User.FirstName @comment.User.LastName.Substring(0,1) </h4> <span> - @comment.DateRecorded</span>
+                    <hr style="margin: 0px 0px 5px 0px;" />
+                    <p style="font-size:15px; color:black;">
+                        @comment.Text
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -95,7 +145,7 @@
 
         <br />
 
-        <div class="row" style="display: none;" id="@comment.CommentID">
+        <div class="row" style="display: none;" id="body-@comment.CommentID">
             <div class="col-md-offset-1 col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-body">
@@ -112,7 +162,7 @@
                 continue;
             }
 
-            <div class="col-md-offset-1"><div class="row well" style="background-color: #fcfcfc;"> 
+            <div class="col-md-offset-1"><div class="row well" style="background-color: #fcfcfc;" id="@item.CommentID"> 
                 <div class="col-md-1 col-xs-2">
                     @if (item.userVote == 1)
                     {
@@ -159,11 +209,22 @@
                 </div>
 
                 <div class="col-md-11 col-xs-10">
-                    <p class="panel panel-body" style="background-color: #e3e3e3;">
-                        @item.Text
-                    </p>
+                    <div class="panel panel-body">
+                        <h4 style="display: inline-block;">@comment.User.FirstName @comment.User.LastName.Substring(0, 1) </h4> <span> - @comment.DateRecorded</span>
+                        <hr style="margin: 0px 0px 5px 0px;" />
+                        <p style="font-size:15px; color:black;">
+                            @item.Text
+                        </p>
+                    </div>
                 </div>
-            </div></div>
+                @if (User.IsInRole("Admin"))
+                {
+                    <p>
+                        @Html.ActionLink("Delete comment", "Delete", "Comments", new { id = item.CommentID }, null)
+                    </p>
+                }
+            </div>
+        </div>
         }
     </div>
 }
@@ -179,7 +240,7 @@
             } else {
                 $("#reply-" + id).text("Cancel");
             }
-            $("#" + id).slideToggle("slow");
+            $("#body-" + id).slideToggle("slow");
 
         }
 

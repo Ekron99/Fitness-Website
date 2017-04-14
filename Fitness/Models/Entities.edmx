@@ -76,6 +76,7 @@
             <PropertyRef Name="FoodID" />
           </Key>
           <Property Name="FoodID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
           <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="Quantity" Type="decimal" Precision="7" Scale="3" Nullable="false" />
           <Property Name="Calories" Type="decimal" Precision="7" Scale="3" />
@@ -349,6 +350,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="F_U_FK">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Food" Type="Self.Food" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Food">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FI_F_FK">
           <End Role="Food" Type="Self.Food" Multiplicity="1" />
           <End Role="FoodIntake" Type="Self.FoodIntake" Multiplicity="*" />
@@ -611,6 +626,10 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="ExerciseList" EntitySet="ExerciseList" />
           </AssociationSet>
+          <AssociationSet Name="F_U_FK" Association="Self.F_U_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Food" EntitySet="Food" />
+          </AssociationSet>
           <AssociationSet Name="FI_F_FK" Association="Self.FI_F_FK">
             <End Role="Food" EntitySet="Food" />
             <End Role="FoodIntake" EntitySet="FoodIntake" />
@@ -780,6 +799,7 @@
           <NavigationProperty Name="Posts" Relationship="fitnessModel.U_P_FK" FromRole="User" ToRole="Post" />
           <NavigationProperty Name="CommentVotes" Relationship="fitnessModel.CV_U_FK" FromRole="User" ToRole="CommentVote" />
           <NavigationProperty Name="PostVotes" Relationship="fitnessModel.PV_U_FK" FromRole="User" ToRole="PostVote" />
+          <NavigationProperty Name="Foods" Relationship="fitnessModel.F_U_FK" FromRole="User" ToRole="Food" />
         </EntityType>
         <Association Name="AE_USER_FK">
           <End Role="Users" Type="Self.User" Multiplicity="1">
@@ -960,6 +980,10 @@
             <End Role="User" EntitySet="Users" />
             <End Role="PostVote" EntitySet="PostVotes" />
           </AssociationSet>
+          <AssociationSet Name="F_U_FK" Association="fitnessModel.F_U_FK">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Food" EntitySet="Foods" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Part">
           <Key>
@@ -1059,6 +1083,8 @@
           <Property Name="Sugars" Type="Decimal" />
           <Property Name="Protein" Type="Decimal" />
           <NavigationProperty Name="FoodIntakes" Relationship="fitnessModel.F_FI_FK" FromRole="Food" ToRole="FoodIntake" />
+          <Property Name="UserID" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="fitnessModel.F_U_FK" FromRole="Food" ToRole="User" />
         </EntityType>
         <EntityType Name="FoodIntake">
           <Key>
@@ -1363,6 +1389,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="F_U_FK">
+          <End Type="fitnessModel.User" Role="User" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="fitnessModel.Food" Role="Food" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Food">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1470,6 +1510,7 @@
           <EntitySetMapping Name="Foods">
             <EntityTypeMapping TypeName="fitnessModel.Food">
               <MappingFragment StoreEntitySet="Food">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="Protein" ColumnName="Protein" />
                 <ScalarProperty Name="Sugars" ColumnName="Sugars" />
                 <ScalarProperty Name="DietaryFiber" ColumnName="DietaryFiber" />

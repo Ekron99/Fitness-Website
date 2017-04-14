@@ -79,6 +79,26 @@
             }
 
         </table>
+
+        <div id="Modal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add new exercise</h4>
+                    </div>
+                    <div class="modal-body">
+                        @Html.Action("CreateModal", "StrengthExercises", new { id = Model.ExerciseListID })
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     }
     else
     {
@@ -132,7 +152,27 @@
             }
 
         </table>
-        }
+
+        <div id="Modal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add new exercise</h4>
+                    </div>
+                    <div class="modal-body">
+                        @Html.Action("CreateModal", "AerobicExercises", new { id = Model.ExerciseListID })
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    }
 
 }
 else
@@ -141,7 +181,7 @@ else
 }
 
 <p>
-    @Html.ActionLink("Add new entry", "Create", Model.Type == "Strength" ? "StrengthExercises" : "AerobicExercises", null, new { @class = "btn btn-success" })
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Modal">Add new entry</button>
     @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
     @Html.ActionLink("Edit Exercise", "Edit", "ExerciseLists", new { id = Model.ExerciseListID }, new { @class = "btn btn-default" })
     @Html.ActionLink("Delete Exercise", "Delete", "ExerciseLists", new { id = Model.ExerciseListID }, new { @class = "btn btn-warning" })
@@ -163,7 +203,12 @@ else
                 });
                 
             }
-            });
+        });
+
+        $(document).ready(function () {
+            $('#Duration').mask('00:00:00', { placeholder: '00:00:00' });
+
+        });
 
     </script>
     

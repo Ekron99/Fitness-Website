@@ -11,12 +11,15 @@ namespace Fitness.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Measurement
     {
         public int MeasurementID { get; set; }
         public int UserID { get; set; }
         public decimal Value { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime DateRecorded { get; set; }
         public int PartID { get; set; }
     

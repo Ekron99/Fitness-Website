@@ -14,7 +14,7 @@
 }
 else
 {
-    <h4>Goal: @Model.goal.Length</h4>
+    <h4>Goal: @Model.goal.</h4>
 }
 
 <div class="progress" style="height: 20px;">
@@ -31,10 +31,7 @@ else
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.goal.Duration)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.goal.Length)
+            @Html.DisplayName("Entry")
         </th>
         <th>
             Date Recorded
@@ -50,10 +47,15 @@ else
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Duration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Length)
+                @if (Model.goal.Focus == "Duration")
+                {
+                    @Html.DisplayFor(modelItem => item.Duration)
+                }
+                else
+                {
+                    @Html.DisplayFor(modelItem => item.Length)
+                }
+                
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateRecorded)

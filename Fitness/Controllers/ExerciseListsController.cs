@@ -68,8 +68,8 @@ namespace Fitness.Controllers
             List<string> xData = new List<string>();
             List<decimal> yData = new List<decimal>();
             decimal maxWeight = 0;
-            DateTime currentDay = exercise.StrengthExercises.ElementAt(0).DateRecorded;
-            foreach (var item in exercise.StrengthExercises)
+            DateTime currentDay = exercise.StrengthExercises.OrderBy(x => x.DateRecorded).FirstOrDefault().DateRecorded;
+            foreach (var item in exercise.StrengthExercises.OrderBy(x => x.DateRecorded))
             {
                 if (currentDay < item.DateRecorded)
                 {
@@ -107,7 +107,7 @@ namespace Fitness.Controllers
             for (int n = 0; n < xData.Count; n++)
             {
                 series.Points.AddXY(xData.ElementAt(n), yData.ElementAt(n));
-                series.Points.ElementAt(n).Label = yData.ElementAt(n).ToString();
+                series.Points.ElementAt(n).Label = Math.Round(yData.ElementAt(n), 2).ToString();
                 series.Points.ElementAt(n).LabelBorderWidth = 5;
             }
             
@@ -140,8 +140,8 @@ namespace Fitness.Controllers
             List<string> dayData = new List<string>();
             List<TimeSpan> durationData = new List<TimeSpan>();
             TimeSpan maxDuration = TimeSpan.Zero;
-            DateTime currentDay = exercise.AerobicExercises.ElementAt(0).DateRecorded;
-            foreach (var item in exercise.AerobicExercises)
+            DateTime currentDay = exercise.AerobicExercises.OrderBy(x => x.DateRecorded).FirstOrDefault().DateRecorded;
+            foreach (var item in exercise.AerobicExercises.OrderBy(x => x.DateRecorded))
             {
                 if (currentDay < item.DateRecorded)
                 {
@@ -181,7 +181,7 @@ namespace Fitness.Controllers
             for (int n = 0; n < dayData.Count; n++)
             {
                 series.Points.AddXY(dayData.ElementAt(n), durationData.ElementAt(n).TotalHours);
-                series.Points.ElementAt(n).Label = durationData.ElementAt(n).TotalHours.ToString() + " Hours";
+                series.Points.ElementAt(n).Label = Math.Round(durationData.ElementAt(n).TotalHours, 2).ToString() + " Hours";
                 series.Points.ElementAt(n).LabelBorderWidth = 5;
             }
             using (MemoryStream stream = new MemoryStream())
@@ -215,8 +215,8 @@ namespace Fitness.Controllers
             List<decimal> lengthData = new List<decimal>();
             TimeSpan maxDuration = TimeSpan.Zero;
             decimal maxLength = 0;
-            DateTime currentDay = exercise.AerobicExercises.ElementAt(0).DateRecorded;
-            foreach (var item in exercise.AerobicExercises)
+            DateTime currentDay = exercise.AerobicExercises.OrderBy(x => x.DateRecorded).FirstOrDefault().DateRecorded;
+            foreach (var item in exercise.AerobicExercises.OrderBy(x => x.DateRecorded))
             {
                 if (currentDay < item.DateRecorded)
                 {
@@ -263,7 +263,7 @@ namespace Fitness.Controllers
             for (int n = 0; n < dayData.Count; n++)
             {
                 series.Points.AddXY(dayData.ElementAt(n), lengthData.ElementAt(n));
-                series.Points.ElementAt(n).Label = lengthData.ElementAt(n).ToString() + " Miles";
+                series.Points.ElementAt(n).Label = Math.Round(lengthData.ElementAt(n), 2).ToString() + " Miles";
                 series.Points.ElementAt(n).LabelBorderWidth = 5;
             }
             using (MemoryStream stream = new MemoryStream())
