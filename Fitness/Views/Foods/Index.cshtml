@@ -89,9 +89,29 @@
             @Html.DisplayFor(modelItem => item.Protein)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.FoodID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.FoodID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.FoodID })
+            @if (item.UserID == null)
+            {
+                if (User.IsInRole("Admin"))
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.FoodID }) 
+                    @Html.ActionLink("Delete", "Delete", new { id = item.FoodID }) 
+                    @Html.ActionLink("Details", "Details", new { id = item.FoodID })
+                }
+                else
+                {
+                    @Html.ActionLink("Details", "Details", new { id = item.FoodID })
+                }
+            }
+            else
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = item.FoodID })  
+                <br />
+                @Html.ActionLink("Delete", "Delete", new { id = item.FoodID })  
+                <br />
+                @Html.ActionLink("Details", "Details", new { id = item.FoodID }) 
+            }
+
+
         </td>
     </tr>
 }

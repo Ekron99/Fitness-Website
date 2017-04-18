@@ -11,7 +11,8 @@ namespace Fitness.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Food
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -34,6 +35,8 @@ namespace Fitness.Models
         public Nullable<decimal> Sugars { get; set; }
         public Nullable<decimal> Protein { get; set; }
         public Nullable<int> UserID { get; set; }
+        [Display(Name = "Public Food Item")]
+        public bool publicFood { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FoodIntake> FoodIntakes { get; set; }

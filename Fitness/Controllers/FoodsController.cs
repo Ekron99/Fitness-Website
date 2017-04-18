@@ -46,11 +46,19 @@ namespace Fitness.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "FoodID,Name,Quantity,Calories,CaloriesFromFat,SaturatedFat,Cholestoral,Sodium,Potassium,TotalCarbohydrate,DietaryFiber,Sugars,Protein")] Food food)
+        public ActionResult Create([Bind(Include = "FoodID,publicFood,Name,Quantity,Calories,CaloriesFromFat,SaturatedFat,Cholestoral,Sodium,Potassium,TotalCarbohydrate,DietaryFiber,Sugars,Protein")] Food food)
         {
             if (ModelState.IsValid)
             {
-                food.User = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+                if (food.publicFood && User.IsInRole("Admin"))
+                {
+                    food.User = null;
+                }
+                else
+                {
+                    food.User = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+                }
+                
                 db.Foods.Add(food);
                 db.SaveChanges();
                 return RedirectToAction("Index", "FoodIntake");
@@ -67,6 +75,10 @@ namespace Fitness.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Food food = db.Foods.Find(id);
+            if (food.UserID == null && !User.IsInRole("Admin"))
+            {
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "Foods/Edit/" + id });
+            }
             if (food == null)
             {
                 return HttpNotFound();
@@ -83,6 +95,14 @@ namespace Fitness.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (food.publicFood && User.IsInRole("Admin"))
+                {
+                    food.User = null;
+                }
+                else
+                {
+                    food.User = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+                }
                 db.Entry(food).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -111,6 +131,14 @@ namespace Fitness.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Food food = db.Foods.Find(id);
+            if (food.publicFood && User.IsInRole("Admin"))
+            {
+                food.User = null;
+            }
+            else
+            {
+                food.User = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+            }
             db.Foods.Remove(food);
             db.SaveChanges();
             return RedirectToAction("Index");
