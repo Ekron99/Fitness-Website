@@ -24,7 +24,18 @@ textarea {
     max-width: 280px;
 }
 
-.navbar-invers {
+.navbar-inverse .navbar-nav>li>a {
     color: white;
 }
 
+.navbar-inverse .navbar-brand {
+    color: white;
+}
+
+.navbar-inverse .navbar-nav>li>a:hover {
+    /*color: #fac0ba;*/
+    /*border-style: inset;
+    border-color: #b81e0d;
+    border-width: 1px;*/
+    box-shadow: inset 0px 2px 10px 0px rgba(0,0,0,0.75);
+}

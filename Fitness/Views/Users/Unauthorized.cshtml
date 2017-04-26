@@ -3,7 +3,7 @@
     ViewBag.Title = "Unauthorized";
 }
 
-<h2>You are not authorized to view this page.</h2>
+<h2 class="well">You are not authorized to view this page.</h2>
 
 @Html.ActionLink("Log in as a different user", "Login", "Users", new { ReturnUrl = "/" + ViewBag.returnURL }, new {@class = "btn btn-primary" })
 

@@ -46,6 +46,17 @@ namespace Fitness.Controllers
             return View();
         }
 
+        public PartialViewResult PendingFriendsBadge()
+        {
+            var user = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+            int pendingCount = 0;
+            pendingCount += user.Friends.Where(x => x.Status == "Pending").Count();
+            pendingCount += user.Friends1.Where(x => x.Status == "Pending").Count();
+            FriendsBadgeModel model = new FriendsBadgeModel();
+            model.numberOfFriends = pendingCount;
+            return PartialView("FriendsPartial", model);
+        }
+
         // POST: Users/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.

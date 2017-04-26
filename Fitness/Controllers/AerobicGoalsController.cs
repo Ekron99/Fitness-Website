@@ -86,6 +86,10 @@ namespace Fitness.Controllers
             AerobicGoalModel model = new AerobicGoalModel();
             AerobicGoal goal = db.AerobicGoals.Find(id);
             model.goal = goal;
+            if (goal == null)
+            {
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "AerobicGoals/ViewProgress/" + id });
+            }
             if (goal.Focus == "Duration")
             {
                 IQueryable<AerobicExercise> progress = db.AerobicExercises.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(x => x.ExerciseListID == goal.ExerciseListID).Where(x => x.DateRecorded >= goal.StartDate && x.DateRecorded <= goal.EndDate).OrderByDescending(x => x.Duration);

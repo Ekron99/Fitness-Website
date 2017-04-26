@@ -5,15 +5,11 @@
 
 <h2>Removed posts</h2>
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal">Submit a new post</button>
+@Html.ActionLink("View current posts", "Index", null, new { @class = "btn btn-primary" })
 <br />
 
 @foreach (var item in Model)
 {
-    if (item.Deleted == true)
-    {
-        continue;
-    }
     <br />
     <div class="row well" id="@item.PostID">
         <div class="col-md-1 col-xs-2">
@@ -127,7 +123,7 @@
                 @Html.ActionLink("View comments", "Details", new { id = item.PostID }, htmlAttributes: new { @class = "btn btn-primary" })
                 @if (User.IsInRole("Admin"))
                 {
-                    @Html.ActionLink("Delete Post", "Delete", new { id = item.PostID }, htmlAttributes: new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Restore Post", "Restore", new { id = item.PostID }, htmlAttributes: new { @class = "btn btn-success" })
                     <text> </text>
                     if (item.Closed)
                     {
@@ -147,23 +143,3 @@
     </div>
 
 }
-
-<div id="Modal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Submit a new post</h3>
-            </div>
-            <div class="modal-body">
-                @Html.Action("CreateModal")
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-
-    </div>
-</div>

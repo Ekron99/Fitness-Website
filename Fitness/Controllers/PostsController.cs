@@ -34,6 +34,13 @@ namespace Fitness.Controllers
         public ActionResult Details(int id)
         {
             var post = db.Posts.Find(id);
+            if (post.Deleted)
+            {
+                if (!User.IsInRole("Admin"))
+                {
+                    return RedirectToAction("Unauthorized", "Users", new { returnURL = "Posts/Details/" + id });
+                }
+            }
             User user = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
             var userVote = db.PostVotes.Where(x => x.UserID == user.UserID && x.PostID == id).FirstOrDefault();
             if (userVote != null)
@@ -66,10 +73,31 @@ namespace Fitness.Controllers
             }
             else
             {
-                return RedirectToAction("Unauthorized", "Users", new { returnURL = "/Posts/RemovedPosts" });
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "Posts/RemovedPosts" });
             }
         }
 
+        [HttpPost]
+        public ActionResult Restore(int id)
+        {
+            if (User.IsInRole("Admin"))
+            {
+                var post = db.Posts.Find(id);
+                if (post != null)
+                {
+                    post.Deleted = false;
+                    db.Entry(post).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                return RedirectToAction("RemovedPosts");
+            }
+            else
+            {
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "Posts/RemovedPosts" });
+            }
+            
+        }
+        [HttpPost]
         public ActionResult upvote(int id, bool fromComments = false)
         {
             User user = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();

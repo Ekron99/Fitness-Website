@@ -244,6 +244,7 @@
     <Compile Include="Models\Friend.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FriendsBadgeModel.cs" />
     <Compile Include="Models\PlateModel.cs" />
     <Compile Include="Models\Post.cs">
       <DependentUpon>Entities.tt</DependentUpon>
@@ -492,6 +493,7 @@
     <Content Include="Views\Friends\PendingFriends.cshtml" />
     <Content Include="Views\Friends\ConfirmedFriends.cshtml" />
     <Content Include="Views\Posts\RemovedPosts.cshtml" />
+    <Content Include="Views\Users\FriendsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

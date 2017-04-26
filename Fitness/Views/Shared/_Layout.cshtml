@@ -41,7 +41,8 @@
                                 <li>@Html.ActionLink("Plate Calulator", "PlateCalc", "Tools")</li>
                             </ul>
                         </li>
-                        <li>@Html.ActionLink("Friends", "Index", "Friends")</li>
+
+                        <li><a href="/Friends">Friends @Html.Action("PendingFriendsBadge", "Users")</a></li>
                     }
                     
                 </ul>
