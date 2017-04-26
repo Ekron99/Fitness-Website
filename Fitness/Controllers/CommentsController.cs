@@ -131,21 +131,14 @@ namespace Fitness.Controllers
             if (User.IsInRole("Admin"))
             {
                 var comment = db.Comments.Find(id);
-                return View(comment);
+                db.Comments.Remove(comment);
+                db.SaveChangesAsync();
+                return RedirectToAction("Details", "Posts", new { id = comment.PostID });
             }
             else
             {
                 return RedirectToAction("Unauthorized", "Users", new { returnURL = this.Url });
             }
-        }
-
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            var comment = db.Comments.Find(id); 
-            db.Comments.Remove(comment);
-            db.SaveChangesAsync();
-            return RedirectToAction("Details", "Posts", new { id = comment.PostID });
         }
 
     }

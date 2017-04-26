@@ -33,6 +33,10 @@ namespace Fitness.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ExerciseList exerciseList = db.ExerciseLists.Find(id);
+            if (exerciseList.User.Email != User.Identity.Name)
+            {
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "ExerciseLists/Details/" + id  });
+            }
             List<object> focusList = new List<object>();
             focusList.Add(new SelectListItem { Text = "Duration", Value = "Duration" });
             focusList.Add(new SelectListItem { Text = "Distance", Value = "Distance" });
@@ -332,7 +336,11 @@ namespace Fitness.Controllers
             ExerciseList exerciseList = db.ExerciseLists.Find(id);
             if (exerciseList == null)
             {
-                return RedirectToAction("Unauthorized", "Users");
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "ExerciseLists/Details/" + id });
+            }
+            if (exerciseList.User.Email != User.Identity.Name)
+            {
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "ExerciseLists/Details/" + id });
             }
             List<string> types = new List<string>();
             types.Add("Strength");
@@ -373,6 +381,10 @@ namespace Fitness.Controllers
             if (exerciseList == null)
             {
                 return HttpNotFound();
+            }
+            if (exerciseList.User.Email != User.Identity.Name)
+            {
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "ExerciseLists/Details/" + id });
             }
             return View(exerciseList);
         }

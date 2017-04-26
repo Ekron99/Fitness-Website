@@ -491,6 +491,7 @@
     <Content Include="Views\Friends\Index.cshtml" />
     <Content Include="Views\Friends\PendingFriends.cshtml" />
     <Content Include="Views\Friends\ConfirmedFriends.cshtml" />
+    <Content Include="Views\Posts\RemovedPosts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

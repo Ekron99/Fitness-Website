@@ -5,7 +5,5 @@
 
 <h2>You are not authorized to view this page.</h2>
 
-@using (Html.BeginForm("Login", "Users", FormMethod.Get, new { ReturnUrl = Request.Params[0] }))
-{
-    <input type="submit" value="Log in as another user" class="btn btn-primary" />
-}
+@Html.ActionLink("Log in as a different user", "Login", "Users", new { ReturnUrl = "/" + ViewBag.returnURL }, new {@class = "btn btn-primary" })
+

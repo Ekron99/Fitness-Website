@@ -33,7 +33,7 @@ namespace Fitness.Controllers
             Part part = db.Parts.Find(id);
             if (part == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "Parts/Details/" + id });
             }
 
             if (part.UserID != db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID)
@@ -131,7 +131,7 @@ namespace Fitness.Controllers
             Part part = db.Parts.Find(id);
             if (part == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "Parts/Edit/" + id });
             }
             ViewBag.UserID = new SelectList(db.Users, "UserID", "FirstName", part.UserID);
             return View(part);
@@ -164,7 +164,7 @@ namespace Fitness.Controllers
             Part part = db.Parts.Find(id);
             if (part == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "Parts/Delete/" + id });
             }
             return View(part);
         }

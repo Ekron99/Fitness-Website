@@ -32,7 +32,7 @@ namespace Fitness.Controllers
             Measurement measurement = db.Measurements.Find(id);
             if (measurement == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "Measurements/Details/" + id });
             }
             return View(measurement);
         }
@@ -104,7 +104,7 @@ namespace Fitness.Controllers
             Measurement measurement = db.Measurements.Find(id);
             if (measurement == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "Measurements/Edit/" + id });
             }
             ViewBag.UserID = new SelectList(db.Users, "UserID", "FirstName", measurement.UserID);
             return View(measurement);
@@ -137,7 +137,7 @@ namespace Fitness.Controllers
             Measurement measurement = db.Measurements.Find(id);
             if (measurement == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "Measurements/Delete/" + id });
             }
             return View(measurement);
         }

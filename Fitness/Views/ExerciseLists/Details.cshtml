@@ -4,30 +4,9 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>@Model.Name Entries</h2>
 
-<div>
-    <h4>ExerciseList</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Type)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Type)
-        </dd>
-
-    </dl>
-</div>
+<hr />
 
 @if (ViewBag.NoStrength == false || ViewBag.NoAerobic == false)
 {
@@ -38,6 +17,20 @@
         <div class="col-md-12" id="chart">
             <img src="@Url.Action("CreateStrengthChart", Model)" height="600" width="800" />
         </div>
+
+        <p>
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Modal">Add new entry</button>
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("Edit Exercise", "Edit", "ExerciseLists", new { id = Model.ExerciseListID }, new { @class = "btn btn-default" })
+            @Html.ActionLink("Delete Exercise", "Delete", "ExerciseLists", new { id = Model.ExerciseListID }, new { @class = "btn btn-warning" })
+
+        </p>
+
+        <div class="col-md-12" style="margin-bottom: 2%;">
+            @Html.Label("Filter by date")
+            <input type="date" id="filter" class="form-control" />
+        </div>
+
         <table class="table">
             <tr>
                 <th>
@@ -111,6 +104,14 @@
                 <img src="@Url.Action("CreateAerobicLengthChart", Model)" height="600" width="800" />
             </div>
         </div>
+        <p>
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Modal">Add new entry</button>
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("Edit Exercise", "Edit", "ExerciseLists", new { id = Model.ExerciseListID }, new { @class = "btn btn-default" })
+            @Html.ActionLink("Delete Exercise", "Delete", "ExerciseLists", new { id = Model.ExerciseListID }, new { @class = "btn btn-warning" })
+
+        </p>
+
         <table class="table">
             <tr>
                 <th>
@@ -180,16 +181,12 @@ else
     <h4 class="text-warning">No data recorded</h4>
 }
 
-<p>
-    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Modal">Add new entry</button>
-    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
-    @Html.ActionLink("Edit Exercise", "Edit", "ExerciseLists", new { id = Model.ExerciseListID }, new { @class = "btn btn-default" })
-    @Html.ActionLink("Delete Exercise", "Delete", "ExerciseLists", new { id = Model.ExerciseListID }, new { @class = "btn btn-warning" })
-    
-</p>
+
 
 @section Scripts {
     <script>
+
+
         $("#ChartType").on("change", function () {
             var listIndex = document.getElementById("ChartType").selectedIndex;
             if (listIndex == 0) {

@@ -31,8 +31,9 @@ namespace Fitness.Controllers
             AerobicGoal aerobicGoal = db.AerobicGoals.Find(id);
             if (aerobicGoal == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "AerobicGoals/Details/" + id });
             }
+
             return View(aerobicGoal);
         }
 
@@ -141,7 +142,7 @@ namespace Fitness.Controllers
             AerobicGoal aerobicGoal = db.AerobicGoals.Find(id);
             if (aerobicGoal == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "AerobicGoals/Edit/" + id });
             }
             List<string> list = new List<string>();
             list.Add("Duration");
@@ -190,7 +191,7 @@ namespace Fitness.Controllers
             AerobicGoal aerobicGoal = db.AerobicGoals.Find(id);
             if (aerobicGoal == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "AerobicGoals/Delete/" + id });
             }
             return View(aerobicGoal);
         }

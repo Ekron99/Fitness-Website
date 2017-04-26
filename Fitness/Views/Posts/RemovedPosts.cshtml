@@ -1,9 +1,9 @@
 ﻿@model IEnumerable<Fitness.Models.Post>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Removed Index";
 }
 
-<h2>User posts</h2>
+<h2>Removed posts</h2>
 
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal">Submit a new post</button>
 <br />
@@ -12,11 +12,11 @@
 {
     if (item.Deleted == true)
     {
-        continue;   
+        continue;
     }
     <br />
     <div class="row well" id="@item.PostID">
-        <div class="col-md-1 col-xs-2" >
+        <div class="col-md-1 col-xs-2">
             @if (item.Closed)
             {
                 if (item.userVote == 1)
@@ -39,24 +39,24 @@
             else
             {
                 if (item.userVote == 1)
-            {
-                <div style="height: 33%; font-size:25px;">
-                    <a href="@Url.Action("upvote", "Posts", new { id = item.PostID })" class="btn btn-success">
-                        <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
-                    </a>
-                </div>
+                {
+                    <div style="height: 33%; font-size:25px;">
+                        <a href="@Url.Action("upvote", "Posts", new { id = item.PostID })" class="btn btn-success">
+                            <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div style="height: 33%; font-size:25px;">
+                        <a href="@Url.Action("upvote", "Posts", new { id = item.PostID })" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                }
             }
-            else
-            {
-                <div style="height: 33%; font-size:25px;">
-                    <a href="@Url.Action("upvote", "Posts", new { id = item.PostID })" class="btn btn-primary">
-                        <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
-                    </a>
-                </div>
-            }
-            }
-            
-           
+
+
 
             <div style="height: 33%; font-size:25px;">
                 <div style="margin-left: 12px;">
@@ -103,8 +103,8 @@
                     </div>
                 }
             }
-            
-            
+
+
 
         </div>
 
@@ -141,7 +141,7 @@
 
                 }
             </p>
-            
+
         </div>
 
     </div>

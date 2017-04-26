@@ -7,22 +7,45 @@
 <p><h2>@Model.Title</h2> <h4 style="display:inline-block;">@Model.User.FirstName @Model.User.LastName.Substring(0, 1)</h4> - @Model.DateRecorded</p>
 <div class="row well">
     <div class="col-md-1 col-xs-2">
-        @if (Model.userVote == 1)
+        @if (Model.Closed)
         {
-            <div style="height: 33%; font-size:10px;">
-                <a href="@Url.Action("upvote", "Posts", new { id = Model.PostID, fromComments = true })" class="btn btn-success">
-                    <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
-                </a>
-            </div>
+            if (Model.userVote == 1)
+            {
+                <div style="height: 33%; font-size:10px;">
+                    <a disabled class="btn btn-success">
+                        <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div style="height: 33%; font-size:10px;">
+                    <a disabled class="btn btn-primary">
+                        <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                    </a>
+                </div>
+            }
         }
         else
         {
-            <div style="height: 33%; font-size:10px;">
-                <a href="@Url.Action("upvote", "Posts", new { id = Model.PostID, fromComments = true})" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
-                </a>
-            </div>
+            if (Model.userVote == 1)
+            {
+                <div style="height: 33%; font-size:10px;">
+                    <a href="@Url.Action("upvote", "Posts", new { id = Model.PostID, fromComments = true })" class="btn btn-success">
+                        <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div style="height: 33%; font-size:10px;">
+                    <a href="@Url.Action("upvote", "Posts", new { id = Model.PostID, fromComments = true})" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                    </a>
+                </div>
+            }
         }
+        
 
 
         <div style="height: 33%; font-size:20px;">
@@ -31,22 +54,45 @@
             </div>
         </div>
 
-        @if (Model.userVote == -1)
+        @if (Model.Closed)
         {
-            <div style="height: 33%; font-size:10px;">
-                <a href="@Url.Action("downvote", "Posts", new { id = Model.PostID, fromComments = true })" class="btn btn-warning">
-                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                </a>
-            </div>
+            if (Model.userVote == -1)
+            {
+                <div style="height: 33%; font-size:10px;">
+                    <a disabled class="btn btn-warning">
+                        <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div style="height: 33%; font-size:10px;">
+                    <a disabled class="btn btn-primary">
+                        <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                    </a>
+                </div>
+            }
         }
         else
         {
-            <div style="height: 33%; font-size:10px;">
-                <a href="@Url.Action("downvote", "Posts", new { id = Model.PostID, fromComments = true })" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                </a>
-            </div>
+            if (Model.userVote == -1)
+            {
+                <div style="height: 33%; font-size:10px;">
+                    <a href="@Url.Action("downvote", "Posts", new { id = Model.PostID, fromComments = true })" class="btn btn-warning">
+                        <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div style="height: 33%; font-size:10px;">
+                    <a href="@Url.Action("downvote", "Posts", new { id = Model.PostID, fromComments = true })" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                    </a>
+                </div>
+            }
         }
+        
 
 
     </div>
@@ -62,7 +108,15 @@
             <h4>Post a new comment</h4>
             <textarea class="form-control" cols="20" id="Text" name="Text" rows="5"></textarea>
             <br />
-            <input type="submit" value="Submit" class="btn btn-primary" />
+            @if (Model.Closed)
+            {
+                <input type="submit" value="Locked" class="btn btn-primary" disabled />
+            }
+            else
+            {
+                <input type="submit" value="Submit" class="btn btn-primary" />
+            }
+            
         </div>
         @Html.HiddenFor(model => model.PostID)
     }
@@ -80,23 +134,44 @@
         <div class="row">
             @* Votes *@
             <div class="col-md-1 col-xs-2">
-                @if (comment.userVote == 1)
+                @if (Model.Closed)
                 {
-                    <div style="height: 33%; font-size:10px;">
-                        <a href="@Url.Action("upvote", "Comments", new { id = comment.CommentID })" class="btn btn-success">
-                            <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
-                        </a>
-                    </div>
+                    if (comment.userVote == 1)
+                    {
+                        <div style="height: 33%; font-size:10px;">
+                            <a disabled class="btn btn-success">
+                                <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="height: 33%; font-size:10px;">
+                            <a disabled class="btn btn-primary">
+                                <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    }
                 }
                 else
                 {
-                    <div style="height: 33%; font-size:10px;">
-                        <a href="@Url.Action("upvote", "Comments", new { id = comment.CommentID })" class="btn btn-primary">
-                            <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
-                        </a>
-                    </div>
+                    if (comment.userVote == 1)
+                    {
+                        <div style="height: 33%; font-size:10px;">
+                            <a href="@Url.Action("upvote", "Comments", new { id = comment.CommentID })" class="btn btn-success">
+                                <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="height: 33%; font-size:10px;">
+                            <a href="@Url.Action("upvote", "Comments", new { id = comment.CommentID })" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    }
                 }
-
 
                 <div style="height: 33%; font-size:20px;">
                     <div style="margin-left: 12px;">
@@ -104,22 +179,46 @@
                     </div>
                 </div>
 
-                @if (comment.userVote == -1)
+
+                @if (Model.Closed)
                 {
-                    <div style="height: 33%; font-size:10px;">
-                        <a href="@Url.Action("downvote", "Comments", new { id = comment.CommentID })" class="btn btn-warning">
-                            <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                        </a>
-                    </div>
+                    if (comment.userVote == -1)
+                    {
+                        <div style="height: 33%; font-size:10px;">
+                            <a disabled class="btn btn-warning">
+                                <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="height: 33%; font-size:10px;">
+                            <a disabled class="btn btn-primary">
+                                <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    }
                 }
                 else
                 {
-                    <div style="height: 33%; font-size:10px;">
-                        <a href="@Url.Action("downvote", "Comments", new { id = comment.CommentID })" class="btn btn-primary">
-                            <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                        </a>
-                    </div>
+                    if (comment.userVote == -1)
+                    {
+                        <div style="height: 33%; font-size:10px;">
+                            <a disabled class="btn btn-warning">
+                                <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="height: 33%; font-size:10px;">
+                            <a href="@Url.Action("downvote", "Comments", new { id = comment.CommentID })" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    }
                 }
+                
 
 
             </div>
@@ -131,15 +230,32 @@
                     <p style="font-size:15px; color:black;">
                         @comment.Text
                     </p>
+                    
                 </div>
             </div>
         </div>
+        @if (User.IsInRole("Admin"))
+        {
+            <p class="col-md-offset-1">
+                @Html.ActionLink("Delete comment", "Delete", "Comments", new { id = comment.CommentID }, null)
+            </p>
+        }
 
         <div class="row">
             <div class="col-md-offset-1 col-md-4">
-                <p class="btn btn-primary" onclick="toggle(@comment.CommentID)" id="reply-@comment.CommentID">
-                    Reply
-                </p>
+                @if (Model.Closed)
+                {
+                    <p class="btn btn-primary" disabled id="reply-@comment.CommentID">
+                        Locked
+                    </p>
+                }
+                else
+                {
+                    <p class="btn btn-primary" onclick="toggle(@comment.CommentID)" id="reply-@comment.CommentID">
+                        Reply
+                    </p>
+                }
+                
             </div>
         </div>
 
@@ -164,22 +280,45 @@
 
             <div class="col-md-offset-1"><div class="row well" style="background-color: #fcfcfc;" id="@item.CommentID"> 
                 <div class="col-md-1 col-xs-2">
-                    @if (item.userVote == 1)
+                    @if (Model.Closed)
                     {
-                        <div style="height: 33%; font-size:10px;">
-                            <a href="@Url.Action("upvote", "Comments", new { id = item.CommentID })" class="btn btn-success">
-                                <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
-                            </a>
-                        </div>
+                        if (item.userVote == 1)
+                        {
+                            <div style="height: 33%; font-size:10px;">
+                                <a disabled class="btn btn-success">
+                                    <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="height: 33%; font-size:10px;">
+                                <a disabled class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        }
                     }
                     else
                     {
-                        <div style="height: 33%; font-size:10px;">
-                            <a href="@Url.Action("upvote", "Comments", new { id = item.CommentID })" class="btn btn-primary">
-                                <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
-                            </a>
-                        </div>
+                        if (item.userVote == 1)
+                        {
+                            <div style="height: 33%; font-size:10px;">
+                                <a href="@Url.Action("upvote", "Comments", new { id = item.CommentID })" class="btn btn-success">
+                                    <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="height: 33%; font-size:10px;">
+                                <a href="@Url.Action("upvote", "Comments", new { id = item.CommentID })" class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        }
                     }
+                    
 
 
                     <div style="height: 33%; font-size:20px;">
@@ -188,24 +327,46 @@
                         </div>
                     </div>
 
-                    @if (item.userVote == -1)
+
+                    @if (Model.Closed)
                     {
-                        <div style="height: 33%; font-size:10px;">
-                            <a href="@Url.Action("downvote", "Comments", new { id = item.CommentID })" class="btn btn-warning">
-                                <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                            </a>
-                        </div>
+                        if (item.userVote == -1)
+                        {
+                            <div style="height: 33%; font-size:10px;">
+                                <a disabled class="btn btn-warning">
+                                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="height: 33%; font-size:10px;">
+                                <a disabled class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        }
                     }
                     else
                     {
-                        <div style="height: 33%; font-size:10px;">
-                            <a href="@Url.Action("downvote", "Comments", new { id = item.CommentID })" class="btn btn-primary">
-                                <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                            </a>
-                        </div>
+                        if (item.userVote == -1)
+                        {
+                            <div style="height: 33%; font-size:10px;">
+                                <a href="@Url.Action("downvote", "Comments", new { id = item.CommentID })" class="btn btn-warning">
+                                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="height: 33%; font-size:10px;">
+                                <a href="@Url.Action("downvote", "Comments", new { id = item.CommentID })" class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        }
                     }
-
-
+                    
                 </div>
 
                 <div class="col-md-11 col-xs-10">

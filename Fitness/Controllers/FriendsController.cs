@@ -42,38 +42,7 @@ namespace Fitness.Controllers
         public ActionResult ConfirmedFriends()
         {
             var user = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
-            List<User> list = new List<Models.User>();
-            foreach (var item in user.Friends)
-            {
-                if (item.Status != "Confirmed")
-                {
-                    continue;
-                }
-                if (item.User.UserID == user.UserID)
-                {
-                    list.Add(item.User1);
-                }
-                else
-                {
-                    list.Add(item.User);
-                }
-            }
-
-            foreach (var item in user.Friends1)
-            {
-                if (item.Status != "Confirmed")
-                {
-                    continue;
-                }
-                if (item.User.UserID == user.UserID)
-                {
-                    list.Add(item.User1);
-                }
-                else
-                {
-                    list.Add(item.User);
-                }
-            }
+            var list = db.Friends.Where(x => x.UserID1 == user.UserID || x.UserID2 == user.UserID).OrderBy(x => x.Status).ToList();
             return PartialView("ConfirmedFriends", list);
         }
 

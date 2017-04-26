@@ -32,7 +32,7 @@ namespace Fitness.Controllers
             StrengthExercise strengthExercise = db.StrengthExercises.Find(id);
             if (strengthExercise == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "StrengthExercises/Details/" + id });
             }
             return View(strengthExercise);
         }
@@ -87,7 +87,7 @@ namespace Fitness.Controllers
             StrengthExercise strengthExercise = db.StrengthExercises.Find(id);
             if (strengthExercise == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "StrengthExercises/Edit/" + id });
             }
             ViewBag.List = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID), "ExerciseListID", "Name", strengthExercise.ExerciseListID);
             return View(strengthExercise);
@@ -119,7 +119,7 @@ namespace Fitness.Controllers
             StrengthExercise strengthExercise = db.StrengthExercises.Find(id);
             if (strengthExercise == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "StrengthExercises/Delete/" + id });
             }
             return View(strengthExercise);
         }

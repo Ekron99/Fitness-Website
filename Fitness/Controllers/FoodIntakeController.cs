@@ -31,7 +31,7 @@ namespace Fitness.Controllers
             FoodIntake foodIntake = db.FoodIntakes.Find(id);
             if (foodIntake == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "FoodIntake/Details/" + id });
             }
             return View(foodIntake);
         }
@@ -75,13 +75,9 @@ namespace Fitness.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             FoodIntake foodIntake = db.FoodIntakes.Find(id);
-            if (foodIntake.UserID != db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID)
-            {
-                return RedirectToAction("Unauthorized", "Users", new { ReturnURL = "~/foodIntake/Edit/" + id });
-            }
             if (foodIntake == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "FoodIntake/Edit/" + id });
             }
             ViewBag.FoodID = new SelectList(db.Foods, "FoodID", "Name", foodIntake.FoodID);
             return View(foodIntake);
@@ -114,7 +110,7 @@ namespace Fitness.Controllers
             FoodIntake foodIntake = db.FoodIntakes.Find(id);
             if (foodIntake == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "FoodIntake/Delete/" + id });
             }
             return View(foodIntake);
         }

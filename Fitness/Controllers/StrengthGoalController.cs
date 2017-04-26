@@ -28,8 +28,9 @@ namespace Fitness.Controllers
             StrengthGoal goal = db.StrengthGoals.Where(x => x.GoalID == id && x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).FirstOrDefault();
             if (goal == null)
             {
-                return RedirectToAction("Unauthorized", "Users");
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "StrengthGoals/ViewProgress/" + id });
             }
+            
             model.goal = goal;
             model.progress = db.StrengthExercises.Where(x => x.User.Email == User.Identity.Name).Where(x => x.ExerciseListID == goal.ExerciseListID).Where(x => x.DateRecorded <= goal.EndDate).Where(x => x.DateRecorded >= goal.StartDate).OrderByDescending(x => x.Weight).OrderByDescending(x => x.DateRecorded);
             decimal progress = 0;
@@ -62,8 +63,9 @@ namespace Fitness.Controllers
             StrengthGoal strengthGoal = db.StrengthGoals.Find(id);
             if (strengthGoal == null)
             {
-                return RedirectToAction("Unauthorized", "Users");
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "StrengthGoals/Details/" + id });
             }
+            
             return View(strengthGoal);
         }
 
@@ -103,8 +105,9 @@ namespace Fitness.Controllers
             StrengthGoal strengthGoal = db.StrengthGoals.Find(id);
             if (strengthGoal == null)
             {
-                return RedirectToAction("Unauthorzied", "Users");
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "StrengthGoals/Edit/" + id });
             }
+            
             ViewBag.ExerciseListID = new SelectList(db.ExerciseLists.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(n => n.Type == "Strength"), "ExerciseListID", "Name", strengthGoal.ExerciseListID);
             return View(strengthGoal);
         }
@@ -138,8 +141,9 @@ namespace Fitness.Controllers
             StrengthGoal strengthGoal = db.StrengthGoals.Find(id);
             if (strengthGoal == null)
             {
-                return RedirectToAction("Unauthoized", "Users");
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "StrengthGoals/Delete/" + id });
             }
+           
             return View(strengthGoal);
         }
 

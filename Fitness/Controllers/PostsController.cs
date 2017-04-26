@@ -14,7 +14,7 @@ namespace Fitness.Controllers
         // GET: Posts
         public ActionResult Index()
         {
-            var posts = db.Posts.OrderByDescending(x => x.DateRecorded).OrderByDescending(x => x.Upvotes - x.DownVotes).ToList();
+            var posts = db.Posts.Where(x => x.Deleted == false).OrderByDescending(x => x.DateRecorded).OrderByDescending(x => x.Upvotes - x.DownVotes).ToList();
             User user = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
             foreach (var item in posts)
             {
@@ -55,6 +55,19 @@ namespace Fitness.Controllers
             }
             post.Comments.OrderBy(x => x.ParentCommentID == null).OrderByDescending(x => x.DateRecorded).OrderByDescending(x => x.Upvotes - x.Downvotes);
             return View(post);
+        }
+
+        public ActionResult RemovedPosts()
+        {
+            if (User.IsInRole("Admin"))
+            {
+                var posts = db.Posts.Where(x => x.Deleted).OrderByDescending(x => x.DateRecorded);
+                return View(posts);
+            }
+            else
+            {
+                return RedirectToAction("Unauthorized", "Users", new { returnURL = "/Posts/RemovedPosts" });
+            }
         }
 
         public ActionResult upvote(int id, bool fromComments = false)
@@ -183,7 +196,13 @@ namespace Fitness.Controllers
             if (User.IsInRole("Admin"))
             {
                 var post = db.Posts.Find(id);
-                return View(post);
+                if (!post.Closed)
+                {
+                    post.Closed = true;
+                    db.Entry(post).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                return Redirect("/Posts/Index/#" + id);
             }
             else
             {
@@ -191,14 +210,23 @@ namespace Fitness.Controllers
             }
         }
 
-        [HttpPost, ActionName("Close")]
-        public ActionResult CloseConfirmed(int id)
+        public ActionResult Open(int id)
         {
-            var post = db.Posts.Find(id);
-            post.Closed = true;
-            db.Entry(post).State = EntityState.Modified;
-            db.SaveChangesAsync();
-            return RedirectToAction("Index", "Posts");
+            if (User.IsInRole("Admin"))
+            {
+                var post = db.Posts.Find(id);
+                if (post.Closed)
+                {
+                    post.Closed = false;
+                    db.Entry(post).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                return Redirect("/Posts/Index/#" + id);
+            }
+            else
+            {
+                return RedirectToAction("Unauthorized", "Users");
+            }
         }
 
         public ActionResult Delete(int id)
@@ -206,23 +234,16 @@ namespace Fitness.Controllers
             if (User.IsInRole("Admin"))
             {
                 var post = db.Posts.Find(id);
-                return View(post);
+                post.Deleted = true;
+                db.Entry(post).State = EntityState.Modified;
+                db.SaveChangesAsync();
+                return RedirectToAction("Index", "Posts");
             }
             else
             {
                 return RedirectToAction("Unauthorized", "Users");
             }
             
-        }
-
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            var post = db.Posts.Find(id);
-            post.Deleted = true;
-            db.Entry(post).State = EntityState.Modified;
-            db.SaveChangesAsync();
-            return RedirectToAction("Index", "Posts");
         }
     }
 }

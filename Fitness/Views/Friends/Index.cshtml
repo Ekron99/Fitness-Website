@@ -3,21 +3,21 @@
     ViewBag.Title = "User List";
 }
 
-<h2>Friends</h2>
+<div class="row">
+    @Html.Action("ConfirmedFriends")
+</div>
 
+<div class="row">
+    <form>
+        <div class="col-md-3" style="margin-bottom: 2%;">
+            <h4>Search for users</h4>
+            <input name="search" id="search" type="search" class="form-control" style="margin-bottom: 2%;" />
+            <button type="button" value="Search" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+</div>
 
-@Html.Action("PendingFriends")
-
-@Html.Action("ConfirmedFriends")
-
-
-<form>
-    <div class="col-md-3" style="margin-bottom: 2%;">
-        <input name="search" id="search" type="search" class="form-control" style="margin-bottom: 2%;" />
-        <button type="button" value="Search" class="btn btn-primary">Search</button>
-    </div>        
-
-</form>
+<h3>All Users</h3>
 <table class="table" id="UserTable">
 
     <tr>
