@@ -9,17 +9,10 @@ namespace Fitness
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/jquery-ui-{version}.js",
-                        "~/Content/themes/base/jquery-ui.css",
-                        "~/Content/themes/base/datepicker.css",
+                        "~/Scripts/jquery-3.1.1.min.js",
+                        "~/Scripts/jquery-ui-1.12.1.min.js",
+                        //"~/Content/jquery-ui.css",
                         "~/Scripts/jquery.mask.min.js"));
-
-            //bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
-            //            "~/Scripts/jquery-ui.min.js"));
-
-            bundles.Add(new ScriptBundle("~/Content/themes/base/css").Include(
-                "~/Content/themes/base/jquery-ui.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));

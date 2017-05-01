@@ -9,8 +9,14 @@
 {
 
 <div class="col-md-12" id="chart">
-    <img src="@Url.Action("CreateChart", Model)" height="600" width="800"/>
+    <img src="@Url.Action("CreateChart", Model)" style="width: 100%; height: auto; max-width: 1000px"/>
 </div>
+
+<p>
+    @Html.ActionLink("Add new entry", "Create", "Measurements", new { id = Model.PartID }, new { @class = "btn btn-success" })
+    @Html.ActionLink("Edit", "Edit", "Parts", new { id = Model.PartID }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Delete this part", "Delete", "Parts", new { id = Model.PartID }, new { @class = "btn btn-danger" })
+</p>
 
 <table class="table">
     <tr>
@@ -26,7 +32,7 @@
         <th></th>
     </tr>
 
-    @foreach (var item in Model.Measurements)
+    @foreach (var item in Model.Measurements.OrderByDescending(x => x.DateRecorded))
     {
         <tr>
             <td>
@@ -51,10 +57,5 @@
 else
 {
     <h4 class="text-warning">No measurements recorded</h4>
-}
-
-<p>
     @Html.ActionLink("Add new entry", "Create", "Measurements", new { id = Model.PartID }, new { @class = "btn btn-success" })
-    @Html.ActionLink("Edit", "Edit", "Parts", new { id = Model.PartID }, new { @class = "btn btn-default" })
-    @Html.ActionLink("Delete this part", "Delete", "Parts", new { id = Model.PartID }, new { @class = "btn btn-danger" })
-</p>
+}

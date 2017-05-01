@@ -77,7 +77,6 @@ namespace Fitness.Controllers
             }
         }
 
-        [HttpPost]
         public ActionResult Restore(int id)
         {
             if (User.IsInRole("Admin"))
@@ -97,7 +96,7 @@ namespace Fitness.Controllers
             }
             
         }
-        [HttpPost]
+
         public ActionResult upvote(int id, bool fromComments = false)
         {
             User user = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();

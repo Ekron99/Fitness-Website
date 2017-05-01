@@ -24,6 +24,11 @@ namespace Fitness.Controllers
             return View();
         }
 
+        public PartialViewResult Scripts()
+        {
+            return PartialView("Scripts");
+        }
+
         // GET: Users/Details/5
         public ActionResult Details(int? id)
         {

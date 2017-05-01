@@ -54,17 +54,32 @@ namespace Fitness.Controllers
             List<string> xData = new List<string>();
             List<decimal> yData = new List<decimal>();
             part = db.Parts.Find(part.PartID);
-            foreach (var item in part.Measurements)
+            DateTime currentDay = part.Measurements.OrderBy(x => x.DateRecorded).FirstOrDefault().DateRecorded;
+            decimal dailyMax = 0;
+            foreach (var item in part.Measurements.OrderBy(x => x.DateRecorded))
             {
-                xData.Add(item.DateRecorded.ToShortDateString());
-                yData.Add(item.Value);
+                if (item.DateRecorded == currentDay)
+                {
+                    if (item.Value > dailyMax)
+                    {
+                        dailyMax = item.Value;
+                    }
+                }
+                else
+                {
+                    xData.Add(currentDay.ToShortDateString());
+                    yData.Add(dailyMax);
+                    dailyMax = item.Value;
+                    currentDay = item.DateRecorded;
+                }
+                
             }
 
             Chart chart = new Chart();
             chart.BackColor = System.Drawing.Color.Transparent;
             chart.AntiAliasing = AntiAliasingStyles.Graphics;
-            chart.Height = 600;
-            chart.Width = 800;
+            chart.Height = 480;
+            chart.Width = 640;
             ChartArea chartArea = new ChartArea("ChartArea");
             chart.ChartAreas.Add(chartArea);
             Series series = new Series("Part");
@@ -108,10 +123,11 @@ namespace Fitness.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PartID,UserID,Name")] Part part)
+        public ActionResult Create([Bind(Include = "Name")] Part part)
         {
             if (ModelState.IsValid)
             {
+                part.User = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
                 db.Parts.Add(part);
                 db.SaveChanges();
                 return RedirectToAction("Index");

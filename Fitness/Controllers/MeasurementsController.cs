@@ -18,7 +18,7 @@ namespace Fitness.Controllers
         // GET: Measurements
         public ActionResult Index()
         {
-            var measurements = db.Measurements;
+            var measurements = db.Measurements.Where(x => x.User == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault());
             return View(measurements.ToList());
         }
 
@@ -72,7 +72,7 @@ namespace Fitness.Controllers
 
             db.Parts.Add(measure.part);
             db.SaveChanges();
-            return RedirectToAction("Create");
+            return RedirectToAction("Create", new { id = measure.part.PartID });
         }
 
         // POST: Measurements/Create
@@ -87,7 +87,7 @@ namespace Fitness.Controllers
                 measurement.UserID = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault().UserID;
                 db.Measurements.Add(measurement);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Parts", new { id = measurement.PartID });
             }
 
             ViewBag.UserID = new SelectList(db.Users, "UserID", "FirstName", measurement.UserID);

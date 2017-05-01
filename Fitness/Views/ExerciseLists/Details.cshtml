@@ -15,7 +15,7 @@
     if (Model.Type == "Strength")
     {
         <div class="col-md-12" id="chart">
-            <img src="@Url.Action("CreateStrengthChart", Model)" height="600" width="800" />
+            <img src="@Url.Action("CreateStrengthChart", Model)" style="width: 100%; height: auto; max-width: 1000px" />
         </div>
 
         <p>
@@ -27,11 +27,12 @@
         </p>
 
         <div class="col-md-12" style="margin-bottom: 2%;">
-            @Html.Label("Filter by date")
-            <input type="date" id="filter" class="form-control" />
+            @Html.Label("Filter by date", new { @style = "font-weight: bold;" })
+            <input type="date" id="filterStrength" style="display: inline;" class="form-control" />
+            <button type="button" id="clear" class="btn btn-primary">Clear</button>
         </div>
 
-        <table class="table">
+        <table class="table" id="table">
             <tr>
                 <th>
                     Reps
@@ -98,12 +99,13 @@
        <div class="col-md-12">
            @Html.DropDownList("ChartType", (SelectList)ViewBag.focus, htmlAttributes: new { @class = "form-control" })
             <div class="col-md-12" id="durationchart" style="display:inline;">
-                <img src="@Url.Action("CreateAerobicDurationChart", Model)" height="600" width="800" />
+                <img src="@Url.Action("CreateAerobicDurationChart", Model)" style="width: 100%; height: auto; max-width: 1000px" />
             </div>
             <div class="col-md-12" id="lengthchart" style="display:none;">
-                <img src="@Url.Action("CreateAerobicLengthChart", Model)" height="600" width="800" />
+                <img src="@Url.Action("CreateAerobicLengthChart", Model)" style="width: 100%; height: auto; max-width: 1000px" />
             </div>
         </div>
+
         <p>
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Modal">Add new entry</button>
             @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
@@ -112,7 +114,13 @@
 
         </p>
 
-        <table class="table">
+        <div class="col-md-12" style="margin-bottom: 2%;">
+            @Html.Label("Filter by date")
+            <input type="date" id="filterAerobic" class="form-control" />
+            <button type="button" id="clear" style="margin-top:2%;" class="btn btn-primary">Clear</button>
+        </div>
+
+        <table class="table" id="table">
             <tr>
                 <th>
                     Duration
@@ -186,6 +194,67 @@ else
 @section Scripts {
     <script>
 
+        $("#clear").on("click", function () {
+            var table = document.getElementById("table");
+            var rows = table.getElementsByTagName("tr");
+            for (var n = 0; n < rows.length; n++) {
+                $(rows[n]).fadeIn();
+            }
+        });
+
+        $("#filterStrength").on("input", function (e) {
+
+            var input = document.getElementById("filterStrength")
+            var table = document.getElementById("table");
+            var rows = table.getElementsByTagName("tr");
+            var td;
+            var filter = input.valueAsDate.getMonth() + 1 + "/";
+            filter += input.valueAsDate.getDate() + 1 + "/";
+            filter += input.valueAsDate.getFullYear();
+            for (var n = 0; n < rows.length; n++) {
+                td = rows[n].getElementsByTagName("td")[3];
+                if (td == null) {
+                    continue;
+                }
+                if (td) {
+                    if (td.innerHTML.indexOf(filter) > -1) {
+                        $(rows[n]).fadeIn();
+                    } else {
+                        $(rows[n]).fadeOut();
+                    }
+                }
+
+
+            }
+
+        });
+
+        $("#filterAerobic").on("input", function (e) {
+
+            var input = document.getElementById("filterAerobic")
+            var table = document.getElementById("table");
+            var rows = table.getElementsByTagName("tr");
+            var td;
+            var filter = input.valueAsDate.getMonth() + 1 + "/";
+            filter += input.valueAsDate.getDate() + 1 + "/";
+            filter += input.valueAsDate.getFullYear();
+            for (var n = 0; n < rows.length; n++) {
+                td = rows[n].getElementsByTagName("td")[2];
+                if (td == null) {
+                    continue;
+                }
+                if (td) {
+                    if (td.innerHTML.indexOf(filter) > -1) {
+                        $(rows[n]).fadeIn();
+                    } else {
+                        $(rows[n]).fadeOut();
+                    }
+                }
+
+
+            }
+
+        });
 
         $("#ChartType").on("change", function () {
             var listIndex = document.getElementById("ChartType").selectedIndex;

@@ -196,6 +196,7 @@
     <Compile Include="Controllers\StrengthGoalController.cs" />
     <Compile Include="Controllers\ToolsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="DateValidator.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -287,6 +288,12 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.simplex.min.css" />
+    <Content Include="Content\Images\10lb.png" />
+    <Content Include="Content\Images\2.5lb.png" />
+    <Content Include="Content\Images\25lb.png" />
+    <Content Include="Content\Images\45lb.png" />
+    <Content Include="Content\Images\5lb.png" />
+    <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\jquery-ui.min.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
@@ -494,6 +501,7 @@
     <Content Include="Views\Friends\ConfirmedFriends.cshtml" />
     <Content Include="Views\Posts\RemovedPosts.cshtml" />
     <Content Include="Views\Users\FriendsPartial.cshtml" />
+    <Content Include="Views\Shared\Scripts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

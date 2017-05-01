@@ -113,7 +113,6 @@ namespace Fitness.Controllers
             }
             else
             {
-                //TODO: Make it to where it calculates the completion for the length
                 var progress = db.AerobicExercises.Where(x => x.UserID == db.Users.Where(i => i.Email == User.Identity.Name).FirstOrDefault().UserID).Where(x => x.ExerciseListID == goal.ExerciseListID).Where(x => x.DateRecorded >= goal.StartDate && x.DateRecorded <= goal.EndDate).OrderByDescending(x => x.Length);
                 model.progress = progress;
                 if (progress.Count() == 0)
