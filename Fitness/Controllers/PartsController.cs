@@ -49,11 +49,12 @@ namespace Fitness.Controllers
             return View(part);
         }
 
-        public ActionResult CreateChart(Part part)
+        [HttpPost]
+        public JsonResult CreateChart(int id)
         {
             List<string> xData = new List<string>();
             List<decimal> yData = new List<decimal>();
-            part = db.Parts.Find(part.PartID);
+            var part = db.Parts.Find(id);
             DateTime currentDay = part.Measurements.OrderBy(x => x.DateRecorded).FirstOrDefault().DateRecorded;
             decimal dailyMax = 0;
             foreach (var item in part.Measurements.OrderBy(x => x.DateRecorded))
@@ -75,39 +76,11 @@ namespace Fitness.Controllers
                 
             }
 
-            Chart chart = new Chart();
-            chart.BackColor = System.Drawing.Color.Transparent;
-            chart.AntiAliasing = AntiAliasingStyles.Graphics;
-            chart.Height = 480;
-            chart.Width = 640;
-            ChartArea chartArea = new ChartArea("ChartArea");
-            chart.ChartAreas.Add(chartArea);
-            Series series = new Series("Part");
-            chartArea.AxisX.Title = "Date Recorded";
-            chartArea.AxisY.Title = "Measurement Value";
-            chartArea.AxisY.TitleFont = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, 15, System.Drawing.FontStyle.Regular);
-            chartArea.AxisX.TitleFont = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, 15, System.Drawing.FontStyle.Regular);
-            chart.Series.Add(series);
-            series.ChartArea = "ChartArea";
-            series.ChartType = SeriesChartType.Line;
-            series.BorderWidth = 4;
-            for (int n = 0; n < xData.Count; n++)
-            {
-                series.Points.AddXY(xData.ElementAt(n), yData.ElementAt(n));
-                series.Points.ElementAt(n).Label = yData.ElementAt(n).ToString();
-            }
+            var data = new ChartData();
+            data.labels = xData;
+            data.data = yData;
+            return Json(data);
 
-            using (MemoryStream stream = new MemoryStream())
-            {
-                chart.SaveImage(stream, ChartImageFormat.Png);
-                return File(stream.ToArray(), "image/png");
-            }
-
-            //Chart chart = new Chart(800, 600);
-            //chart.AddTitle(part.Name + " History");
-            //chart.AddSeries(xValue: xData, yValues: yData, chartType: "Line");
-            //chart.Write("png");
-            //return null;
         }
 
         // GET: Parts/Create

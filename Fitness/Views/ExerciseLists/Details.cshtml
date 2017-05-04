@@ -14,10 +14,9 @@
 
     if (Model.Type == "Strength")
     {
-        <div class="col-md-12" id="chart">
-            <img src="@Url.Action("CreateStrengthChart", Model)" style="width: 100%; height: auto; max-width: 1000px" />
+        <div style="box-shadow: 10px 10px 5px #888888; margin-bottom: 1%; padding:1%;  border: 2px solid black; border-radius: 25px;">
+            <canvas id="strength" style="width: 100%; height: auto; min-height: 400px; margin:1%; "></canvas>
         </div>
-
         <p>
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Modal">Add new entry</button>
             @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
@@ -49,7 +48,7 @@
                 <th></th>
             </tr>
 
-            @foreach (var item in Model.StrengthExercises)
+            @foreach (var item in Model.StrengthExercises.OrderByDescending(x => x.DateRecorded))
             {
                 <tr>
                     <td>
@@ -96,14 +95,9 @@
     }
     else
     {
-       <div class="col-md-12">
+       <div id="graph-container" class="col-md-12">
            @Html.DropDownList("ChartType", (SelectList)ViewBag.focus, htmlAttributes: new { @class = "form-control" })
-            <div class="col-md-12" id="durationchart" style="display:inline;">
-                <img src="@Url.Action("CreateAerobicDurationChart", Model)" style="width: 100%; height: auto; max-width: 1000px" />
-            </div>
-            <div class="col-md-12" id="lengthchart" style="display:none;">
-                <img src="@Url.Action("CreateAerobicLengthChart", Model)" style="width: 100%; height: auto; max-width: 1000px" />
-            </div>
+           <canvas id="durationchart" style="width: 100%; height: auto; max-width: 1000px; min-height: 400px;"></canvas>
         </div>
 
         <p>
@@ -193,6 +187,11 @@ else
 
 @section Scripts {
     <script>
+        var chart;
+        var durationdata;
+        var lengthdata;
+        var durationlabels;
+        var lengthlabels;
 
         $("#clear").on("click", function () {
             var table = document.getElementById("table");
@@ -259,25 +258,119 @@ else
         $("#ChartType").on("change", function () {
             var listIndex = document.getElementById("ChartType").selectedIndex;
             if (listIndex == 0) {
-                $("#lengthchart").fadeOut(function () {
-                    $("#durationchart").fadeIn();
-                });
-                
-            } else {
-                $("#durationchart").fadeOut(function () {
-                    $("#lengthchart").fadeIn();
-                });
-                
+                //var canvas = $("durationchart");
+                //canvas.remove();
+                //$("graph-container").append('<canvas id="durationchart" style="width: 100%; height: auto; max-width: 1000px; min-height: 400px;"></canvas>');
+                getDurationChart();
+            } else if (listIndex == 1) {
+                //var canvas = $("durationchart");
+                //canvas.remove();
+                //$("graph-container").append('<canvas id="durationchart" style="width: 100%; height: auto; max-width: 1000px; min-height: 400px;"></canvas>');
+                getLengthChart();
+
             }
         });
+
+        function updateChart(data, labels) {
+            chart.data.datasets[0].data = data;
+            chart.data.labels = labels;
+            chart.update();
+        }
+
+        function getDurationChart() {
+            updateChart(durationdata, durationlabels);
+        }
+
+        function getLengthChart() {
+            updateChart(lengthdata, lengthlabels);
+        }
 
         $(document).ready(function () {
             $('#Duration').mask('00:00:00', { placeholder: '00:00:00' });
 
+            if (@Model.StrengthExercises.Count > 0) {
+                $.post("/ExerciseLists/CreateStrengthChart/" + @Model.ExerciseListID, function(data) {
+                    var canvas = $("#strength");
+                    chart = new Chart(canvas, {
+                        data: {
+                            labels: data.labels,
+                            datasets: [
+                                {
+                                    label: "Weight",
+                                    data: data.data,
+                                    backgroundColor: 'rgba(75,192,192,1)',
+                                    borderColor: "rgba(75,192,192,.5)",
+                                    fill: false
+                                }
+                            ]
+                        },
+                        type: "line",
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Weight Lifted'
+                                    },
+                                    ticks: {
+                                        suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                                        // OR //
+                                        beginAtZero: true   // minimum value will be 0.
+                                    }
+                                }]
+                            }
+                        }
+                    })
+                });
+            }
+
+            if (@Model.AerobicExercises.Count > 0) {
+                $.post("/ExerciseLists/CreateAerobicDurationChart/" + @Model.ExerciseListID, function(data) {
+                    durationdata = data.times;
+                    durationlabels = data.labels;
+                    var durationcanvas = document.getElementById("durationchart").getContext("2d");
+                    chart = new Chart(durationcanvas, {
+                        data: {
+                            labels: data.labels,
+                            datasets: [
+                                {
+                                    label: "Hours",
+                                    data: data.times,
+                                    backgroundColor: 'rgba(75,192,192,1)',
+                                    borderColor: "rgba(75,192,192,.5)",
+                                    fill: false
+                                }
+                            ]
+                        },
+                        type: "line",
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Hours Elapsed'
+                                    },
+                                    ticks: {
+                                        suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                                        // OR //
+                                        beginAtZero: true   // minimum value will be 0.
+                                    }
+                                }]
+                            }
+                        }
+                    })
+                });
+            }
+
+        });
+
+        $.post("/ExerciseLists/CreateAerobicLengthChart/" + @Model.ExerciseListID, function(data) {
+            lengthdata = data.data;
+            lengthlabels = data.labels;
         });
 
     </script>
     
     
     
-    }
+    }   

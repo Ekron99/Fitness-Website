@@ -208,6 +208,7 @@
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AerobicGoalModel.cs" />
+    <Compile Include="Models\ChartData.cs" />
     <Compile Include="Models\Comment.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
@@ -368,6 +369,8 @@
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.js" />
@@ -448,7 +451,6 @@
     <Content Include="Views\StrengthExercises\Index.cshtml" />
     <Content Include="Views\ExerciseLists\Create.cshtml" />
     <Content Include="Views\ExerciseLists\Delete.cshtml" />
-    <Content Include="Views\ExerciseLists\Details.cshtml" />
     <Content Include="Views\ExerciseLists\Edit.cshtml" />
     <Content Include="Views\ExerciseLists\Index.cshtml" />
     <Content Include="Views\AerobicExercises\Create.cshtml" />
@@ -502,6 +504,7 @@
     <Content Include="Views\Posts\RemovedPosts.cshtml" />
     <Content Include="Views\Users\FriendsPartial.cshtml" />
     <Content Include="Views\Shared\Scripts.cshtml" />
+    <Content Include="Views\ExerciseLists\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
