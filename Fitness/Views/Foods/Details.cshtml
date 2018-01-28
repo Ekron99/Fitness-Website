@@ -1,0 +1,114 @@
+﻿@model Fitness.Models.Food
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Food</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Calories)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Calories)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CaloriesFromFat)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CaloriesFromFat)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SaturatedFat)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SaturatedFat)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Cholestoral)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cholestoral)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Sodium)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Sodium)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Potassium)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Potassium)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalCarbohydrate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalCarbohydrate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DietaryFiber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DietaryFiber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Sugars)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Sugars)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Protein)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Protein)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.FoodID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

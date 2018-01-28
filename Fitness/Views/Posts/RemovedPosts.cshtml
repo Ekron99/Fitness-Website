@@ -1,0 +1,145 @@
+﻿@model IEnumerable<Fitness.Models.Post>
+@{
+    ViewBag.Title = "Removed Index";
+}
+
+<h2>Removed posts</h2>
+
+@Html.ActionLink("View current posts", "Index", null, new { @class = "btn btn-primary" })
+<br />
+
+@foreach (var item in Model)
+{
+    <br />
+    <div class="row well" id="@item.PostID">
+        <div class="col-md-1 col-xs-2">
+            @if (item.Closed)
+            {
+                if (item.userVote == 1)
+                {
+                    <div style="height: 33%; font-size:25px;">
+                        <a disabled class="btn btn-success">
+                            <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div style="height: 33%; font-size:25px;">
+                        <a disabled class="btn btn-primary">
+                            <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                }
+            }
+            else
+            {
+                if (item.userVote == 1)
+                {
+                    <div style="height: 33%; font-size:25px;">
+                        <a href="@Url.Action("upvote", "Posts", new { id = item.PostID })" class="btn btn-success">
+                            <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div style="height: 33%; font-size:25px;">
+                        <a href="@Url.Action("upvote", "Posts", new { id = item.PostID })" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                }
+            }
+
+
+
+            <div style="height: 33%; font-size:25px;">
+                <div style="margin-left: 12px;">
+                    @item.totalVotes()
+                </div>
+            </div>
+
+
+            @if (item.Closed)
+            {
+                if (item.userVote == -1)
+                {
+                    <div style="height: 33%; font-size:25px;">
+                        <a disabled class="btn btn-warning">
+                            <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div style="height: 33%; font-size:25px;">
+                        <a disabled class="btn btn-primary">
+                            <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                }
+            }
+            else
+            {
+                if (item.userVote == -1)
+                {
+                    <div style="height: 33%; font-size:25px;">
+                        <a href="@Url.Action("downvote", "Posts", new { id = item.PostID })" class="btn btn-warning">
+                            <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div style="height: 33%; font-size:25px;">
+                        <a href="@Url.Action("downvote", "Posts", new { id = item.PostID })" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                }
+            }
+
+
+
+        </div>
+
+        <div class="col-md-11 col-xs-10">
+            <h3>@Html.ActionLink(@item.Title, "Details", new { id = item.PostID })</h3>
+            @if (item.Closed)
+            {
+                <h4 class="text-danger"><span class="glyphicon glyphicon-ban-circle"></span> Post Closed</h4>
+            }
+            @if (item.Text.Length > 50)
+            {
+                <h5>@item.Text.Substring(0, 150) . . . </h5>
+            }
+            else
+            {
+                <h5>@item.Text</h5>
+            }
+
+            <p>
+                @Html.ActionLink("View comments", "Details", new { id = item.PostID }, htmlAttributes: new { @class = "btn btn-primary" })
+                @if (User.IsInRole("Admin"))
+                {
+                    @Html.ActionLink("Restore Post", "Restore", new { id = item.PostID }, htmlAttributes: new { @class = "btn btn-success" })
+                    <text> </text>
+                    if (item.Closed)
+                    {
+                        @Html.ActionLink("Open Post", "Open", new { id = item.PostID }, htmlAttributes: new { @class = "btn btn-success" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Close Post", "Close", new { id = item.PostID }, htmlAttributes: new { @class = "btn btn-primary" })
+                    }
+
+
+                }
+            </p>
+
+        </div>
+
+    </div>
+
+}

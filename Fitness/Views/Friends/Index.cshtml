@@ -1,0 +1,103 @@
+﻿@model IEnumerable<Fitness.Models.User>
+@{
+    ViewBag.Title = "User List";
+}
+
+<div class="row">
+    @Html.Action("ConfirmedFriends")
+</div>
+
+<div class="row">
+    <form>
+        <div class="col-md-3" style="margin-bottom: 2%;">
+            <h4>Search for users</h4>
+            <input name="search" id="search" type="search" class="form-control" style="margin-bottom: 2%;" />
+            <button type="button" value="Search" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+</div>
+
+<h3>All Users</h3>
+<table class="table" id="UserTable">
+
+    <tr>
+
+        <th>
+            Name
+        </th>
+
+        <th>
+            Options
+        </th>
+
+    </tr>
+
+
+    @foreach (var item in Model)
+    {
+
+        <tr>
+            <td>
+
+                @item.FirstName @item.LastName
+
+            </td>
+
+            <td>
+                @if (item.friend == "Confirmed")
+                {
+                    using (Html.BeginForm("Remove", "Friends", new { id = item.UserID }, FormMethod.Post, htmlAttributes: new { @class = "form-horizontal" }))
+                    {
+                        <input type="submit" value="Remove Friend" class="btn btn-primary" />
+                    }
+                }
+                else if (item.friend == "Pending")
+                {
+                    <input type="submit" value="Pending" disabled class="btn btn-success" />
+                }
+                else
+                {
+                    using (Html.BeginForm("Add", "Friends", new { id = item.UserID }, FormMethod.Post, htmlAttributes: new { @class = "form-horizontal" }))
+                    {
+                        <input type="submit" value="Add Friend" class="btn btn-success" />
+                    }
+                }
+            </td>
+        </tr>
+
+    }
+
+</table>
+
+
+@section Scripts {
+    
+    <script>
+
+        $("#search").on("input", function (e) {
+
+            var input = document.getElementById("search")
+            var table = document.getElementById("UserTable");
+            var rows = table.getElementsByTagName("tr");
+            var td;
+            var filter = input.value.toLowerCase();
+
+            for (var n = 0; n < rows.length; n++) {
+                td = rows[n].getElementsByTagName("td")[0];
+                if (td) {
+                    if (td.innerHTML.toLowerCase().indexOf(filter) > -1) {
+                        $(rows[n]).fadeIn();
+                    } else {
+                        $(rows[n]).fadeOut();
+                    }
+                }
+
+
+            }
+
+        });
+
+    </script>
+
+    
+    }

@@ -1,0 +1,119 @@
+﻿@model IEnumerable<Fitness.Models.Food>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-default" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Calories)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CaloriesFromFat)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SaturatedFat)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cholestoral)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sodium)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Potassium)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalCarbohydrate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DietaryFiber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sugars)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Protein)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Quantity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Calories)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CaloriesFromFat)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SaturatedFat)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cholestoral)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sodium)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Potassium)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalCarbohydrate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DietaryFiber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sugars)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Protein)
+        </td>
+        <td>
+            @if (item.UserID == null)
+            {
+                if (User.IsInRole("Admin"))
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.FoodID }) 
+                    @Html.ActionLink("Delete", "Delete", new { id = item.FoodID }) 
+                    @Html.ActionLink("Details", "Details", new { id = item.FoodID })
+                }
+                else
+                {
+                    @Html.ActionLink("Details", "Details", new { id = item.FoodID })
+                }
+            }
+            else
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = item.FoodID })  
+                <br />
+                @Html.ActionLink("Delete", "Delete", new { id = item.FoodID })  
+                <br />
+                @Html.ActionLink("Details", "Details", new { id = item.FoodID }) 
+            }
+
+
+        </td>
+    </tr>
+}
+
+</table>

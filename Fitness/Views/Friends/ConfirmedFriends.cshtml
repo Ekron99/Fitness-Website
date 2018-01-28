@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Fitness.Models.Friend>
+
+@if (Model.Count() > 0)
+{
+    <h3>Your Friends</h3>
+<table class="table">
+
+    <tr>
+        <th>
+            @Html.Label("Name")
+        </th>
+        <th>
+            @Html.Label("Status")
+        </th>
+        <th>
+            @Html.Label("Options")
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        if (item.User.Email == User.Identity.Name)
+        {
+            <tr>
+                <td>
+                    @item.User1.FirstName @item.User1.LastName
+                </td>
+                <td>
+                    @item.Status
+                </td>
+                <td>
+                    
+                    @Html.ActionLink("Remove Friend", "Remove", new { id = item.User1.UserID }, htmlAttributes: new { @class = "btn btn-primary" })
+                    @if (item.Status == "Pending")
+                    {
+                        @Html.ActionLink("Confirm Friend", "Confirm", new { id = item.FriendsID }, htmlAttributes: new { @class = "btn btn-success" })
+                    }
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td>
+                    @item.User.FirstName @item.User1.LastName
+                </td>
+                <td>
+                    @item.Status
+                </td>
+                <td>
+                    
+                    @Html.ActionLink("Remove Friend", "Remove", new { id = item.User.UserID }, htmlAttributes: new { @class = "btn btn-primary" })
+                    @if (item.Status == "Pending")
+                    {
+                        @Html.ActionLink("Confirm Friend", "Confirm", new { id = item.FriendsID }, htmlAttributes: new { @class = "btn btn-success" })
+                    }
+                </td>
+            </tr>
+        }
+
+    }
+
+</table>
+}

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="82fca2fb9a77498da0e3079a787c4e56" Name="Diagram1">
+        <EntityTypeShape EntityType="fitnessEntities.aerobicexercise" Width="1.5" PointX="5.25" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="fitnessEntities.aerobicgoal" Width="1.5" PointX="8.25" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="fitnessEntities.competition" Width="1.5" PointX="5.25" PointY="19.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="fitnessEntities.exerciselist" Width="1.5" PointX="3" PointY="18.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="fitnessEntities.food" Width="1.5" PointX="0.75" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="fitnessEntities.foodintake" Width="1.5" PointX="3" PointY="13.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="fitnessEntities.friend" Width="1.5" PointX="5" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="fitnessEntities.measurement" Width="1.5" PointX="5.25" PointY="22.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="fitnessEntities.part" Width="1.5" PointX="3" PointY="28.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="fitnessEntities.strengthexercise" Width="1.5" PointX="8.25" PointY="19.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="fitnessEntities.strengthgoal" Width="1.5" PointX="8.25" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="fitnessEntities.user" Width="1.5" PointX="0.75" PointY="12.75" IsExpanded="true" />
+        <AssociationConnector Association="fitnessEntities.AE_LIST_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="fitnessEntities.AE_USER_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="fitnessEntities.EL_AE_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="fitnessEntities.U_AE_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="fitnessEntities.C_EL_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="fitnessEntities.EL_SG_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="fitnessEntities.EL_USER_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="fitnessEntities.SE_LIST_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="fitnessEntities.FI_F_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="fitnessEntities.FI_U_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="fitnessEntities.M_PART_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="fitnessEntities.M_USER_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="fitnessEntities.P_U_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="fitnessEntities.SE_USER_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="fitnessEntities.U_SG_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="fitnessEntities.participants" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

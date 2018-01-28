@@ -1,0 +1,140 @@
+﻿@model Fitness.Models.PlateModel
+
+@{
+    ViewBag.Title = "Plate Calulator";
+
+}
+
+<h2>Plate Calculator</h2>
+
+<h4>Enter the amount you want to load onto the bar, and it will show you what plates will reach that weight.</h4>
+<h5>Only enter weight in increments of 5.</h5>
+<hr />
+
+@using (Html.BeginForm("PlateCalc", "Tools", FormMethod.Get))
+{
+
+    <div class="form-horizontal ">
+
+        <div class="form-group">
+            @Html.Label("Weight", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.Editor("weight", new { htmlAttributes = new { @class = "form-control" } })
+                <div class="text-danger">@ViewBag.error</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Weight System", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("type", (SelectList)ViewBag.type, htmlAttributes: new { @class = "form-control" })
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Calculate" class="btn btn-primary" />
+            </div>
+        </div>
+
+    </div>
+}
+@if (Model != null)
+{
+        if (Model.type == "lb")
+    {
+        //pound calculation
+<div class="row">
+    @if (Model.fourtyFive > 0)
+    {
+    <div class="col-md-2 col-xs-6  well" style="margin-right: 2%">
+        <img src="~/Content/Images/45lb.png" style="width: 100%; height:100%;" />
+        <h3 class="text-primary">45lb: @Model.fourtyFive plate(s)</h3>
+    </div>
+    }
+
+    @if (Model.twentyFive > 0)
+    {
+    <div class="col-md-2 col-xs-6 well" style="margin-right: 2%">
+        <img src="~/Content/Images/25lb.png" style="width: 100%; height:100%;" />
+        <h3 class="text-primary">25lb: @Model.twentyFive plates</h3>
+    </div>
+    }
+
+    @if (Model.ten > 0)
+    {
+    <div class="col-md-2 col-xs-6 well" style="margin-right: 2%">
+        <img src="~/Content/Images/10lb.png" style="width: 100%; height:100%;" />
+        <h3 class="text-primary">10lb: @Model.ten plates</h3>
+    </div>
+    }
+
+    @if (Model.five > 0)
+    {
+    <div class="col-md-2 col-xs-6 well" style="margin-right: 1%">
+        <img src="~/Content/Images/5lb.png" style="width: 100%; height:100%;" />
+        <h3 class="text-primary">5lb: @Model.five plates</h3>
+    </div>
+    }
+
+    @if (Model.twoFive > 0)
+    {
+    <div class="col-md-2 col-xs-6 well">
+        <img src="~/Content/Images/2.5lb.png" style="width: 100%; height:100%;" />
+        <h3 class="text-primary">2.5lb: @Model.twoFive plates</h3>
+    </div>
+    }
+
+</div>
+
+    }
+    else
+    {
+        //kilo calculation
+        <div class="row">
+            @if (Model.fourtyFive > 0)
+            {
+                <div class="col-md-2 col-xs-6  well" style="margin-right: 2%">
+                    <img src="~/Content/Images/45lb.png" style="width: 100%; height:100%;" />
+                    <h3 class="text-primary">20kg: @Model.fourtyFive plates</h3>
+                </div>
+            }
+
+            @if (Model.twentyFive > 0)
+            {
+                <div class="col-md-2 col-xs-6 well" style="margin-right: 2%">
+                    <img src="~/Content/Images/25lb.png" style="width: 100%; height:100%;" />
+                    <h3 class="text-primary">10kg: @Model.twentyFive plates</h3>
+                </div>
+            }
+
+            @if (Model.ten > 0)
+            {
+                <div class="col-md-2 col-xs-6 well" style="margin-right: 2%">
+                    <img src="~/Content/Images/10lb.png" style="width: 100%; height:100%;" />
+                    <h3 class="text-primary">5kg: @Model.ten plates</h3>
+                </div>
+            }
+
+            @if (Model.five > 0)
+            {
+                <div class="col-md-2 col-xs-6 well" style="margin-right: 2%">
+                    <img src="~/Content/Images/5lb.png" style="width: 100%; height:100%;" />
+                    <h3 class="text-primary">2.5kg: @Model.five plates</h3>
+                </div>
+            }
+
+            @if (Model.twoFive > 0)
+            {
+                <div class="col-md-2 col-xs-6 well">
+                    <img src="~/Content/Images/2.5lb.png" style="width: 100%; height:100%;" />
+                    <h3 class="text-primary">1.25kg: @Model.twoFive plates</h3>
+                </div>
+            }
+
+        </div>
+    }
+
+}

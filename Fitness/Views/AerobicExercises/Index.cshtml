@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Fitness.Models.AerobicExercise>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Duration)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Length)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateRecorded)
+        </th>
+        <th>
+            Exercise Name
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Duration)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Length)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateRecorded)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ExerciseList.Name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.AerobicExerciseID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.AerobicExerciseID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.AerobicExerciseID })
+        </td>
+    </tr>
+}
+
+</table>

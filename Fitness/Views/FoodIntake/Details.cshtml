@@ -1,0 +1,42 @@
+﻿@model Fitness.Models.FoodIntake
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>FoodIntake</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DateRecorded)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateRecorded)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Servings)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Servings)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Food.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Food.Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.FoodIntakeID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

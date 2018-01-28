@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<br />
+<div class="jumbotron">
+    <p>
+        Welcome to Fit Keeper, a free website that allows you to track exercises, goals, and more!
+    </p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Exercises</h2>
+        <p>
+            Start tracking your exercises today! Choose either a strength or aerobic exercise and enter your daily workouts.
+        </p>
+        
+        <p>@Html.ActionLink("Go to Exercises", "Index", "ExerciseLists", null, htmlAttributes: new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Measurements</h2>
+        <p>Measurements are a way to keep track of you weight, waist size, and more. Simply create a part that you would like to track, and enter your measurements!</p>
+        <p>@Html.ActionLink("Go to Measurements", "Index", "Parts", null, htmlAttributes: new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Goals</h2>
+        <p>Goals allow you to pick an exercise to and a target to reach by a certain date. Just pick an exercise, enter data to track, and Fit Keeper will pull the information for you!</p>
+        <p>@Html.ActionLink("Go to Goals", "Index", "Goals", null, htmlAttributes: new { @class = "btn btn-default" })</p>
+    </div>
+</div>

@@ -1,0 +1,77 @@
+﻿@model Fitness.Models.StrengthGoalProgressModel
+@{
+    ViewBag.Title = "View Progress";
+}
+
+<h2>View Progress</h2>
+
+<h3>@Model.goal.Name</h3>
+<h4>@Model.goal.ExerciseList.Name</h4>
+<h4>@Model.goal.StartDate.ToShortDateString() - @Model.goal.EndDate.ToShortDateString()</h4>
+
+
+<div class="progress" style="height: 20px;">
+    <div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: @ViewBag.percentDone%;">
+    </div>
+
+</div>
+
+<div class="text-primary col-md-12 " style="font-size: 20px; text-align:center; ">
+    @ViewBag.percentDone% Complete
+    <br />
+</div>
+
+@if (Model.progress.Count() > 0)
+{
+<table class="table">
+    <tr>
+        <th>
+            Reps
+        </th>
+        <th>
+           Sets
+        </th>
+        <th>
+           Weight
+        </th>
+        <th>
+            Date Recorded
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model.progress)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rep)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sets)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weight)
+            </td>
+            <td>
+                @item.DateRecorded.ToShortDateString()
+            </td>
+        </tr>
+    }
+
+</table>
+}
+else
+{
+    <div class="well">
+        <h4 class="text-primary">No entries for this exercise</h4>
+        <p>
+            This may be because there are no entries for this exercise within the goal start and end dates.
+        </p>
+    </div>
+    <br />
+}
+<p>
+    @Html.ActionLink("Add new entry", "Create", "StrengthExercises", null, new { @class = "btn btn-success" })
+    @Html.ActionLink("Edit this goal", "Edit", "StrengthGoal", new { id = Model.goal.GoalID }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Delete this goal", "Delete", "StrengthGoal", new { id = Model.goal.GoalID }, new { @class = "btn btn-danger" })
+</p>

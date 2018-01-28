@@ -1,0 +1,22 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="jumbotron">
+    <h2>Uh oh, something went wrong!</h2>
+</div>
+
+
+    @*@{
+        var exception = Model.Exception.InnerException;
+    }
+    @while (exception != null)
+    {
+        <p>
+            Inner Exception:
+            @Model.Exception.InnerException.Message
+        </p>
+        @exception = exception.InnerException;
+    }*@
+

@@ -1,0 +1,376 @@
+﻿@model Fitness.Models.ExerciseList
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>@Model.Name Entries</h2>
+
+<hr />
+
+@if (ViewBag.NoStrength == false || ViewBag.NoAerobic == false)
+{
+
+
+    if (Model.Type == "Strength")
+    {
+        <div style="box-shadow: 10px 10px 5px #888888; margin-bottom: 1%; padding:1%;  border: 2px solid black; border-radius: 25px;">
+            <canvas id="strength" style="width: 100%; height: auto; min-height: 400px; margin:1%; "></canvas>
+        </div>
+        <p>
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Modal">Add new entry</button>
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("Edit Exercise", "Edit", "ExerciseLists", new { id = Model.ExerciseListID }, new { @class = "btn btn-default" })
+            @Html.ActionLink("Delete Exercise", "Delete", "ExerciseLists", new { id = Model.ExerciseListID }, new { @class = "btn btn-warning" })
+
+        </p>
+
+        <div class="col-md-12" style="margin-bottom: 2%;">
+            @Html.Label("Filter by date", new { @style = "font-weight: bold;" })
+            <input type="date" id="filterStrength" style="display: inline;" class="form-control" />
+            <button type="button" id="clear" class="btn btn-primary">Clear</button>
+        </div>
+
+        <table class="table" id="table">
+            <tr>
+                <th>
+                    Reps
+                </th>
+                <th>
+                    Sets
+                </th>
+                <th>
+                    Weight
+                </th>
+                <th>
+                    Date Recorded
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.StrengthExercises.OrderByDescending(x => x.DateRecorded))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Rep)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Sets)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Weight)
+                    </td>
+                    <td>
+                        @item.DateRecorded.ToShortDateString()
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", "StrengthExercises", new { id = item.ExerciseID }, null) |
+                        @Html.ActionLink("Details", "Details", "StrengthExercises", new { id = item.ExerciseID }, null) |
+                        @Html.ActionLink("Delete", "Delete", "StrengthExercises", new { id = item.ExerciseID }, null)
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+        <div id="Modal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add new exercise</h4>
+                    </div>
+                    <div class="modal-body">
+                        @Html.Action("CreateModal", "StrengthExercises", new { id = Model.ExerciseListID })
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    }
+    else
+    {
+       <div id="graph-container" class="col-md-12">
+           @Html.DropDownList("ChartType", (SelectList)ViewBag.focus, htmlAttributes: new { @class = "form-control" })
+           <canvas id="durationchart" style="width: 100%; height: auto; max-width: 1000px; min-height: 400px;"></canvas>
+        </div>
+
+        <p>
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Modal">Add new entry</button>
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("Edit Exercise", "Edit", "ExerciseLists", new { id = Model.ExerciseListID }, new { @class = "btn btn-default" })
+            @Html.ActionLink("Delete Exercise", "Delete", "ExerciseLists", new { id = Model.ExerciseListID }, new { @class = "btn btn-warning" })
+
+        </p>
+
+        <div class="col-md-12" style="margin-bottom: 2%;">
+            @Html.Label("Filter by date")
+            <input type="date" id="filterAerobic" class="form-control" />
+            <button type="button" id="clear" style="margin-top:2%;" class="btn btn-primary">Clear</button>
+        </div>
+
+        <table class="table" id="table">
+            <tr>
+                <th>
+                    Duration
+                </th>
+                <th>
+                    Length
+                </th>
+                <th>
+                    Date Recorded
+                </th>
+                <th>
+                    Exercise Name
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.AerobicExercises)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Duration)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Length)
+                    </td>
+                    <td>
+                        @item.DateRecorded.ToShortDateString()
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ExerciseList.Name)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", "AerobicExercises", new { id = item.AerobicExerciseID }, null) |
+                        @Html.ActionLink("Details", "Details", "AerobicExercises", new { id = item.AerobicExerciseID }, null) |
+                        @Html.ActionLink("Delete", "Delete", "AerobicExercises", new { id = item.AerobicExerciseID }, null)
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+        <div id="Modal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add new exercise</h4>
+                    </div>
+                    <div class="modal-body">
+                        @Html.Action("CreateModal", "AerobicExercises", new { id = Model.ExerciseListID })
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    }
+
+}
+else
+{
+    <h4 class="text-warning">No data recorded</h4>
+}
+
+
+
+@section Scripts {
+    <script>
+        var chart;
+        var durationdata;
+        var lengthdata;
+        var durationlabels;
+        var lengthlabels;
+
+        $("#clear").on("click", function () {
+            var table = document.getElementById("table");
+            var rows = table.getElementsByTagName("tr");
+            for (var n = 0; n < rows.length; n++) {
+                $(rows[n]).fadeIn();
+            }
+        });
+
+        $("#filterStrength").on("input", function (e) {
+
+            var input = document.getElementById("filterStrength")
+            var table = document.getElementById("table");
+            var rows = table.getElementsByTagName("tr");
+            var td;
+            var filter = input.valueAsDate.getMonth() + 1 + "/";
+            filter += input.valueAsDate.getDate() + 1 + "/";
+            filter += input.valueAsDate.getFullYear();
+            for (var n = 0; n < rows.length; n++) {
+                td = rows[n].getElementsByTagName("td")[3];
+                if (td == null) {
+                    continue;
+                }
+                if (td) {
+                    if (td.innerHTML.indexOf(filter) > -1) {
+                        $(rows[n]).fadeIn();
+                    } else {
+                        $(rows[n]).fadeOut();
+                    }
+                }
+
+
+            }
+
+        });
+
+        $("#filterAerobic").on("input", function (e) {
+
+            var input = document.getElementById("filterAerobic")
+            var table = document.getElementById("table");
+            var rows = table.getElementsByTagName("tr");
+            var td;
+            var filter = input.valueAsDate.getMonth() + 1 + "/";
+            filter += input.valueAsDate.getDate() + 1 + "/";
+            filter += input.valueAsDate.getFullYear();
+            for (var n = 0; n < rows.length; n++) {
+                td = rows[n].getElementsByTagName("td")[2];
+                if (td == null) {
+                    continue;
+                }
+                if (td) {
+                    if (td.innerHTML.indexOf(filter) > -1) {
+                        $(rows[n]).fadeIn();
+                    } else {
+                        $(rows[n]).fadeOut();
+                    }
+                }
+
+
+            }
+
+        });
+
+        $("#ChartType").on("change", function () {
+            var listIndex = document.getElementById("ChartType").selectedIndex;
+            if (listIndex == 0) {
+                //var canvas = $("durationchart");
+                //canvas.remove();
+                //$("graph-container").append('<canvas id="durationchart" style="width: 100%; height: auto; max-width: 1000px; min-height: 400px;"></canvas>');
+                getDurationChart();
+            } else if (listIndex == 1) {
+                //var canvas = $("durationchart");
+                //canvas.remove();
+                //$("graph-container").append('<canvas id="durationchart" style="width: 100%; height: auto; max-width: 1000px; min-height: 400px;"></canvas>');
+                getLengthChart();
+
+            }
+        });
+
+        function updateChart(data, labels) {
+            chart.data.datasets[0].data = data;
+            chart.data.labels = labels;
+            chart.update();
+        }
+
+        function getDurationChart() {
+            updateChart(durationdata, durationlabels);
+        }
+
+        function getLengthChart() {
+            updateChart(lengthdata, lengthlabels);
+        }
+
+        $(document).ready(function () {
+            $('#Duration').mask('00:00:00', { placeholder: '00:00:00' });
+
+            if (@Model.StrengthExercises.Count > 0) {
+                $.post("/ExerciseLists/CreateStrengthChart/" + @Model.ExerciseListID, function(data) {
+                    var canvas = $("#strength");
+                    chart = new Chart(canvas, {
+                        data: {
+                            labels: data.labels,
+                            datasets: [
+                                {
+                                    label: "Weight",
+                                    data: data.data,
+                                    backgroundColor: 'rgba(75,192,192,1)',
+                                    borderColor: "rgba(75,192,192,.5)",
+                                    fill: false
+                                }
+                            ]
+                        },
+                        type: "line",
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Weight Lifted'
+                                    },
+                                    ticks: {
+                                        suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                                        // OR //
+                                        beginAtZero: true   // minimum value will be 0.
+                                    }
+                                }]
+                            }
+                        }
+                    })
+                });
+            }
+
+            if (@Model.AerobicExercises.Count > 0) {
+                $.post("/ExerciseLists/CreateAerobicDurationChart/" + @Model.ExerciseListID, function(data) {
+                    durationdata = data.times;
+                    durationlabels = data.labels;
+                    var durationcanvas = document.getElementById("durationchart").getContext("2d");
+                    chart = new Chart(durationcanvas, {
+                        data: {
+                            labels: data.labels,
+                            datasets: [
+                                {
+                                    label: "Hours",
+                                    data: data.times,
+                                    backgroundColor: 'rgba(75,192,192,1)',
+                                    borderColor: "rgba(75,192,192,.5)",
+                                    fill: false
+                                }
+                            ]
+                        },
+                        type: "line",
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Hours Elapsed'
+                                    },
+                                    ticks: {
+                                        suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                                        // OR //
+                                        beginAtZero: true   // minimum value will be 0.
+                                    }
+                                }]
+                            }
+                        }
+                    })
+                });
+            }
+
+        });
+
+        $.post("/ExerciseLists/CreateAerobicLengthChart/" + @Model.ExerciseListID, function(data) {
+            lengthdata = data.data;
+            lengthlabels = data.labels;
+        });
+
+    </script>
+    
+    
+    
+    }   

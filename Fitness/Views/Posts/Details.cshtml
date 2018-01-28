@@ -1,0 +1,425 @@
+﻿@model Fitness.Models.Post
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<p><h2>@Model.Title</h2> <h4 style="display:inline-block;">@Model.User.FirstName @Model.User.LastName.Substring(0, 1)</h4> - @Model.DateRecorded</p>
+<div class="row well">
+    <div class="col-md-1 col-xs-2">
+        @if (Model.Closed)
+        {
+            if (Model.userVote == 1)
+            {
+                <div style="height: 33%; font-size:10px;">
+                    <a disabled class="btn btn-success">
+                        <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div style="height: 33%; font-size:10px;">
+                    <a disabled class="btn btn-primary">
+                        <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                    </a>
+                </div>
+            }
+        }
+        else
+        {
+            if (Model.userVote == 1)
+            {
+                <div style="height: 33%; font-size:10px;">
+                    <a href="@Url.Action("upvote", "Posts", new { id = Model.PostID, fromComments = true })" class="btn btn-success">
+                        <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div style="height: 33%; font-size:10px;">
+                    <a href="@Url.Action("upvote", "Posts", new { id = Model.PostID, fromComments = true})" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                    </a>
+                </div>
+            }
+        }
+        
+
+
+        <div style="height: 33%; font-size:20px;">
+            <div style="margin-left: 12px;">
+                @Model.totalVotes()
+            </div>
+        </div>
+
+        @if (Model.Closed)
+        {
+            if (Model.userVote == -1)
+            {
+                <div style="height: 33%; font-size:10px;">
+                    <a disabled class="btn btn-warning">
+                        <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div style="height: 33%; font-size:10px;">
+                    <a disabled class="btn btn-primary">
+                        <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                    </a>
+                </div>
+            }
+        }
+        else
+        {
+            if (Model.userVote == -1)
+            {
+                <div style="height: 33%; font-size:10px;">
+                    <a href="@Url.Action("downvote", "Posts", new { id = Model.PostID, fromComments = true })" class="btn btn-warning">
+                        <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div style="height: 33%; font-size:10px;">
+                    <a href="@Url.Action("downvote", "Posts", new { id = Model.PostID, fromComments = true })" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                    </a>
+                </div>
+            }
+        }
+        
+
+
+    </div>
+    <div class="col-md-11 col-xs-10">
+        <h4>@Model.Text</h4>
+    </div>
+</div>
+<div class="row">
+    @using (Html.BeginForm("Create", "Comments", FormMethod.Post))
+    {
+        //create new comment
+        <div class="col-md-12">
+            <h4>Post a new comment</h4>
+            <textarea class="form-control" cols="20" id="Text" name="Text" rows="5"></textarea>
+            <br />
+            @if (Model.Closed)
+            {
+                <input type="submit" value="Locked" class="btn btn-primary" disabled />
+            }
+            else
+            {
+                <input type="submit" value="Submit" class="btn btn-primary" />
+            }
+            
+        </div>
+        @Html.HiddenFor(model => model.PostID)
+    }
+</div>
+
+<hr />
+
+@foreach (var comment in Model.Comments.OrderByDescending(x => x.Upvotes - x.Downvotes).OrderByDescending(x => x.DateRecorded))
+{
+    if (comment.ParentCommentID != null)
+    {
+        continue;
+    }
+    <div class="well" id="@comment.CommentID">
+        <div class="row">
+            @* Votes *@
+            <div class="col-md-1 col-xs-2">
+                @if (Model.Closed)
+                {
+                    if (comment.userVote == 1)
+                    {
+                        <div style="height: 33%; font-size:10px;">
+                            <a disabled class="btn btn-success">
+                                <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="height: 33%; font-size:10px;">
+                            <a disabled class="btn btn-primary">
+                                <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    }
+                }
+                else
+                {
+                    if (comment.userVote == 1)
+                    {
+                        <div style="height: 33%; font-size:10px;">
+                            <a href="@Url.Action("upvote", "Comments", new { id = comment.CommentID })" class="btn btn-success">
+                                <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="height: 33%; font-size:10px;">
+                            <a href="@Url.Action("upvote", "Comments", new { id = comment.CommentID })" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    }
+                }
+
+                <div style="height: 33%; font-size:20px;">
+                    <div style="margin-left: 12px;">
+                        @comment.totalVotes()
+                    </div>
+                </div>
+
+
+                @if (Model.Closed)
+                {
+                    if (comment.userVote == -1)
+                    {
+                        <div style="height: 33%; font-size:10px;">
+                            <a disabled class="btn btn-warning">
+                                <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="height: 33%; font-size:10px;">
+                            <a disabled class="btn btn-primary">
+                                <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    }
+                }
+                else
+                {
+                    if (comment.userVote == -1)
+                    {
+                        <div style="height: 33%; font-size:10px;">
+                            <a disabled class="btn btn-warning">
+                                <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="height: 33%; font-size:10px;">
+                            <a href="@Url.Action("downvote", "Comments", new { id = comment.CommentID })" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    }
+                }
+                
+
+
+            </div>
+            @* Text *@
+            <div class="col-md-11 col-xs-10">
+                <div class="panel panel-body">
+                    <h4 style="display: inline-block;">@comment.User.FirstName @comment.User.LastName.Substring(0,1) </h4> <span> - @comment.DateRecorded</span>
+                    <hr style="margin: 0px 0px 5px 0px;" />
+                    <p style="font-size:15px; color:black;">
+                        @comment.Text
+                    </p>
+                    
+                </div>
+            </div>
+        </div>
+        @if (User.IsInRole("Admin"))
+        {
+            <p class="col-md-offset-1">
+                @Html.ActionLink("Delete comment", "Delete", "Comments", new { id = comment.CommentID }, null)
+            </p>
+        }
+
+        <div class="row">
+            <div class="col-md-offset-1 col-md-4">
+                @if (Model.Closed)
+                {
+                    <p class="btn btn-primary" disabled id="reply-@comment.CommentID">
+                        Locked
+                    </p>
+                }
+                else
+                {
+                    <p class="btn btn-primary" onclick="toggle(@comment.CommentID)" id="reply-@comment.CommentID">
+                        Reply
+                    </p>
+                }
+                
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row" style="display: none;" id="body-@comment.CommentID">
+            <div class="col-md-offset-1 col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        @Html.Action("CreatePartial", "Comments", new { ParentCommentID = comment.CommentID, PostID = comment.PostID })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @foreach (var item in comment.ChildComments)
+        {
+            if (item.ParentCommentID == null)
+            {
+                continue;
+            }
+
+            <div class="col-md-offset-1"><div class="row well" style="background-color: #fcfcfc;" id="@item.CommentID"> 
+                <div class="col-md-1 col-xs-2">
+                    @if (Model.Closed)
+                    {
+                        if (item.userVote == 1)
+                        {
+                            <div style="height: 33%; font-size:10px;">
+                                <a disabled class="btn btn-success">
+                                    <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="height: 33%; font-size:10px;">
+                                <a disabled class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        if (item.userVote == 1)
+                        {
+                            <div style="height: 33%; font-size:10px;">
+                                <a href="@Url.Action("upvote", "Comments", new { id = item.CommentID })" class="btn btn-success">
+                                    <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="height: 33%; font-size:10px;">
+                                <a href="@Url.Action("upvote", "Comments", new { id = item.CommentID })" class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        }
+                    }
+                    
+
+
+                    <div style="height: 33%; font-size:20px;">
+                        <div style="margin-left: 12px;">
+                            @item.totalVotes()
+                        </div>
+                    </div>
+
+
+                    @if (Model.Closed)
+                    {
+                        if (item.userVote == -1)
+                        {
+                            <div style="height: 33%; font-size:10px;">
+                                <a disabled class="btn btn-warning">
+                                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="height: 33%; font-size:10px;">
+                                <a disabled class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        if (item.userVote == -1)
+                        {
+                            <div style="height: 33%; font-size:10px;">
+                                <a href="@Url.Action("downvote", "Comments", new { id = item.CommentID })" class="btn btn-warning">
+                                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="height: 33%; font-size:10px;">
+                                <a href="@Url.Action("downvote", "Comments", new { id = item.CommentID })" class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        }
+                    }
+                    
+                </div>
+
+                <div class="col-md-11 col-xs-10">
+                    <div class="panel panel-body">
+                        <h4 style="display: inline-block;">@comment.User.FirstName @comment.User.LastName.Substring(0, 1) </h4> <span> - @comment.DateRecorded</span>
+                        <hr style="margin: 0px 0px 5px 0px;" />
+                        <p style="font-size:15px; color:black;">
+                            @item.Text
+                        </p>
+                    </div>
+                </div>
+                @if (User.IsInRole("Admin"))
+                {
+                    <p>
+                        @Html.ActionLink("Delete comment", "Delete", "Comments", new { id = item.CommentID }, null)
+                    </p>
+                }
+            </div>
+        </div>
+        }
+    </div>
+}
+
+@section Scripts {
+
+    <script>
+        function toggle(id) {
+            if ($("#reply-" + id).text() === "Reply") {
+                $("#reply-" + id).text("Cancel");
+            } else if ($("#reply-" + id).text() === "Cancel") {
+                $("#reply-" + id).text("Reply");
+            } else {
+                $("#reply-" + id).text("Cancel");
+            }
+            $("#body-" + id).slideToggle("slow");
+
+        }
+
+        //$(document).ready(function () {
+        //    $(".reply").click(function () {
+        //        var child = $(".reply").find("")
+        //        if ($(".reply").text() === "Reply") {
+        //            $(".reply").text("Cancel");
+        //        } else if ($(".reply").text() === "Cancel") {
+        //            $(".reply").text("Reply");
+        //        } else {
+        //            $(".reply").text("Cancel");
+        //        }
+        //        $(".createReply").slideToggle("slow");
+
+        //    });
+        //});
+    </script>
+
+
+}

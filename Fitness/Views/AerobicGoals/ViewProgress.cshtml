@@ -1,0 +1,89 @@
+﻿@model Fitness.Models.AerobicGoalModel
+
+@{
+    ViewBag.Title = "View Progress";
+}
+
+<h2>View Progress</h2>
+
+<h3>Name: @Model.goal.Name</h3>
+<h4>Exercise: @Model.goal.ExerciseList.Name</h4>
+@if (Model.goal.Focus == "Duration")
+{
+    <h4>Goal: @Model.goal.Duration</h4>
+}
+else
+{
+    <h4>Goal: @Model.goal.Length</h4>
+}
+
+<div class="progress" style="height: 20px;">
+    <div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuenow="@ViewBag.percentDone" aria-valuemin="0" aria-valuemax="100" style="width: @ViewBag.percentDone%;">
+    </div>
+
+</div>
+
+<div class="text-primary col-md-12 " style="font-size: 20px; text-align:center; ">
+    @ViewBag.percentDone% Complete
+</div>
+@if (Model.progress.Count() > 0)
+{
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Entry")
+        </th>
+        <th>
+            Date Recorded
+        </th>
+
+        <th>
+            Exercise Name
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.progress)
+    {
+        <tr>
+            <td>
+                @if (Model.goal.Focus == "Duration")
+                {
+                    @Html.DisplayFor(modelItem => item.Duration)
+                }
+                else
+                {
+                    @Html.DisplayFor(modelItem => item.Length)
+                }
+                
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateRecorded)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExerciseList.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", "AerobicExercises", new { id = item.AerobicExerciseID }, null)
+            </td>
+        </tr>
+    }
+
+</table>
+}
+else
+{
+    <div class="well">
+        <h4 class="text-primary">No entries for this exercise</h4>
+        <p>
+            This may be because there are no entries for this exercise within the goal start and end dates.
+        </p>
+    </div>
+    <br />
+}
+
+<p>
+    @Html.ActionLink("Add new entry", "Create", "AerobicExercises", null, new { @class = "btn btn-success" })
+    @Html.ActionLink("Edit this goal", "Edit", "AerobicGoals", new { id = Model.goal.GoalID }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Delete this goal", "Delete", "AerobicGoals", new { id = Model.goal.GoalID }, new { @class = "btn btn-danger" })
+</p>

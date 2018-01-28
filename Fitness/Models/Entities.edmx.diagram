@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="0fbc2edb786846fa9ae734aa9233f4a5" Name="Diagram1" ZoomLevel="97">
+        <EntityTypeShape EntityType="fitnessModel.AerobicExercise" Width="1.5" PointX="7.5" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="fitnessModel.Competition" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="fitnessModel.ExerciseList" Width="1.5" PointX="0.75" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="fitnessModel.Friend" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="fitnessModel.Measurement" Width="1.5" PointX="7.5" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="fitnessModel.StrengthExercise" Width="1.5" PointX="7.5" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="fitnessModel.User" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
+        <AssociationConnector Association="fitnessModel.AE_USER_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="fitnessModel.C_EL_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="fitnessModel.M_USER_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="fitnessModel.SE_USER_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="fitnessModel.Participants" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="fitnessModel.Part" Width="1.5" PointX="7.5" PointY="10.5" />
+        <AssociationConnector Association="fitnessModel.P_U_FK" />
+        <AssociationConnector Association="fitnessModel.M_PART_FK" />
+        <AssociationConnector Association="fitnessModel.EL_USER_FK" />
+        <AssociationConnector Association="fitnessModel.AE_LIST_FK" />
+        <AssociationConnector Association="fitnessModel.SE_LIST_FK" />
+        <EntityTypeShape EntityType="fitnessModel.Food" Width="1.5" PointX="0.75" PointY="9" />
+        <EntityTypeShape EntityType="fitnessModel.FoodIntake" Width="1.5" PointX="10.875" PointY="7.125" />
+        <AssociationConnector Association="fitnessModel.F_FI_FK" />
+        <AssociationConnector Association="fitnessModel.U_FI_FK" />
+        <EntityTypeShape EntityType="fitnessModel.StrengthGoal" Width="1.5" PointX="10.5" PointY="4" />
+        <AssociationConnector Association="fitnessModel.EL_SG_FK" />
+        <AssociationConnector Association="fitnessModel.U_SG_FK" />
+        <EntityTypeShape EntityType="fitnessModel.AerobicGoal" Width="1.5" PointX="10.5" PointY="0.75" />
+        <AssociationConnector Association="fitnessModel.EL_AE_FK" />
+        <AssociationConnector Association="fitnessModel.U_AE_FK" />
+        <EntityTypeShape EntityType="fitnessModel.Comment" Width="1.5" PointX="9.75" PointY="10.625" />
+        <EntityTypeShape EntityType="fitnessModel.Post" Width="1.5" PointX="7.5" PointY="13.75" />
+        <AssociationConnector Association="fitnessModel.C_C_FK" />
+        <AssociationConnector Association="fitnessModel.C_U_FK" />
+        <AssociationConnector Association="fitnessModel.P_C_FK" />
+        <AssociationConnector Association="fitnessModel.U_U_FK1" />
+        <AssociationConnector Association="fitnessModel.U_U_FK2" />
+        <AssociationConnector Association="fitnessModel.U_P_FK" />
+        <EntityTypeShape EntityType="fitnessModel.CommentVote" Width="1.5" PointX="14" PointY="7.875" />
+        <EntityTypeShape EntityType="fitnessModel.PostVote" Width="1.5" PointX="12.75" PointY="11.375" />
+        <AssociationConnector Association="fitnessModel.CV_C_FK" />
+        <AssociationConnector Association="fitnessModel.CV_U_FK" />
+        <AssociationConnector Association="fitnessModel.PV_P_FK" />
+        <AssociationConnector Association="fitnessModel.PV_U_FK" />
+        <AssociationConnector Association="fitnessModel.F_U_FK" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

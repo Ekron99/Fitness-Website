@@ -1,0 +1,105 @@
+﻿@model Fitness.Models.Part
+
+@{
+    ViewBag.Title = "Details";
+}
+<h2 class="text-primary">@Model.Name Measurements</h2>
+
+@if (ViewBag.NoMeasurements == false)
+{
+
+<div  id="chart-container" style="box-shadow: 10px 10px 5px #888888; margin-bottom: 1%; padding:1%;  border: 2px solid black; border-radius: 25px;">
+    <canvas id="canvas" style="width: 100%; height: auto; min-height: 400px; margin:1%; "></canvas>
+</div>
+
+<p>
+    @Html.ActionLink("Add new entry", "Create", "Measurements", new { id = Model.PartID }, new { @class = "btn btn-success" })
+    @Html.ActionLink("Edit", "Edit", "Parts", new { id = Model.PartID }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Delete this part", "Delete", "Parts", new { id = Model.PartID }, new { @class = "btn btn-danger" })
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            Part
+        </th>
+        <th>
+            Value
+        </th>
+        <th>
+            Date Recorded
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Measurements.OrderByDescending(x => x.DateRecorded))
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Part.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Value)
+            </td>
+            <td>
+                @item.DateRecorded.ToShortDateString()
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "Measurements", new { id = item.MeasurementID }, null) |
+                @Html.ActionLink("Details", "Details", "Measurements", new { id = item.MeasurementID }, null) |
+                @Html.ActionLink("Delete", "Delete", "Measurements", new { id = item.MeasurementID }, null)
+            </td>
+        </tr>
+    }
+
+</table>
+}
+else
+{
+    <h4 class="text-warning">No measurements recorded</h4>
+    @Html.ActionLink("Add new entry", "Create", "Measurements", new { id = Model.PartID }, new { @class = "btn btn-success" })
+}
+
+@section Scripts {
+    <script>
+
+        $.post("/Parts/CreateChart/" + @Model.PartID, function(data) {
+            durationdata = data.times;
+            durationlabels = data.labels;
+            var durationcanvas = document.getElementById("canvas").getContext("2d");
+            chart = new Chart(durationcanvas, {
+                data: {
+                    labels: data.labels,
+                    datasets: [
+                        {
+                            label: "Value",
+                            data: data.data,
+                            backgroundColor: 'rgba(75,192,192,1)',
+                            borderColor: "rgba(75,192,192,.5)",
+                            fill: false
+                        }
+                    ]
+                },
+                type: "line",
+                options: {
+                    scales: {
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Values'
+                            },
+                            ticks: {
+                                suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                                // OR //
+                                beginAtZero: true   // minimum value will be 0.
+                            }
+                        }]
+                    }
+                }
+            })
+        });
+
+    </script>
+    
+    
+    }
